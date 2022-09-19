@@ -6,16 +6,15 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyBehaviourScript : MonoBehaviour
 {
-    public PlayerScanner playerScanner;
+    [SerializeField] private Enemy enemy;
     private NavMeshAgent agent;
-    private Mesh mesh;
-    private GameObject FieldOfView;
-
+    private PlayerScanner playerScanner = new PlayerScanner();
 
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
-        mesh = new Mesh();
-        // GetComponent<MeshFilter>().mesh = mesh;
+
+        //creata field of view
+        playerScanner.CreataFieldOfView(transform, transform.position);
     }
 
     // Start is called before the first frame update
@@ -27,6 +26,6 @@ public class EnemyBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        playerScanner.renderFieldOfView(enemy.detectionAngle, enemy.viewDistancee);
     }
 }

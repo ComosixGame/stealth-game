@@ -6,4 +6,5 @@ using UnityEngine;
 public class Enemy : ScriptableObject
 {
     [Range(0, 360)] public float detectionAngle;
+    public float viewDistancee;
 }
