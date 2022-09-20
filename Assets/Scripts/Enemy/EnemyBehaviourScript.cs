@@ -6,26 +6,41 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyBehaviourScript : MonoBehaviour
 {
+    [SerializeField] private PlayerScanner playerScanner = new PlayerScanner();
     [SerializeField] private Enemy enemy;
+    [SerializeField] private Transform[] patrolList;
     private NavMeshAgent agent;
-    private PlayerScanner playerScanner = new PlayerScanner();
+    private GameObject FieldOfView;
 
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
 
         //creata field of view
-        playerScanner.CreataFieldOfView(transform, transform.position);
+        FieldOfView = playerScanner.CreataFieldOfView(transform, transform.position);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerScanner.SetFovAngel(enemy.detectionAngle);
+        playerScanner.SetViewDistence(enemy.viewDistance);
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerScanner.renderFieldOfView(enemy.detectionAngle, enemy.viewDistancee);
+        playerScanner.renderFieldOfView(transform);
     }
+
+    private void Patrol() {
+    }
+
+    
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected() {
+        playerScanner.EditorGizmo(transform, enemy.detectionAngle, enemy.viewDistance);
+    }
+
+#endif
 }
