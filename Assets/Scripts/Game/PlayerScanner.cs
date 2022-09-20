@@ -1,4 +1,8 @@
 using UnityEngine;
+using UnityEngine.Events;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [System.Serializable]
 public class PlayerScanner
@@ -25,7 +29,7 @@ public class PlayerScanner
         return FieldOfView;
     }
 
-    public void renderFieldOfView(Transform detector) {
+    public void Scan(Transform detector) {
         int rayCount = 50;
         float angelIncrease = fov/rayCount;
 
@@ -53,11 +57,10 @@ public class PlayerScanner
                 if(!hit.transform.gameObject.tag.Equals(TargetTag)) {
                     vertex = Vector3.zero +  (dir * hit.distance);
                 } else {
-                    Debug.Log("bố m bắt đc m r");
+                    // do 
                 }
             } 
             
-
             vertices[i + 1] = vertex;
             if(i>0) {
                 triangles[triangleIndex] = 0;
@@ -84,9 +87,9 @@ public class PlayerScanner
 
 #if UNITY_EDITOR
     public void EditorGizmo(Transform transform, float angle, float radius) {
-        UnityEditor.Handles.color = new Color32(76, 122, 90, 80);
+        Handles.color = new Color32(76, 122, 90, 80);
         Vector3 vectorStart = Quaternion.Euler(0, -angle/2, 0) * transform.forward;
-        UnityEditor.Handles.DrawSolidArc(transform.position, Vector3.up, vectorStart, angle, radius);
+        Handles.DrawSolidArc(transform.position, Vector3.up, vectorStart, angle, radius);
     }
 # endif
 }

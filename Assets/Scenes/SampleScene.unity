@@ -3401,7 +3401,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 932ef586605fb9b44972d77a7f9738f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3439,7 +3439,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1674747940}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.14, z: 7.93}
+  m_LocalPosition: {x: 2.62, y: 2.14, z: 7.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3453,19 +3453,19 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1674747940}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1.6
-  m_BaseOffset: 0.8
+  m_Height: 2
+  m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1674747951
@@ -3480,13 +3480,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolList:
+  - {x: 4.153791, y: 1.29, z: 22.680664}
+  - {x: 5.83257, y: 1.29, z: 15.752246}
+  - {x: -6.1781116, y: 1.29, z: 4.7867165}
   playerScanner:
-    materialFieldOfView: {fileID: 2100000, guid: 6fd8392d4e7f7f74eac1458adbdec141, type: 2}
+    materialFieldOfView: {fileID: 2100000, guid: 82796e8b824dac44592bf587055d64a8, type: 2}
     TargetTag: Player
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
-  patrolList:
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!65 &1674747952
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3516,8 +3517,8 @@ GameObject:
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!65 &1833662421
 BoxCollider:
@@ -3590,7 +3591,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1833662420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.61, z: 19.27}
+  m_LocalPosition: {x: -2.81, y: 1.47, z: 6.77}
   m_LocalScale: {x: 2.4761, y: 2.4761, z: 2.4761}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3666,7 +3667,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094422800}
-  m_LocalRotation: {x: 0.38068005, y: 0.008069442, z: -0.003322147, w: 0.9246657}
+  m_LocalRotation: {x: 0.38067997, y: 0.00806944, z: -0.0033221452, w: 0.92466575}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
