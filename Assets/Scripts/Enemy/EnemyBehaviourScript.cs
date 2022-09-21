@@ -60,7 +60,6 @@ public class EnemyBehaviourScript : MonoBehaviour
                 break;
             case State.Patrol:
                 prevState = state;
-                IdleTime = 0;
                 Patrol();
                 break;
             case State.Attack:
@@ -95,8 +94,12 @@ public class EnemyBehaviourScript : MonoBehaviour
             if(patrolIndex >= patrolList.Length) {
                 patrolIndex = 0;
             }
+            IdleTime += Time.deltaTime;
+            if(IdleTime > 2f) {
+                agent.SetDestination(walkPoint);
+                IdleTime = 0;
+            }
 
-            agent.SetDestination(walkPoint);
         }
     }
 
