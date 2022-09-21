@@ -13,8 +13,12 @@ public class PlayerScanner
     private MeshFilter meshFilterFOV;
     private float fov;
     private float ViewDistence;
+    private Transform playerTransform;
+    private Vector3 LastplayerPosition;
     public UnityEvent<Transform> OnDetectedTarget;
-    public UnityEvent OnLostTarget;
+    public UnityEvent<Transform> OnLostTarget;
+    public UnityEvent OnNotDetectedTarget;
+    
     
     public GameObject CreataFieldOfView(Transform detector, Vector3 pos) {
         //creata field of view
@@ -84,7 +88,6 @@ public class PlayerScanner
             RaycastHit[] hits = Physics.RaycastAll(origin, ViewDistence);
             float[] distance = new float[hits.Length];
             float distancePlayer = ViewDistence;
-            Transform playerTransform = null;
             if(hits.Length > 0) {
                 for(int i = 0; i<hits.Length; i++) {
                     RaycastHit hit = hits[i];
@@ -94,18 +97,25 @@ public class PlayerScanner
                         playerTransform = hit.transform;
                     } else {
                         distance[i] = hit.distance;
-                        OnLostTarget?.Invoke();
                     }
                 }
                 
                 float mindistance =  Mathf.Min(distance);
                 if(distancePlayer <= mindistance && playerTransform != null) {
                     OnDetectedTarget?.Invoke(playerTransform);
+                } else {
+                    OnNotDetectedTarget?.Invoke();
+                    if(playerTransform != null && playerTransform.position != LastplayerPosition){
+                        LastplayerPosition = playerTransform.position;
+                        OnLostTarget?.Invoke(playerTransform);
+                        Debug.Log("lost");
+                    }
                 }
                 vertex = Vector3.zero +  (dirFOV * mindistance);
             } else {
-                OnLostTarget?.Invoke();
+                OnNotDetectedTarget?.Invoke();
             }
+
     }
 
 

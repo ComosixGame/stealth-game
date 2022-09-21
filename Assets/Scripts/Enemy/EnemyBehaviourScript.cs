@@ -12,17 +12,10 @@ public class EnemyBehaviourScript : MonoBehaviour
     private int patrolIndex = 0;
     private Vector3 LastplayerPosition;
 
-    private enum EnemyAction {
-        PATROL,
-        CHASE,
-        ATTACK,
-        LOOKING,
-    }
-
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
         playerScanner.OnDetectedTarget.AddListener(Attack);
-        playerScanner.OnLostTarget.AddListener(Patrol);
+        playerScanner.OnNotDetectedTarget.AddListener(Patrol);
     }
 
     // Start is called before the first frame update
@@ -65,15 +58,18 @@ public class EnemyBehaviourScript : MonoBehaviour
         if(Quaternion.Angle(transform.rotation, rotLook) > 10) {
             transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, 2f * Time.deltaTime);
         } else {
-            Debug.Log("bùm chíu");
             transform.rotation =  rotLook;
+            Debug.Log("bùm chíu");
         }
+        
+        LastplayerPosition = playerTransform.position;
 
     }
 
 
     private void OnDisable() {
-   
+        playerScanner.OnDetectedTarget.RemoveAllListeners();
+        playerScanner.OnNotDetectedTarget.RemoveAllListeners();
     }
 
     
