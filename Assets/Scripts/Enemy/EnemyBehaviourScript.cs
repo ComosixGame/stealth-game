@@ -31,7 +31,11 @@ public class EnemyBehaviourScript : MonoBehaviour
             state = State.Attack;
         });
 
-        playerScanner.OnNotDetectedTarget.AddListener(HandelChangeState);
+        playerScanner.OnNotDetectedTarget.AddListener(()=> {
+            if(prevState == State.Attack) {
+                state = State.Chase;
+            }
+        });
     }
 
     // Start is called before the first frame update
@@ -68,23 +72,6 @@ public class EnemyBehaviourScript : MonoBehaviour
                 prevState = state;
                 IdleTime = 0;
                 Chase(playerPosition);
-                break;
-            default:
-                break;
-        }
-    }
-
-    
-    private void HandelChangeState() {
-        switch(prevState) {
-            case State.Idle:
-                break;
-            case State.Patrol:
-                break;
-            case State.Attack:
-                state = State.Chase;
-                break;
-            case State.Chase:
                 break;
             default:
                 break;
