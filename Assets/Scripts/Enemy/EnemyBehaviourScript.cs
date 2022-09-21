@@ -10,12 +10,28 @@ public class EnemyBehaviourScript : MonoBehaviour
     private NavMeshAgent agent;
     private GameObject FieldOfView;
     private int patrolIndex = 0;
-    private Vector3 LastplayerPosition;
+    private Vector3 playerPosition;
+    private enum State {
+        Idle,
+        Patrol,
+        Chase,
+        Attack
+    }
+    private State state;
+    private State prevState;
+    private float IdleTime;
+    private Vector3 randomDirLook = Vector3.zero;
+    private float speedRotation = 3;
 
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
-        playerScanner.OnDetectedTarget.AddListener(Attack);
-        playerScanner.OnNotDetectedTarget.AddListener(Patrol);
+
+        playerScanner.OnDetectedTarget.AddListener(transformPlayer=> {
+            playerPosition = transformPlayer.position;
+            state = State.Attack;
+        });
+
+        playerScanner.OnNotDetectedTarget.AddListener(HandelChangeState);
     }
 
     // Start is called before the first frame update
@@ -32,6 +48,56 @@ public class EnemyBehaviourScript : MonoBehaviour
     void Update()
     {
         playerScanner.Scan(transform);
+
+        switch(state) {
+            case State.Idle:
+                prevState = state;
+                Idle();
+                break;
+            case State.Patrol:
+                prevState = state;
+                IdleTime = 0;
+                Patrol();
+                break;
+            case State.Attack:
+                prevState = state;
+                IdleTime = 0;
+                Attack(playerPosition);
+                break;
+            case State.Chase:
+                prevState = state;
+                IdleTime = 0;
+                Chase(playerPosition);
+                break;
+            default:
+                break;
+        }
+    }
+
+    
+    private void HandelChangeState() {
+        switch(prevState) {
+            case State.Idle:
+                break;
+            case State.Patrol:
+                break;
+            case State.Attack:
+                state = State.Chase;
+                break;
+            case State.Chase:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void Idle() {
+        IdleTime += Time.deltaTime;
+        agent.SetDestination(transform.position);
+        if(IdleTime >= 2) {
+            state = State.Patrol;
+            IdleTime = 0;
+        }
     }
 
     private void Patrol() {
@@ -47,25 +113,22 @@ public class EnemyBehaviourScript : MonoBehaviour
         }
     }
 
-    private void Chase() {
-        agent.SetDestination(LastplayerPosition);
-    }
-
-    private void Attack(Transform playerTransform) {
+    private void Attack(Vector3 playerPos) {
         agent.SetDestination(transform.position);
-        Vector3 dirLook = playerTransform.position - transform.position;
+        Vector3 dirLook = playerPos - transform.position;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
-        if(Quaternion.Angle(transform.rotation, rotLook) > 10) {
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, 2f * Time.deltaTime);
-        } else {
-            transform.rotation =  rotLook;
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, speedRotation * Time.deltaTime);
+        if(Quaternion.Angle(transform.rotation, rotLook) <= 10) {
             Debug.Log("bùm chíu");
         }
-        
-        LastplayerPosition = playerTransform.position;
-
     }
 
+    private void Chase(Vector3 playerPos) {
+        agent.SetDestination(playerPos);
+        if(Vector3.Distance(transform.position, playerPos) <= 2f) {
+            state = State.Idle;
+        }
+    }
 
     private void OnDisable() {
         playerScanner.OnDetectedTarget.RemoveAllListeners();

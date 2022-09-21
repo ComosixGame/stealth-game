@@ -7,14 +7,13 @@ using UnityEditor;
 [System.Serializable]
 public class PlayerScanner
 {
+    public LayerMask layerMaskTarget;
+    public LayerMask ignoreObstacle;
     public Material materialFieldOfView;
-    [SerializeField] private string TargetTag;
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
     private float fov;
     private float ViewDistence;
-    private Transform playerTransform;
-    private Vector3 LastplayerPosition;
     public UnityEvent<Transform> OnDetectedTarget;
     public UnityEvent<Transform> OnLostTarget;
     public UnityEvent OnNotDetectedTarget;
@@ -36,6 +35,7 @@ public class PlayerScanner
     }
 
     public void Scan(Transform detector) {
+        bool detected = false;
         int rayCount = 50;
         float angelIncrease = fov/rayCount;
 
@@ -50,15 +50,21 @@ public class PlayerScanner
 
         //set vetex and triangle for mesh
         for(int i = 0; i<=rayCount; i++) {
+            // render FOV when have Obstacle
             Vector3 dir = Quaternion.Euler(0, angel, 0) * Vector3.forward;
             Vector3 dirRaycast = Quaternion.Euler(0, angel, 0) * detector.forward.normalized;
 
             Ray origin = new Ray(detector.position, dirRaycast);
             Vector3 vertex = Vector3.zero +  (dir * ViewDistence);
+            float rangeScan = ViewDistence;
+            RaycastHit hit;
 
-            // scan object by raycast
-            ScanTarget(origin, dir, ref vertex);
-            
+            if(Physics.Raycast(origin, out hit, ViewDistence, ~ignoreObstacle)) {
+                vertex = Vector3.zero +  (dir * hit.distance);
+                rangeScan = hit.distance;
+            }
+
+            // set triangels for custom mesh
             vertices[i + 1] = vertex;
             if(i>0) {
                 triangles[triangleIndex] = 0;
@@ -68,8 +74,15 @@ public class PlayerScanner
             }
 
             angel += angelIncrease;
+            
+            // scan object by raycast
+            ScanTarget(origin, rangeScan, ref detected);
         }
 
+        if(!detected) {
+            OnNotDetectedTarget?.Invoke();
+        }
+        
         mesh.vertices = vertices;
         mesh.uv = uv;
         mesh.triangles = triangles;
@@ -84,38 +97,15 @@ public class PlayerScanner
     }
 
 
-    private void ScanTarget(Ray origin, Vector3 dirFOV, ref Vector3 vertex) {
-            RaycastHit[] hits = Physics.RaycastAll(origin, ViewDistence);
-            float[] distance = new float[hits.Length];
-            float distancePlayer = ViewDistence;
-            if(hits.Length > 0) {
-                for(int i = 0; i<hits.Length; i++) {
-                    RaycastHit hit = hits[i];
-                    if(hit.transform.tag.Equals(TargetTag)) {
-                        distance[i] = ViewDistence;
-                        distancePlayer =  hit.distance;
-                        playerTransform = hit.transform;
-                    } else {
-                        distance[i] = hit.distance;
-                    }
-                }
-                
-                float mindistance =  Mathf.Min(distance);
-                if(distancePlayer <= mindistance && playerTransform != null) {
-                    OnDetectedTarget?.Invoke(playerTransform);
-                } else {
-                    OnNotDetectedTarget?.Invoke();
-                    if(playerTransform != null && playerTransform.position != LastplayerPosition){
-                        LastplayerPosition = playerTransform.position;
-                        OnLostTarget?.Invoke(playerTransform);
-                        Debug.Log("lost");
-                    }
-                }
-                vertex = Vector3.zero +  (dirFOV * mindistance);
-            } else {
-                OnNotDetectedTarget?.Invoke();
+    private void ScanTarget(Ray origin, float range, ref bool detected) {
+        if(!detected){
+            RaycastHit hit;
+            Vector3 end = origin.GetPoint(range - 1f);
+            if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
+                OnDetectedTarget?.Invoke(hit.transform);
+                detected = true;
             }
-
+        }
     }
 
 
