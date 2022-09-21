@@ -13,6 +13,8 @@ public class PlayerScanner
     private MeshFilter meshFilterFOV;
     private float fov;
     private float ViewDistence;
+    public UnityEvent<Transform> OnDetectedTarget;
+    public UnityEvent OnLostTarget;
     
     public GameObject CreataFieldOfView(Transform detector, Vector3 pos) {
         //creata field of view
@@ -48,18 +50,10 @@ public class PlayerScanner
             Vector3 dirRaycast = Quaternion.Euler(0, angel, 0) * detector.forward.normalized;
 
             Ray origin = new Ray(detector.position, dirRaycast);
-            RaycastHit hit;
-            Vector3 vertex;
+            Vector3 vertex = Vector3.zero +  (dir * ViewDistence);
 
-            vertex = Vector3.zero +  (dir * ViewDistence);
-
-            if(Physics.Raycast(origin, out hit, ViewDistence)) {
-                if(!hit.transform.gameObject.tag.Equals(TargetTag)) {
-                    vertex = Vector3.zero +  (dir * hit.distance);
-                } else {
-                    // do 
-                }
-            } 
+            // scan object by raycast
+            ScanTarget(origin, dir, ref vertex);
             
             vertices[i + 1] = vertex;
             if(i>0) {
@@ -84,6 +78,36 @@ public class PlayerScanner
     public void SetViewDistence(float distance) {
         ViewDistence = distance;
     }
+
+
+    private void ScanTarget(Ray origin, Vector3 dirFOV, ref Vector3 vertex) {
+            RaycastHit[] hits = Physics.RaycastAll(origin, ViewDistence);
+            float[] distance = new float[hits.Length];
+            float distancePlayer = ViewDistence;
+            Transform playerTransform = null;
+            if(hits.Length > 0) {
+                for(int i = 0; i<hits.Length; i++) {
+                    RaycastHit hit = hits[i];
+                    if(hit.transform.tag.Equals(TargetTag)) {
+                        distance[i] = ViewDistence;
+                        distancePlayer =  hit.distance;
+                        playerTransform = hit.transform;
+                    } else {
+                        distance[i] = hit.distance;
+                        OnLostTarget?.Invoke();
+                    }
+                }
+                
+                float mindistance =  Mathf.Min(distance);
+                if(distancePlayer <= mindistance && playerTransform != null) {
+                    OnDetectedTarget?.Invoke(playerTransform);
+                }
+                vertex = Vector3.zero +  (dirFOV * mindistance);
+            } else {
+                OnLostTarget?.Invoke();
+            }
+    }
+
 
 #if UNITY_EDITOR
     public void EditorGizmo(Transform transform, float angle, float radius) {
