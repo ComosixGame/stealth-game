@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class EnemyBehaviourScript : MonoBehaviour
 {
     public Vector3[] patrolList;
+    public float IdleTime = 2;
     [SerializeField] private PlayerScanner playerScanner = new PlayerScanner();
     [SerializeField] private Enemy enemy;
     private NavMeshAgent agent;
@@ -19,9 +20,8 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
     private State state;
     private State prevState;
-    private float IdleTime;
-    private Vector3 randomDirLook = Vector3.zero;
-    private float speedRotation = 3;
+    private float IdleTimer;
+    private float speedRotation = 4;
 
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
@@ -64,12 +64,12 @@ public class EnemyBehaviourScript : MonoBehaviour
                 break;
             case State.Attack:
                 prevState = state;
-                IdleTime = 0;
+                IdleTimer = 0;
                 Attack(playerPosition);
                 break;
             case State.Chase:
                 prevState = state;
-                IdleTime = 0;
+                IdleTimer = 0;
                 Chase(playerPosition);
                 break;
             default:
@@ -78,11 +78,11 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void Idle() {
-        IdleTime += Time.deltaTime;
         agent.SetDestination(transform.position);
-        if(IdleTime >= 2) {
+        IdleTimer += Time.deltaTime;
+        if(IdleTimer >= IdleTime) {
             state = State.Patrol;
-            IdleTime = 0;
+            IdleTimer = 0;
         }
     }
 
@@ -94,10 +94,10 @@ public class EnemyBehaviourScript : MonoBehaviour
             if(patrolIndex >= patrolList.Length) {
                 patrolIndex = 0;
             }
-            IdleTime += Time.deltaTime;
-            if(IdleTime > 2f) {
+            IdleTimer += Time.deltaTime;
+            if(IdleTimer > IdleTime) {
                 agent.SetDestination(walkPoint);
-                IdleTime = 0;
+                IdleTimer = 0;
             }
 
         }
@@ -108,14 +108,14 @@ public class EnemyBehaviourScript : MonoBehaviour
         Vector3 dirLook = playerPos - transform.position;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, speedRotation * Time.deltaTime);
-        if(Quaternion.Angle(transform.rotation, rotLook) <= 10) {
+        if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 10) {
             Debug.Log("bùm chíu");
         }
     }
 
     private void Chase(Vector3 playerPos) {
         agent.SetDestination(playerPos);
-        if(Vector3.Distance(transform.position, playerPos) <= 2f) {
+        if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
             state = State.Idle;
         }
     }
