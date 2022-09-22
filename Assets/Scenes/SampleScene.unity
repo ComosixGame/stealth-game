@@ -2048,7 +2048,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189458194}
   m_LocalRotation: {x: -0, y: 0.12251133, z: -0, w: 0.9924671}
-  m_LocalPosition: {x: -3.25, y: 1.99, z: -2.13}
+  m_LocalPosition: {x: -2.21, y: 2.51, z: -10.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2656,7 +2656,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 819339022}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3634408, y: 16.99, z: -8.62901}
+  m_LocalPosition: {x: -2.3234408, y: 17.51, z: -17.40901}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2759,8 +2759,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.45318073, y: 0.007778983, z: -0.003954881, w: 0.89137596}
-  m_LocalPosition: {x: -3.3634408, y: 16.99, z: -8.62901}
+  m_LocalRotation: {x: 0.45318076, y: 0.0077789593, z: -0.0039548688, w: 0.89137596}
+  m_LocalPosition: {x: -2.3234408, y: 17.51, z: -17.40901}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2997,7 +2997,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068590698}
-  m_LocalRotation: {x: 0.45318076, y: 0.007778944, z: -0.0039548604, w: 0.89137596}
+  m_LocalRotation: {x: 0.4531808, y: 0.007778944, z: -0.0039548604, w: 0.89137596}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3160,12 +3160,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
   typePatrol: 0
   patrolList:
   - {x: -7.724551, y: -0.18647194, z: 19.69102}
   - {x: 7.4030113, y: -0.18647194, z: -9.0905075}
-  rotationLook: []
-  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  - {x: 2.62, y: 2.14, z: 18.43}
+  standPos: {x: 0, y: 0, z: 0}
   OnAttack:
     m_PersistentCalls:
       m_Calls: []
@@ -3746,7 +3747,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1674747940}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.96123767, z: 0, w: 0.2757212}
   m_LocalPosition: {x: 3.86, y: 2.14, z: 11.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3754,7 +3755,7 @@ Transform:
   - {fileID: 1150738716}
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 147.99, z: 0}
 --- !u!195 &1674747949
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3789,13 +3790,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typePatrol: 0
-  patrolList:
-  - {x: 3.9243999, y: 2.14, z: 11.397932}
-  - {x: 1.5021982, y: 2.14, z: 2.202383}
-  - {x: -6.8936224, y: 2.14, z: 11.324185}
-  rotationLook: []
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  typePatrol: 1
+  patrolList:
+  - {x: -10.158384, y: 0, z: 10.039203}
+  - {x: 4.1252356, y: 2.14, z: 19.222546}
+  standPos: {x: 6.43, y: 2.14, z: 13.380027}
   OnAttack:
     m_PersistentCalls:
       m_Calls: []
@@ -3995,7 +3995,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094422800}
-  m_LocalRotation: {x: 0.4947585, y: 0.0075835753, z: -0.004317716, w: 0.8689867}
+  m_LocalRotation: {x: 0.4947585, y: 0.0075835083, z: -0.004317678, w: 0.8689867}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4050,12 +4050,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
   typePatrol: 0
   patrolList:
   - {x: 6.231752, y: -0.18647194, z: 23.890657}
   - {x: -5.2831655, y: -0.18647194, z: -9.0905075}
-  rotationLook: []
-  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  - {x: 2.62, y: 2.14, z: -15.26}
+  standPos: {x: 0, y: 0, z: 0}
   OnAttack:
     m_PersistentCalls:
       m_Calls: []
