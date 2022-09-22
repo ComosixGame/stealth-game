@@ -39,17 +39,6 @@ public class EnemyBehaviourScript : MonoBehaviour
         agent.angularSpeed = enemy.angularSpeed;
         agent.acceleration = enemy.acceleration;
 
-        playerScanner.OnDetectedTarget.AddListener(transformPlayer=> {
-            player = transformPlayer;
-            playerPosition = player.position;
-            state = State.Attack;
-        });
-
-        playerScanner.OnNotDetectedTarget.AddListener(()=> {
-            if(prevState == State.Attack) {
-                state = State.Chase;
-            }
-        });
     }
 
     // Start is called before the first frame update
@@ -162,6 +151,18 @@ public class EnemyBehaviourScript : MonoBehaviour
         Vector3 dirLook = pos1 - pos2;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         return Quaternion.Lerp(transform.rotation, rotLook, speed * Time.deltaTime);
+    }
+    
+    public void HandleChangeStateWhenDetected(Transform transform) {
+        player = transform;
+        playerPosition = player.position;
+        state = State.Attack;
+    }
+
+    public void HandleChangeStateWhenNotDetected() {
+        if(prevState == State.Attack) {
+            state = State.Chase;
+        }
     }
 
     

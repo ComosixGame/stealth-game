@@ -2517,7 +2517,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 804841079}
-  m_LocalRotation: {x: 0.5487926, y: 0.00729493, z: -0.0047892584, w: 0.835913}
+  m_LocalRotation: {x: 0.5487926, y: 0.0072948895, z: -0.0047892327, w: 0.835913}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2759,7 +2759,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.45318076, y: 0.0077789593, z: -0.0039548688, w: 0.89137596}
+  m_LocalRotation: {x: 0.45318076, y: 0.007778897, z: -0.003954837, w: 0.89137596}
   m_LocalPosition: {x: -2.3234408, y: 17.51, z: -17.40901}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2997,7 +2997,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068590698}
-  m_LocalRotation: {x: 0.4531808, y: 0.007778944, z: -0.0039548604, w: 0.89137596}
+  m_LocalRotation: {x: 0.4531808, y: 0.0077789132, z: -0.003954845, w: 0.89137596}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3179,9 +3179,6 @@ MonoBehaviour:
       m_Bits: 68
     materialFieldOfView: {fileID: 2100000, guid: 840912d4f2257ba46aa56340f5a3b043, type: 2}
     OnDetectedTarget:
-      m_PersistentCalls:
-        m_Calls: []
-    OnLostTarget:
       m_PersistentCalls:
         m_Calls: []
     OnNotDetectedTarget:
@@ -3809,13 +3806,34 @@ MonoBehaviour:
     materialFieldOfView: {fileID: 2100000, guid: 840912d4f2257ba46aa56340f5a3b043, type: 2}
     OnDetectedTarget:
       m_PersistentCalls:
-        m_Calls: []
-    OnLostTarget:
-      m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1674747951}
+          m_TargetAssemblyTypeName: EnemyBehaviourScript, Assembly-CSharp
+          m_MethodName: HandleChangeStateWhenDetected
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnNotDetectedTarget:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1674747951}
+          m_TargetAssemblyTypeName: EnemyBehaviourScript, Assembly-CSharp
+          m_MethodName: HandleChangeStateWhenNotDetected
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!65 &1674747952
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3995,7 +4013,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094422800}
-  m_LocalRotation: {x: 0.4947585, y: 0.0075835083, z: -0.004317678, w: 0.8689867}
+  m_LocalRotation: {x: 0.4947585, y: 0.0075835753, z: -0.004317716, w: 0.8689867}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4069,9 +4087,6 @@ MonoBehaviour:
       m_Bits: 68
     materialFieldOfView: {fileID: 2100000, guid: 840912d4f2257ba46aa56340f5a3b043, type: 2}
     OnDetectedTarget:
-      m_PersistentCalls:
-        m_Calls: []
-    OnLostTarget:
       m_PersistentCalls:
         m_Calls: []
     OnNotDetectedTarget:

@@ -13,7 +13,6 @@ public class PlayerScanner
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
     private float fov, ViewDistence;    public UnityEvent<Transform> OnDetectedTarget;
-    public UnityEvent<Transform> OnLostTarget;
     public UnityEvent OnNotDetectedTarget;
     
     
