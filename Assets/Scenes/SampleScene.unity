@@ -3015,6 +3015,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1150738716}
+  - component: {fileID: 1150738717}
   m_Layer: 2
   m_Name: WeaponRoot
   m_TagString: Untagged
@@ -3037,6 +3038,20 @@ Transform:
   m_Father: {fileID: 1674747945}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1150738717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150738715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36feed2aed322234c9633a12c9c6bb6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0
+  audioEffect: {fileID: 0}
 --- !u!1 &1250403943
 GameObject:
   m_ObjectHideFlags: 0
@@ -3161,15 +3176,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  attackAction: {fileID: 0}
   typePatrol: 0
   patrolList:
   - {x: -7.724551, y: -0.18647194, z: 19.69102}
   - {x: 7.4030113, y: -0.18647194, z: -9.0905075}
   - {x: 2.62, y: 2.14, z: 18.43}
   standPos: {x: 0, y: 0, z: 0}
-  OnAttack:
-    m_PersistentCalls:
-      m_Calls: []
   playerScanner:
     layerMaskTarget:
       serializedVersion: 2
@@ -3788,14 +3801,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  attackAction: {fileID: 1150738717}
   typePatrol: 1
   patrolList:
   - {x: -10.158384, y: 0, z: 10.039203}
   - {x: 4.1252356, y: 2.14, z: 19.222546}
   standPos: {x: 6.43, y: 2.14, z: 13.380027}
-  OnAttack:
-    m_PersistentCalls:
-      m_Calls: []
   playerScanner:
     layerMaskTarget:
       serializedVersion: 2
@@ -3806,34 +3817,10 @@ MonoBehaviour:
     materialFieldOfView: {fileID: 2100000, guid: 840912d4f2257ba46aa56340f5a3b043, type: 2}
     OnDetectedTarget:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1674747951}
-          m_TargetAssemblyTypeName: EnemyBehaviourScript, Assembly-CSharp
-          m_MethodName: HandleChangeStateWhenDetected
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     OnNotDetectedTarget:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1674747951}
-          m_TargetAssemblyTypeName: EnemyBehaviourScript, Assembly-CSharp
-          m_MethodName: HandleChangeStateWhenNotDetected
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!65 &1674747952
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4069,15 +4056,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  attackAction: {fileID: 0}
   typePatrol: 0
   patrolList:
   - {x: 6.231752, y: -0.18647194, z: 23.890657}
   - {x: -5.2831655, y: -0.18647194, z: -9.0905075}
   - {x: 2.62, y: 2.14, z: -15.26}
   standPos: {x: 0, y: 0, z: 0}
-  OnAttack:
-    m_PersistentCalls:
-      m_Calls: []
   playerScanner:
     layerMaskTarget:
       serializedVersion: 2
