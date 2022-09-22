@@ -1800,7 +1800,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh65726
+  m_Name: pb_Mesh28568
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3006,6 +3006,37 @@ Transform:
   m_Father: {fileID: 819339024}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1150738715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1150738716}
+  m_Layer: 2
+  m_Name: WeaponRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1150738716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150738715}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.474}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1674747945}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1250403943
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,9 +3160,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typePatrol: 0
   patrolList:
   - {x: -7.724551, y: -0.18647194, z: 19.69102}
   - {x: 7.4030113, y: -0.18647194, z: -9.0905075}
+  rotationLook: []
+  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  OnAttack:
+    m_PersistentCalls:
+      m_Calls: []
   playerScanner:
     layerMaskTarget:
       serializedVersion: 2
@@ -3149,7 +3186,6 @@ MonoBehaviour:
     OnNotDetectedTarget:
       m_PersistentCalls:
         m_Calls: []
-  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
 --- !u!195 &1267821415
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3711,10 +3747,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1674747940}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.62, y: 2.14, z: 7.93}
+  m_LocalPosition: {x: 3.86, y: 2.14, z: 11.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1150738716}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3752,9 +3789,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typePatrol: 0
   patrolList:
-  - {x: -1.9189893, y: -0.18647194, z: 10.212607}
-  - {x: 11.042162, y: -0.18647194, z: 0.22551537}
+  - {x: 3.9243999, y: 2.14, z: 11.397932}
+  - {x: 1.5021982, y: 2.14, z: 2.202383}
+  - {x: -6.8936224, y: 2.14, z: 11.324185}
+  rotationLook: []
+  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  OnAttack:
+    m_PersistentCalls:
+      m_Calls: []
   playerScanner:
     layerMaskTarget:
       serializedVersion: 2
@@ -3772,7 +3816,6 @@ MonoBehaviour:
     OnNotDetectedTarget:
       m_PersistentCalls:
         m_Calls: []
-  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
 --- !u!65 &1674747952
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4007,9 +4050,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typePatrol: 0
   patrolList:
   - {x: 6.231752, y: -0.18647194, z: 23.890657}
   - {x: -5.2831655, y: -0.18647194, z: -9.0905075}
+  rotationLook: []
+  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
+  OnAttack:
+    m_PersistentCalls:
+      m_Calls: []
   playerScanner:
     layerMaskTarget:
       serializedVersion: 2
@@ -4027,7 +4076,6 @@ MonoBehaviour:
     OnNotDetectedTarget:
       m_PersistentCalls:
         m_Calls: []
-  enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
 --- !u!195 &2096474611
 NavMeshAgent:
   m_ObjectHideFlags: 0

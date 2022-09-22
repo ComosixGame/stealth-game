@@ -5,16 +5,14 @@ using UnityEditor;
 #endif
 
 [System.Serializable]
+[CanEditMultipleObjects]
 public class PlayerScanner
 {
-    public LayerMask layerMaskTarget;
-    public LayerMask ignoreObstacle;
+    public LayerMask layerMaskTarget, ignoreObstacle;
     public Material materialFieldOfView;
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
-    private float fov;
-    private float ViewDistence;
-    public UnityEvent<Transform> OnDetectedTarget;
+    private float fov, ViewDistence;    public UnityEvent<Transform> OnDetectedTarget;
     public UnityEvent<Transform> OnLostTarget;
     public UnityEvent OnNotDetectedTarget;
     
