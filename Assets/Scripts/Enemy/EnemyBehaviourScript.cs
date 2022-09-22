@@ -1,15 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyBehaviourScript : MonoBehaviour
 {   
     [SerializeField] private Enemy enemy;
+    public AttackAction attackAction;
 
     private enum State {
         Idle,
@@ -24,7 +21,6 @@ public class EnemyBehaviourScript : MonoBehaviour
     public TypePatrol typePatrol;
     [HideInInspector] public List<Vector3> patrolList = new List<Vector3>();
     [HideInInspector] public Vector3 standPos;
-    public UnityEvent<Transform> OnAttack;
     [SerializeField] private PlayerScanner playerScanner = new PlayerScanner();
     private NavMeshAgent agent;
     private GameObject FieldOfView;
@@ -38,6 +34,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         agent.speed = enemy.speed;
         agent.angularSpeed = enemy.angularSpeed;
         agent.acceleration = enemy.acceleration;
+
+        playerScanner.OnDetectedTarget.AddListener(HandleChangeStateWhenDetected);
+        playerScanner.OnNotDetectedTarget.AddListener(HandleChangeStateWhenNotDetected);
 
     }
 
@@ -135,7 +134,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, speedRotation * Time.deltaTime);
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 10) {
-            OnAttack?.Invoke(player);
+            attackAction.Attack(player);
         }
     }
 
