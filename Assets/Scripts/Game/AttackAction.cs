@@ -1,8 +1,9 @@
 using UnityEngine;
 
 public abstract class AttackAction : MonoBehaviour {
-    [SerializeField] private float damage;
-    [SerializeField] private AudioClip audioEffect;
-    public abstract void Attack(Transform _transform);
+    [SerializeField] protected float damage, delayAttack;
+    protected float timeNextAttack;
+    [SerializeField] protected AudioClip audioEffect;
+    public abstract void Attack(Transform _transforml);
     
 }

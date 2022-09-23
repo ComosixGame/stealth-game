@@ -27,18 +27,18 @@ public class EditorEnemyBehaviour : Editor {
     }
 
     private void CustomPatrolPoint(EnemyBehaviourScript t) {
-        List<Vector3> listPoint = t.patrolList;
+        Vector3[] listPoint = t.patrolList;
 
         // for each line segment we need two indices into the points array:
         // the index to the start and the end point
-        int[] segmentIndices = new int[listPoint.Count * 2];
+        int[] segmentIndices = new int[listPoint.Length * 2];
 
         // create the points and line segments indices
-        int prevIndex = listPoint.Count - 1;
+        int prevIndex = listPoint.Length - 1;
         int pointIndex = 0;
         int segmentIndex = 0;
 
-        for(int i = 0; i< t.patrolList.Count; i++) {
+        for(int i = 0; i< t.patrolList.Length; i++) {
             Vector3 pos = listPoint[i];
 
             // the index to the start of the line segment
@@ -57,8 +57,8 @@ public class EditorEnemyBehaviour : Editor {
 
             if(t.typePatrol == EnemyBehaviourScript.TypePatrol.MoveAround) {
                 // Draw arrow dir if type patrol is move around
-                Handles.DrawDottedLines(listPoint.ToArray(), segmentIndices, 2);
-                int nextIndexPoint = i >= listPoint.Count - 1 ? 0 : i + 1;
+                Handles.DrawDottedLines(listPoint, segmentIndices, 2);
+                int nextIndexPoint = i >= listPoint.Length - 1 ? 0 : i + 1;
                 float distanceToNextPoint = Vector3.Distance(pos, listPoint[nextIndexPoint]);
                 for(int j = 0; j <= distanceToNextPoint/4; j += 2) {
                     Vector3 dir = (listPoint[nextIndexPoint] - pos).normalized;
@@ -80,7 +80,7 @@ public class EditorEnemyBehaviour : Editor {
             //begin check change on editor
             EditorGUI.BeginChangeCheck();
             
-            Vector3 newPos = Handles.PositionHandle(pos, new Quaternion(0,0,0,1));
+            Vector3 newPos = Handles.PositionHandle(pos, Quaternion.identity);
             if(EditorGUI.EndChangeCheck()) {
                 // update position point
                 Undo.RecordObject(t, "Update Patrol point");
@@ -93,7 +93,7 @@ public class EditorEnemyBehaviour : Editor {
         Handles.Label(t.standPos,"Stand Pos","button");
         Handles.DrawDottedLine(t.standPos, t.transform.position,2);
         EditorGUI.BeginChangeCheck();
-        Vector3 newPos = Handles.PositionHandle(t.standPos, new Quaternion(0,0,0,1));
+        Vector3 newPos = Handles.PositionHandle(t.standPos, Quaternion.identity);
         if(EditorGUI.EndChangeCheck()) {
             t.standPos = newPos;
         }

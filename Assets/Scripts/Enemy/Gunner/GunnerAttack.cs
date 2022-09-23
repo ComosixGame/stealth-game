@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GunnerAttack : AttackAction
 {
+    public Transform gun;
+    public GameObject bullet;
+    public ParticleSystem shotEffect;
+    public float speedBullet;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,8 +19,14 @@ public class GunnerAttack : AttackAction
     {
         
     }
-    public override void Attack(Transform _transform)
+    public override void Attack(Transform TargetTransform)
     {
-        Debug.Log(_transform.tag);
+        gun.LookAt(TargetTransform.position);
+        if(Time.time >= timeNextAttack) {
+            GameObject c_bullet = Instantiate(bullet, transform.position,Quaternion.identity);
+            shotEffect.Play();
+            c_bullet.GetComponent<Bullet>().TriggerFireBullet(transform.forward, speedBullet, damage);
+            timeNextAttack = Time.time + delayAttack;
+        }
     }
 }

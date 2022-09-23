@@ -19,7 +19,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         standInPlace
     }
     public TypePatrol typePatrol;
-    [HideInInspector] public List<Vector3> patrolList = new List<Vector3>();
+    [HideInInspector] public Vector3[] patrolList;
     [HideInInspector] public Vector3 standPos;
     [SerializeField] private PlayerScanner playerScanner = new PlayerScanner();
     private NavMeshAgent agent;
@@ -28,16 +28,20 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Vector3 playerPosition;
     private Transform player;
     private State state, prevState;
-    private float IdleTimer,speedRotation = 4;
+    private float IdleTimer,speedRotation = 10;
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = enemy.speed;
         agent.angularSpeed = enemy.angularSpeed;
         agent.acceleration = enemy.acceleration;
 
+    }
+
+    private void OnEnable() {
+
         playerScanner.OnDetectedTarget.AddListener(HandleChangeStateWhenDetected);
         playerScanner.OnNotDetectedTarget.AddListener(HandleChangeStateWhenNotDetected);
-
+        
     }
 
     // Start is called before the first frame update
@@ -101,7 +105,7 @@ public class EnemyBehaviourScript : MonoBehaviour
                     IdleTimer += Time.deltaTime;
                     if(IdleTimer > enemy.IdleTime) {
                         patrolIndex++;
-                        if(patrolIndex >= patrolList.Count) {
+                        if(patrolIndex >= patrolList.Length) {
                             patrolIndex = 0;
                         }
                         agent.SetDestination(walkPoint);
@@ -116,7 +120,7 @@ public class EnemyBehaviourScript : MonoBehaviour
                         transform.rotation = LerpRotation(walkPoint, transform.position, speedRotation);
                         if(IdleTimer > enemy.IdleTime) {
                             patrolIndex++;
-                            if(patrolIndex >= patrolList.Count) {
+                            if(patrolIndex >= patrolList.Length) {
                                 patrolIndex = 0;
                             }
                             IdleTimer = 0;
@@ -133,7 +137,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Vector3 dirLook = playerPos - transform.position;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, speedRotation * Time.deltaTime);
-        if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 10) {
+        if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
             attackAction.Attack(player);
         }
     }
