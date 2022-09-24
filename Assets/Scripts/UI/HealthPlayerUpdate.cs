@@ -3,6 +3,7 @@ using TMPro;
 
 public class HealthPlayerUpdate : MonoBehaviour
 {
+    GameManager gameManager;
     private TextMeshProUGUI text;
     private void Awake() {
         text = GetComponent<TextMeshProUGUI>();
@@ -11,7 +12,8 @@ public class HealthPlayerUpdate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.OnUpdateHealthPlayer.AddListener(UpdateTextHealth);
+        gameManager = GameManager.Instance;
+        gameManager.OnUpdateHealthPlayer.AddListener(UpdateTextHealth);
     }
 
     // Update is called once per frame
@@ -25,6 +27,6 @@ public class HealthPlayerUpdate : MonoBehaviour
     }
 
     private void OnDisable() {
-        GameManager.Instance.OnUpdateHealthPlayer.RemoveListener(UpdateTextHealth);
+        gameManager.OnUpdateHealthPlayer.RemoveListener(UpdateTextHealth);
     }
 }

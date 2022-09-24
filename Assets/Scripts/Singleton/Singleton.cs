@@ -28,11 +28,4 @@ public class Singleton<T> : MonoBehaviour where T: Component
         }
     }
 
-    protected virtual void OnDestroy() {
-        if(_instance == this) {
-            _instance = null;
-        }
-    }
-
-
 }
