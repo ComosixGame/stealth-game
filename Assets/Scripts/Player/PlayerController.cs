@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +14,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 dirMove;
     // private Vector2 joystickOrginPos;
     private float fallingVelocity;
-    GameManager gameManager;
     
     private void Awake() {
         //init input system

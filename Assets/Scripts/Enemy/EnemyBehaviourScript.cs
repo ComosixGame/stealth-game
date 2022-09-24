@@ -57,7 +57,6 @@ public class EnemyBehaviourScript : MonoBehaviour
     void Update()
     {
         playerScanner.Scan(transform);
-
         switch(state) {
             case State.Idle:
                 prevState = state;

@@ -5,7 +5,9 @@ using UnityEditor;
 #endif
 
 [System.Serializable]
+#if UNITY_EDITOR
 [CanEditMultipleObjects]
+#endif
 public class PlayerScanner
 {
     public LayerMask layerMaskTarget, ignoreObstacle;
