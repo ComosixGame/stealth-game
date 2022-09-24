@@ -97,7 +97,7 @@ public class PlayerScanner
     private void ScanTarget(Ray origin, float range, ref bool detected) {
         if(!detected){
             RaycastHit hit;
-            Vector3 end = origin.GetPoint(range - 1f);
+            Vector3 end = origin.GetPoint(range - 0.5f);
             if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
                 OnDetectedTarget?.Invoke(hit.transform);
                 detected = true;

@@ -16,10 +16,10 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
     public enum TypePatrol {
         MoveAround,
-        standInPlace
+        StandInPlace
     }
     public TypePatrol typePatrol;
-    [HideInInspector] public Vector3[] patrolList;
+    public Vector3[] patrolList;
     [HideInInspector] public Vector3 standPos;
     [SerializeField] private PlayerScanner playerScanner = new PlayerScanner();
     private NavMeshAgent agent;
@@ -34,7 +34,6 @@ public class EnemyBehaviourScript : MonoBehaviour
         agent.speed = enemy.speed;
         agent.angularSpeed = enemy.angularSpeed;
         agent.acceleration = enemy.acceleration;
-
     }
 
     private void OnEnable() {
@@ -84,8 +83,8 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void OnDisable() {
-        playerScanner.OnDetectedTarget.RemoveAllListeners();
-        playerScanner.OnNotDetectedTarget.RemoveAllListeners();
+        playerScanner.OnDetectedTarget.RemoveListener(HandleChangeStateWhenDetected);
+        playerScanner.OnNotDetectedTarget.RemoveListener(HandleChangeStateWhenNotDetected);
     }
 
     private void Idle() {
@@ -113,7 +112,7 @@ public class EnemyBehaviourScript : MonoBehaviour
                     }
                 }
                 break;
-            case TypePatrol.standInPlace:
+            case TypePatrol.StandInPlace:
                     IdleTimer += Time.deltaTime;
                     agent.SetDestination(standPos);
                     if(agent.remainingDistance <= agent.stoppingDistance) {

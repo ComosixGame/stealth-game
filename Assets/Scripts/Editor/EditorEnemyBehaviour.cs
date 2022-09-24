@@ -10,14 +10,14 @@ public class EditorEnemyBehaviour : Editor {
     private void OnSceneGUI() {
         EnemyBehaviourScript t = target as EnemyBehaviourScript;
         CustomPatrolPoint(t);
-        if(t.typePatrol == EnemyBehaviourScript.TypePatrol.standInPlace) {
+        if(t.typePatrol == EnemyBehaviourScript.TypePatrol.StandInPlace) {
             CustomStandPoint(t);
         }
     }
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
         EnemyBehaviourScript enemyBehaviour = target as EnemyBehaviourScript;
-        if(enemyBehaviour.typePatrol == EnemyBehaviourScript.TypePatrol.standInPlace) {
+        if(enemyBehaviour.typePatrol == EnemyBehaviourScript.TypePatrol.StandInPlace) {
             EditorGUI.BeginChangeCheck();
             Vector3 standPos = EditorGUILayout.Vector3Field("Stand Position",enemyBehaviour.standPos);
             if(EditorGUI.EndChangeCheck()) {
