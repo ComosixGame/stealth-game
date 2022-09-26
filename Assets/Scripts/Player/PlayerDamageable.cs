@@ -6,9 +6,7 @@ public class PlayerDamageable : Damageable
 {
 
     private void Awake() {
-        GameManager.Instance.SetHealthPlayer(health);
-    }
-    private void OnEnable() {
+        GameManager.Instance.UpdatePlayerHealth(health);
     }
 
     // Start is called before the first frame update
@@ -22,8 +20,17 @@ public class PlayerDamageable : Damageable
     {
         
     }
-    public override void TakeDamge(float damage)
-    {
-        GameManager.Instance.PlayerGetDamage(damage);
+    public override void TakeDamge(Vector3 hitPoint ,float damage, float force)
+    {   if(health > 0) {
+            health -= damage;
+            GameManager.Instance.UpdatePlayerHealth(health);
+        } else {
+            Destroy(gameObject);
+            GameObject deadBody = Instantiate(DestroyedBody, transform.position, transform.rotation);
+            Vector3 dirForce = transform.position - hitPoint;
+            dirForce.y = 0;
+            dirForce.Normalize();
+            deadBody.GetComponent<Rigidbody>().AddForce(dirForce * force, ForceMode.VelocityChange);
+        }
     }
 }

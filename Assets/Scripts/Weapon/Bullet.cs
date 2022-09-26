@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     private float speed;
     private bool triggered;
     private float damage;
+    private float force;
     private void Awake() {
         bulletRigidbody = GetComponent<Rigidbody>();
     }
@@ -23,15 +24,15 @@ public class Bullet : MonoBehaviour
     
     private void OnCollisionEnter(Collision other) {
         Destroy(gameObject);
+        ContactPoint contact = other.GetContact(0);
         if(!other.transform.tag.Equals("Player")) {
-            ContactPoint contact = other.GetContact(0);
             GameObject obj = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
             if(obj.GetComponent<ParticleSystem>().isStopped) {
                 Destroy(obj);
             }
         } else {
             if(other.transform.TryGetComponent(out Damageable damageable)){
-                damageable.TakeDamge(damage);
+                damageable.TakeDamge(contact.point, damage, force);
             }
         }
     }
@@ -44,10 +45,11 @@ public class Bullet : MonoBehaviour
         bulletRigidbody.velocity = dir * speed;
     }
 
-    public void TriggerFireBullet(Vector3 _dir, float _speed, float _damage) {
+    public void TriggerFireBullet(Vector3 _dir, float _speed, float _damage, float _force) {
         dir = _dir;
         speed = _speed;
         damage = _damage;
+        force = _force;
         triggered = true;
     }
 }

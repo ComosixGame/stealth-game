@@ -17,12 +17,9 @@ public class GameManager : Singleton<GameManager>
         
     }
 
-    public void SetHealthPlayer(float hp) {
+    public void UpdatePlayerHealth(float hp) {
         healthPlayer = hp;
-    }
-
-    public void PlayerGetDamage(float damage) {
-        healthPlayer -= damage;
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
     }
+
 }

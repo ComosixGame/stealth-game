@@ -25,7 +25,7 @@ public class GunnerAttack : AttackAction
         if(Time.time >= timeNextAttack) {
             GameObject c_bullet = Instantiate(bullet, transform.position,Quaternion.identity);
             shotEffect.Play();
-            c_bullet.GetComponent<Bullet>().TriggerFireBullet(transform.forward, speedBullet, damage);
+            c_bullet.GetComponent<Bullet>().TriggerFireBullet(transform.forward, speedBullet, damage, 8f);
             timeNextAttack = Time.time + delayAttack;
         }
     }
