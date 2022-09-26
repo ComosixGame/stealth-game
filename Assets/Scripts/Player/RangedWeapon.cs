@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class GunnerAttack : EnemyWeapon
+public class RangedWeapon : PlayerWeapon
 {
     public Transform root;
     public GameObject bullet;
     public ParticleSystem shotEffect;
     public float speedBullet;
     public float force;
+
     public override void Attack(Transform TargetTransform)
     {
         transform.LookAt(TargetTransform.position);
@@ -16,5 +17,9 @@ public class GunnerAttack : EnemyWeapon
             c_bullet.GetComponent<Bullet>().TriggerFireBullet(root.forward.normalized, speedBullet, damage, force);
             timeNextAttack = Time.time + delayAttack;
         }
+    }
+
+    public override void Idle(Transform _transform) {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_transform.forward), 5f * Time.deltaTime);
     }
 }

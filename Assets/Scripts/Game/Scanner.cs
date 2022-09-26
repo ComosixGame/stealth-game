@@ -8,17 +8,18 @@ using UnityEditor;
 #if UNITY_EDITOR
 [CanEditMultipleObjects]
 #endif
-public class PlayerScanner
+public class Scanner
 {
     public LayerMask layerMaskTarget, ignoreObstacle;
     public Material materialFieldOfView;
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
-    private float fov, ViewDistence;    public UnityEvent<Transform> OnDetectedTarget;
+    private float fov, ViewDistence;
+    public UnityEvent<Transform> OnDetectedTarget;
     public UnityEvent OnNotDetectedTarget;
     
     
-    public GameObject CreataFieldOfView(Transform detector, Vector3 pos) {
+    public GameObject CreataFieldOfView(Transform detector, Vector3 pos, float angel, float distance) {
         //creata field of view
         mesh = new Mesh();
         GameObject FieldOfView = new GameObject("FieldOfView");
@@ -30,6 +31,8 @@ public class PlayerScanner
         meshRendererFOV.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         meshRendererFOV.material = materialFieldOfView;
         meshFilterFOV.mesh = mesh;
+        fov = angel;
+        ViewDistence = distance;
         return FieldOfView;
     }
 
@@ -86,15 +89,6 @@ public class PlayerScanner
         mesh.uv = uv;
         mesh.triangles = triangles;
     }
-
-    public void SetFovAngel(float angel) {
-        fov = angel;
-    }
-
-    public void SetViewDistence(float distance) {
-        ViewDistence = distance;
-    }
-
 
     private void ScanTarget(Ray origin, float range, ref bool detected) {
         if(!detected){

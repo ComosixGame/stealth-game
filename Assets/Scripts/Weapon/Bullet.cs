@@ -38,10 +38,6 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        
-    }
-
     private void FireBullet() {
         bulletRigidbody.velocity = dir * speed;
     }

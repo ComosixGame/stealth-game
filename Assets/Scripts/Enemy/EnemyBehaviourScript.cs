@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyBehaviourScript : MonoBehaviour
 {   
     [SerializeField] private Enemy enemy;
-    public AttackAction attackAction;
+    public EnemyWeapon enemyWeapon;
 
     private enum State {
         Idle,
@@ -21,14 +21,14 @@ public class EnemyBehaviourScript : MonoBehaviour
     public TypePatrol typePatrol;
     public Vector3[] patrolList;
     [HideInInspector] public Vector3 standPos;
-    [SerializeField] private PlayerScanner playerScanner = new PlayerScanner();
+    [SerializeField] private Scanner playerScanner = new Scanner();
     private NavMeshAgent agent;
     private GameObject FieldOfView;
     private int patrolIndex = 0;
     private Vector3 playerPosition;
     private Transform player;
     private State state, prevState;
-    private float IdleTimer,speedRotation = 10;
+    private float IdleTimer,speedRotation = 7;
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = enemy.speed;
@@ -47,10 +47,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     void Start()
     {
         //creata field of view
-        FieldOfView = playerScanner.CreataFieldOfView(transform, transform.position);
-
-        playerScanner.SetFovAngel(enemy.detectionAngle);
-        playerScanner.SetViewDistence(enemy.viewDistance);
+        FieldOfView = playerScanner.CreataFieldOfView(transform, transform.position, enemy.detectionAngle, enemy.viewDistance);
     }
 
     // Update is called once per frame
@@ -136,7 +133,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, speedRotation * Time.deltaTime);
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
-            attackAction.Attack(player);
+            enemyWeapon.Attack(player);
         }
     }
 

@@ -1,20 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public float range;
-    public AttackAction attackAction;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public PlayerWeapon playerWeapon;
+    [SerializeField] private Scanner scanner = new Scanner();
+
+    private void OnEnable() {
+        scanner.OnDetectedTarget.AddListener(playerWeapon.Attack);
+        scanner.OnNotDetectedTarget.AddListener(HandleNotDetectedTarget);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Start() {
+        scanner.CreataFieldOfView(transform, transform.position, playerWeapon.angel, playerWeapon.range);
     }
+
+    private void Update() {
+        scanner.Scan(transform);
+    }
+
+    private void HandleNotDetectedTarget() {
+        playerWeapon.Idle(transform);
+    }
+
+    private void OnDisable() {
+        scanner.OnDetectedTarget.RemoveListener(playerWeapon.Attack);
+        scanner.OnNotDetectedTarget.RemoveListener(HandleNotDetectedTarget);
+    }
+
+
+    #if UNITY_EDITOR
+    private void OnDrawGizmosSelected() {
+        scanner.EditorGizmo(transform, playerWeapon.angel, playerWeapon.range);
+    }
+    #endif
 }

@@ -30,8 +30,8 @@ public class PlayerDamageable : Damageable
             Vector3 dirForce = transform.position - hitPoint;
             dirForce.y = 0;
             dirForce.Normalize();
-            deadBody.GetComponent<Rigidbody>()
-                .AddForce(dirForce * force, ForceMode.VelocityChange);
+            Rigidbody rb = deadBody.GetComponent<Rigidbody>();
+            rb.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.VelocityChange);
         }
     }
 }
