@@ -7,13 +7,16 @@ public class HealthPlayerUpdate : MonoBehaviour
     private TextMeshProUGUI text;
     private void Awake() {
         text = GetComponent<TextMeshProUGUI>();
+        gameManager = GameManager.Instance;
+    }
+    
+    private void OnEnable() {
+        gameManager.OnUpdateHealthPlayer.AddListener(UpdateTextHealth);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameManager.Instance;
-        gameManager.OnUpdateHealthPlayer.AddListener(UpdateTextHealth);
     }
 
     // Update is called once per frame

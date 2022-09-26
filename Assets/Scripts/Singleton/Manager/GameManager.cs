@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private float healthPlayer;
-    public UnityEvent<float> OnUpdateHealthPlayer = new UnityEvent<float>();
+    private float healthPlayer;
+    public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +15,10 @@ public class GameManager : Singleton<GameManager>
     void Update()
     {
         
+    }
+
+    public void SetHealthPlayer(float hp) {
+        healthPlayer = hp;
     }
 
     public void PlayerGetDamage(float damage) {

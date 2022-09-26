@@ -30,7 +30,9 @@ public class Bullet : MonoBehaviour
                 Destroy(obj);
             }
         } else {
-            GameManager.Instance.PlayerGetDamage(damage);
+            if(other.transform.TryGetComponent(out Damageable damageable)){
+                damageable.TakeDamge(damage);
+            }
         }
     }
 
