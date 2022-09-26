@@ -1,11 +1,11 @@
 #if UNITY_EDITOR
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 //custom editor for enemy patrol
 [CustomEditor(typeof(EnemyBehaviourScript))]
 [CanEditMultipleObjects]
+
 public class EditorEnemyBehaviour : Editor {
     bool showToggle;
     private void OnSceneGUI() {
@@ -19,11 +19,7 @@ public class EditorEnemyBehaviour : Editor {
         base.OnInspectorGUI();
         EnemyBehaviourScript enemyBehaviour = target as EnemyBehaviourScript;
         if(enemyBehaviour.typePatrol == EnemyBehaviourScript.TypePatrol.StandInPlace) {
-            EditorGUI.BeginChangeCheck();
-            Vector3 standPos = EditorGUILayout.Vector3Field("Stand Position",enemyBehaviour.standPos);
-            if(EditorGUI.EndChangeCheck()) {
-                enemyBehaviour.standPos = standPos;
-            }
+            enemyBehaviour.standPos = EditorGUILayout.Vector3Field("Stand Position",enemyBehaviour.standPos);
         }
     }
 
@@ -78,15 +74,7 @@ public class EditorEnemyBehaviour : Editor {
             //Draw a button point
             Handles.Label(pos, $"Point {i+1}","button");
 
-            //begin check change on editor
-            EditorGUI.BeginChangeCheck();
-            
-            Vector3 newPos = Handles.PositionHandle(pos, Quaternion.identity);
-            if(EditorGUI.EndChangeCheck()) {
-                // update position point
-                Undo.RecordObject(t, "Update Patrol point");
-                listPoint[i] = newPos;
-            }
+            listPoint[i] = Handles.PositionHandle(pos, Quaternion.identity);
         }
     }
 
@@ -94,10 +82,7 @@ public class EditorEnemyBehaviour : Editor {
         Handles.Label(t.standPos,"Stand Pos","button");
         Handles.DrawDottedLine(t.standPos, t.transform.position,2);
         EditorGUI.BeginChangeCheck();
-        Vector3 newPos = Handles.PositionHandle(t.standPos, Quaternion.identity);
-        if(EditorGUI.EndChangeCheck()) {
-            t.standPos = newPos;
-        }
+        t.standPos = Handles.PositionHandle(t.standPos, Quaternion.identity);
 
     }
 }

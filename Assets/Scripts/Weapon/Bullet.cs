@@ -25,13 +25,14 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         Destroy(gameObject);
         ContactPoint contact = other.GetContact(0);
-        if(!other.transform.tag.Equals("Player")) {
+        if(other.gameObject.layer != LayerMask.NameToLayer("Player")) {
             GameObject obj = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
             if(obj.GetComponent<ParticleSystem>().isStopped) {
                 Destroy(obj);
             }
         } else {
-            if(other.transform.TryGetComponent(out Damageable damageable)){
+            Damageable damageable =  other.transform.GetComponentInParent<Damageable>();
+            if(damageable != null) {
                 damageable.TakeDamge(contact.point, damage, force);
             }
         }

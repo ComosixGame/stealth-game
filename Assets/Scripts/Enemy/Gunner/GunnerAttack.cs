@@ -2,30 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunnerAttack : AttackAction
+public class GunnerAttack : RangedWeapon
 {
-    public Transform gun;
-    public GameObject bullet;
-    public ParticleSystem shotEffect;
-    public float speedBullet;
-    // Start is called before the first frame update
-    void Start()
+    public override void RangedWeaponAttack(Transform TargetTransform)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public override void Attack(Transform TargetTransform)
-    {
-        gun.LookAt(TargetTransform.position);
+        transform.LookAt(TargetTransform.position);
         if(Time.time >= timeNextAttack) {
-            GameObject c_bullet = Instantiate(bullet, transform.position,Quaternion.identity);
+            GameObject c_bullet = Instantiate(bullet, root.position,Quaternion.identity);
             shotEffect.Play();
-            c_bullet.GetComponent<Bullet>().TriggerFireBullet(transform.forward, speedBullet, damage, 8f);
+            c_bullet.GetComponent<Bullet>().TriggerFireBullet(root.forward, speedBullet, damage, force);
             timeNextAttack = Time.time + delayAttack;
         }
     }

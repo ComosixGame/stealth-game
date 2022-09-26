@@ -21,7 +21,7 @@ public class PlayerDamageable : Damageable
         
     }
     public override void TakeDamge(Vector3 hitPoint ,float damage, float force)
-    {   if(health > 0) {
+    {   if(health != 0) {
             health -= damage;
             GameManager.Instance.UpdatePlayerHealth(health);
         } else {
@@ -30,7 +30,8 @@ public class PlayerDamageable : Damageable
             Vector3 dirForce = transform.position - hitPoint;
             dirForce.y = 0;
             dirForce.Normalize();
-            deadBody.GetComponent<Rigidbody>().AddForce(dirForce * force, ForceMode.VelocityChange);
+            deadBody.GetComponent<Rigidbody>()
+                .AddForce(dirForce * force, ForceMode.VelocityChange);
         }
     }
 }
