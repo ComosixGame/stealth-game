@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
     private bool triggered;
     private float damage;
     private float force;
+    private LayerMask layerMask;
     private void Awake() {
         bulletRigidbody = GetComponent<Rigidbody>();
     }
@@ -25,7 +26,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         Destroy(gameObject);
         ContactPoint contact = other.GetContact(0);
-        if(other.gameObject.layer != LayerMask.NameToLayer("Player")) {
+        if(other.gameObject.layer.Equals(layerMask)) {
             GameObject obj = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
             if(obj.GetComponent<ParticleSystem>().isStopped) {
                 Destroy(obj);
@@ -42,11 +43,12 @@ public class Bullet : MonoBehaviour
         bulletRigidbody.velocity = dir * speed;
     }
 
-    public void TriggerFireBullet(Vector3 _dir, float _speed, float _damage, float _force) {
+    public void TriggerFireBullet(Vector3 _dir, float _speed, float _damage, float _force, LayerMask _layerMask) {
         dir = _dir;
         speed = _speed;
         damage = _damage;
         force = _force;
+        layerMask = _layerMask;
         triggered = true;
     }
 }

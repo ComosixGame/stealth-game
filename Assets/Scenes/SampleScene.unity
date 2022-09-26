@@ -2168,11 +2168,6 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
   m_PVRTiledBaking: 0
---- !u!4 &161675400 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4350938947755741589, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-  m_PrefabInstance: {fileID: 317527225800123902}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330072506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2367,11 +2362,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!198 &451176052 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4610097892797327163, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-  m_PrefabInstance: {fileID: 317527225800123902}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &457241141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2812,7 +2802,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 804841079}
-  m_LocalRotation: {x: 0.5487926, y: 0.007294899, z: -0.0047892383, w: 0.835913}
+  m_LocalRotation: {x: 0.5487926, y: 0.007294884, z: -0.004789228, w: 0.835913}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3055,7 +3045,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.45318073, y: 0.007778909, z: -0.003954843, w: 0.89137596}
+  m_LocalRotation: {x: 0.45318073, y: 0.0077788457, z: -0.0039548106, w: 0.89137596}
   m_LocalPosition: {x: -5.5334406, y: 17.51, z: -34.699013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3326,7 +3316,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068590698}
-  m_LocalRotation: {x: 0.45318073, y: 0.0077789095, z: -0.003954843, w: 0.89137596}
+  m_LocalRotation: {x: 0.4531807, y: 0.007778858, z: -0.003954816, w: 0.891376}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4168,38 +4158,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: root
-      value: 
-      objectReference: {fileID: 161675400}
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: angel
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: force
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: bullet
-      value: 
-      objectReference: {fileID: 196305309152883417, guid: 5cceaf7d08eeabf47a85d0265fc76801, type: 3}
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: damage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: shotEffect
-      value: 
-      objectReference: {fileID: 451176052}
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: delayAttack
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4037959476039015821, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: speedBullet
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8649240085551915604, guid: 88249e541725abb46900243f6f69ce00, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -4247,10 +4205,6 @@ PrefabInstance:
     - target: {fileID: 8649240085551915605, guid: 88249e541725abb46900243f6f69ce00, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962254914683193265, guid: 88249e541725abb46900243f6f69ce00, type: 3}
-      propertyPath: health
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8962254914683193266, guid: 88249e541725abb46900243f6f69ce00, type: 3}
       propertyPath: joystickRectTrans

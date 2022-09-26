@@ -13,7 +13,7 @@ public class GunnerAttack : EnemyWeapon
         if(Time.time >= timeNextAttack) {
             GameObject c_bullet = Instantiate(bullet, root.position, Quaternion.identity);
             shotEffect.Play();
-            c_bullet.GetComponent<Bullet>().TriggerFireBullet(root.forward.normalized, speedBullet, damage, force);
+            c_bullet.GetComponent<Bullet>().TriggerFireBullet(root.forward.normalized, speedBullet, damage, force, targets);
             timeNextAttack = Time.time + delayAttack;
         }
     }

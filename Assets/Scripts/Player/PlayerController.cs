@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
             Vector3 ForceDir = hit.transform.position - transform.position;
             ForceDir.y = 0;
             ForceDir.Normalize();
-            rb.AddForceAtPosition(ForceDir * 2f, transform.position, ForceMode.Impulse);
+            rb.AddForceAtPosition(ForceDir * 0.5f, transform.position, ForceMode.Impulse);
         }
     }
 

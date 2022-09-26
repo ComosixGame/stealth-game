@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedBody: {fileID: 516414283311704983, guid: 22c1ed8b944fe2a4980a4f2bd981ab8e, type: 3}
-  health: 99999
+  health: 5
 --- !u!114 &8962254914683193266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,5 +330,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9e71fa2cd499a44ba5fd00daf363e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  angel: 200
   range: 8
-  angel: 100
+  audioEffect: {fileID: 0}
+  targets:
+    serializedVersion: 2
+    m_Bits: 128
+  damage: 1
+  delayAttack: 0.5
+  root: {fileID: 4350938947755741589}
+  bullet: {fileID: 196305309152883417, guid: 5cceaf7d08eeabf47a85d0265fc76801, type: 3}
+  shotEffect: {fileID: 4610097892797327163}
+  speedBullet: 10
+  force: 8
+--- !u!4 &4350938947755741589 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4887125374424876926, guid: 3ca0e6386274ba84b894fc819d490118, type: 3}
+  m_PrefabInstance: {fileID: 9201748256260888299}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4610097892797327163 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4632364338474529232, guid: 3ca0e6386274ba84b894fc819d490118, type: 3}
+  m_PrefabInstance: {fileID: 9201748256260888299}
+  m_PrefabAsset: {fileID: 0}
