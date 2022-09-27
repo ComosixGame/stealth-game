@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
-  enemyWeapon: {fileID: 2005248119495357407}
+  enemyWeapon: {fileID: 2979538833450665272}
   detector: {fileID: 7368117047814226585}
   typePatrol: 1
   patrolList:
@@ -168,7 +168,7 @@ MonoBehaviour:
       m_Bits: 64
     ignoreObstacle:
       serializedVersion: 2
-      m_Bits: 196
+      m_Bits: 452
     layerMaskSubTarget:
       serializedVersion: 2
       m_Bits: 256
@@ -315,19 +315,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
---- !u!114 &2005248119495357407 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2499653005483471678, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
+--- !u!198 &2347674471382010309 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1868996998777293092, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
   m_PrefabInstance: {fileID: 4135605869333053665}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36feed2aed322234c9633a12c9c6bb6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+--- !u!4 &2526349028282138475 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1903890893496582026, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
+  m_PrefabInstance: {fileID: 4135605869333053665}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2526349028592113292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1903890893253695085, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
   m_PrefabInstance: {fileID: 4135605869333053665}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2526349028592113293 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1903890893253695084, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
+  m_PrefabInstance: {fileID: 4135605869333053665}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2979538833450665272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2526349028592113293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36feed2aed322234c9633a12c9c6bb6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioEffect: {fileID: 0}
+  damage: 1
+  delayAttack: 1
+  targets:
+    serializedVersion: 2
+    m_Bits: 64
+  root: {fileID: 2526349028282138475}
+  bullet: {fileID: 196305309152883417, guid: 5cceaf7d08eeabf47a85d0265fc76801, type: 3}
+  shotEffect: {fileID: 2347674471382010309}
+  speedBullet: 10
+  force: 8

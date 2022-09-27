@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1903890893253695085}
-  - component: {fileID: 2499653005483471678}
   m_Layer: 2
   m_Name: Enemy_Gun
   m_TagString: Untagged
@@ -34,26 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2499653005483471678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1903890893253695084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36feed2aed322234c9633a12c9c6bb6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  delayAttack: 0.5
-  audioEffect: {fileID: 0}
-  root: {fileID: 1903890893496582026}
-  bullet: {fileID: 196305309152883417, guid: 5cceaf7d08eeabf47a85d0265fc76801, type: 3}
-  shotEffect: {fileID: 1868996998777293092}
-  speedBullet: 10
-  force: 8
 --- !u!1 &1903890893496582029
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,10 +228,5 @@ PrefabInstance:
 --- !u!4 &1868996998777293082 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 260074564958471147, guid: 4d977615c639a9e4083d932fe63e36cf, type: 3}
-  m_PrefabInstance: {fileID: 1903890894555351793}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1868996998777293092 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 260074564958471125, guid: 4d977615c639a9e4083d932fe63e36cf, type: 3}
   m_PrefabInstance: {fileID: 1903890894555351793}
   m_PrefabAsset: {fileID: 0}

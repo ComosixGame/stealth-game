@@ -32,7 +32,9 @@ public class EnemyBehaviourScript : MonoBehaviour
     private State state, prevState;
     private float IdleTimer, alertTimer;
     private bool isDeadBody;
+    private GameManager gameManager;
     private void Awake() {
+        gameManager = GameManager.Instance;
         agent = GetComponent<NavMeshAgent>();
         agent.speed = enemy.speed;
         agent.angularSpeed = enemy.angularSpeed;
@@ -40,6 +42,9 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void OnEnable() {
+
+        gameManager.OnEnemyAlert.AddListener(HandleOnAlert);
+        gameManager.OnEnemyAlertOff.AddListener(HandleOnAlertOff);
 
         playerScanner.OnDetectedTarget.AddListener(HandleChangeStateWhenDetected);
         playerScanner.OnNotDetectedTarget.AddListener(HandleChangeStateWhenNotDetected);
@@ -86,11 +91,18 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void Idle() {
-        agent.SetDestination(transform.position);
         IdleTimer += Time.deltaTime;
-        if(IdleTimer >= enemy.IdleTime) {
-            state = State.Patrol;
-            IdleTimer = 0;
+        agent.SetDestination(transform.position);
+        if(!isDeadBody) {
+            if(IdleTimer >= enemy.IdleTime) {
+                state = State.Patrol;
+                IdleTimer = 0;
+            }
+        } else {
+            if(IdleTimer >= 1) {
+                gameManager.EnemyTriggerAlert(enemy.alertTime);
+                IdleTimer = 0;
+            }
         }
     }
 
@@ -142,11 +154,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void Chase(Vector3 pos) {
         agent.SetDestination(pos);
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
-            if(!isDeadBody) {
-                state = State.Idle;
-            } else {
-                state = State.Alert;
-            }
+            state = State.Idle;
         }
     }
 
@@ -163,6 +171,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             }
         } else {
             alertTimer = 0;
+            isDeadBody = false;
             state = State.Idle;
         }
     }
@@ -171,6 +180,8 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Quaternion LerpRotation(Vector3 pos1, Vector3 pos2, float speed) {
         Vector3 dirLook = pos1 - pos2;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
+        rotLook.x = 0;
+        rotLook.z = 0;
         return Quaternion.Lerp(transform.rotation, rotLook, speed * Time.deltaTime);
     }
     
@@ -187,10 +198,13 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleChangeStateWhenDetectedSubtarget(Transform _transform) {
+        bool isDetected = _transform.GetComponent<DeadBody>().isDetected;
         playerPosition =  _transform.position;
-        isDeadBody = true;
-        Destroy(_transform.GetComponent<Collider>());
         state = State.Chase;
+        if(!isDetected) {
+            _transform.GetComponent<DeadBody>().isDetected = true;
+            isDeadBody = true;
+        }
     }
 
     private Vector3 RandomNavmeshLocation(float radius) {
@@ -202,9 +216,20 @@ public class EnemyBehaviourScript : MonoBehaviour
             finalPosition = hit.position;     
         }
         return finalPosition;
-     }
+    }
+
+    private void HandleOnAlert() {
+        state = State.Alert;
+    }
+
+    private void HandleOnAlertOff() {
+        state = State.Idle;
+    }
 
     private void OnDisable() {
+        gameManager.OnEnemyAlert.RemoveListener(HandleOnAlert);
+        gameManager.OnEnemyAlertOff.RemoveListener(HandleOnAlertOff);
+
         playerScanner.OnDetectedTarget.RemoveListener(HandleChangeStateWhenDetected);
         playerScanner.OnNotDetectedTarget.RemoveListener(HandleChangeStateWhenNotDetected);
         playerScanner.OnDetectedSubTarget.RemoveListener(HandleChangeStateWhenDetectedSubtarget);

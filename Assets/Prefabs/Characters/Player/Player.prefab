@@ -239,8 +239,14 @@ MonoBehaviour:
     ignoreObstacle:
       serializedVersion: 2
       m_Bits: 196
+    layerMaskSubTarget:
+      serializedVersion: 2
+      m_Bits: 0
     materialFieldOfView: {fileID: 2100000, guid: 25cfa743ea307e44087a7da889335d1a, type: 2}
     OnDetectedTarget:
+      m_PersistentCalls:
+        m_Calls: []
+    OnDetectedSubTarget:
       m_PersistentCalls:
         m_Calls: []
     OnNotDetectedTarget:
@@ -305,8 +311,7 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8888973442554299674, guid: 3ca0e6386274ba84b894fc819d490118, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca0e6386274ba84b894fc819d490118, type: 3}
 --- !u!4 &4350938946993043570 stripped
 Transform:
