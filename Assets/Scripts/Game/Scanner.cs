@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 #if UNITY_EDITOR
@@ -15,7 +17,8 @@ public class Scanner
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
     private float fov, ViewDistence;
-    public UnityEvent<Transform> OnDetectedTarget;
+    private List<RaycastHit> listHit = new List<RaycastHit>();
+    public UnityEvent<List<RaycastHit>> OnDetectedTarget;
     public UnityEvent OnNotDetectedTarget;
     
     
@@ -37,7 +40,9 @@ public class Scanner
     }
 
     public void Scan(Transform detector) {
-        bool detected = false;
+        // remove all element in list detect
+        listHit.RemoveAll(el => true);
+
         int rayCount = 50;
         float angelIncrease = fov/rayCount;
 
@@ -78,10 +83,12 @@ public class Scanner
             angel += angelIncrease;
             
             // scan object by raycast
-            ScanTarget(origin, rangeScan, ref detected);
+            ScanTarget(origin, rangeScan);
         }
 
-        if(!detected) {
+        if(listHit.Count > 0) {
+            OnDetectedTarget?.Invoke(listHit);
+        } else {
             OnNotDetectedTarget?.Invoke();
         }
         
@@ -90,15 +97,23 @@ public class Scanner
         mesh.triangles = triangles;
     }
 
-    private void ScanTarget(Ray origin, float range, ref bool detected) {
-        if(!detected){
-            RaycastHit hit;
-            Vector3 end = origin.GetPoint(range - 0.5f);
-            if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
-                OnDetectedTarget?.Invoke(hit.transform);
-                detected = true;
-            }
+    private void ScanTarget(Ray origin, float range) {
+        RaycastHit hit;
+        Vector3 end = origin.GetPoint(range - 0.5f);
+        if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
+            listHit.Add(hit);
         }
+    }
+
+    public Transform DetectSingleTarget(List<RaycastHit> listRaycast) {
+        float[] distences = new float[listRaycast.Count];
+        for(int i = 0; i<listRaycast.Count; i++) {
+            distences[i] = listRaycast[i].distance;
+        }
+
+        float minDistence = Mathf.Min(distences);
+        int hitIndex = Array.IndexOf(distences, minDistence);
+        return listRaycast[hitIndex].transform;
     }
 
 

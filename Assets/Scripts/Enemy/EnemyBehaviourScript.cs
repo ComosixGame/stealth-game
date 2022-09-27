@@ -78,11 +78,6 @@ public class EnemyBehaviourScript : MonoBehaviour
         }
     }
 
-    private void OnDisable() {
-        playerScanner.OnDetectedTarget.RemoveListener(HandleChangeStateWhenDetected);
-        playerScanner.OnNotDetectedTarget.RemoveListener(HandleChangeStateWhenNotDetected);
-    }
-
     private void Idle() {
         agent.SetDestination(transform.position);
         IdleTimer += Time.deltaTime;
@@ -151,8 +146,8 @@ public class EnemyBehaviourScript : MonoBehaviour
         return Quaternion.Lerp(transform.rotation, rotLook, speed * Time.deltaTime);
     }
     
-    public void HandleChangeStateWhenDetected(Transform transform) {
-        player = transform;
+    public void HandleChangeStateWhenDetected(List<RaycastHit> hitList) {
+        player = playerScanner.DetectSingleTarget(hitList);
         playerPosition = player.position;
         state = State.Attack;
     }
@@ -161,6 +156,11 @@ public class EnemyBehaviourScript : MonoBehaviour
         if(prevState == State.Attack) {
             state = State.Chase;
         }
+    }
+
+    private void OnDisable() {
+        playerScanner.OnDetectedTarget.RemoveListener(HandleChangeStateWhenDetected);
+        playerScanner.OnNotDetectedTarget.RemoveListener(HandleChangeStateWhenNotDetected);
     }
 
     

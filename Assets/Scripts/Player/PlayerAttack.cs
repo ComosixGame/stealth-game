@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -6,7 +8,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Scanner scanner = new Scanner();
 
     private void OnEnable() {
-        scanner.OnDetectedTarget.AddListener(playerWeapon.Attack);
+        scanner.OnDetectedTarget.AddListener(HandleDetectedTarget);
         scanner.OnNotDetectedTarget.AddListener(HandleNotDetectedTarget);
     }
 
@@ -22,8 +24,13 @@ public class PlayerAttack : MonoBehaviour
         playerWeapon.Idle(transform);
     }
 
+    private void HandleDetectedTarget(List<RaycastHit> listHit) {
+        Transform hitTransform = scanner.DetectSingleTarget(listHit);
+        playerWeapon.Attack(hitTransform);
+    }
+
     private void OnDisable() {
-        scanner.OnDetectedTarget.RemoveListener(playerWeapon.Attack);
+        scanner.OnDetectedTarget.RemoveListener(HandleDetectedTarget);
         scanner.OnNotDetectedTarget.RemoveListener(HandleNotDetectedTarget);
     }
 
