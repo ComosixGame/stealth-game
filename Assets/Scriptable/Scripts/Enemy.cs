@@ -9,5 +9,7 @@ public class Enemy : ScriptableObject
         speed = 3,
         angularSpeed = 120,
         acceleration = 8,
-        IdleTime = 2;
+        IdleTime = 2,
+        alertTime = 10,
+        speedRotation = 7;
 }

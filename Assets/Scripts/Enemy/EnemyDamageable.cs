@@ -15,8 +15,8 @@ public class EnemyDamageable : Damageable
             dirForce.Normalize();
             Rigidbody rb = deadBody.GetComponent<Rigidbody>();
             rb.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.VelocityChange);
-            Destroy(rb, 5f);
-            Destroy(deadBody.GetComponent<Collider>(), 5f);
+            Destroy(rb, 2f);
+            Destroy(deadBody.GetComponent<Collider>(), 2f);
         }
     }
 }

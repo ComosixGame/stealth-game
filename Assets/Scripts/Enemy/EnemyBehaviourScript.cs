@@ -7,12 +7,14 @@ public class EnemyBehaviourScript : MonoBehaviour
 {   
     [SerializeField] private Enemy enemy;
     public EnemyWeapon enemyWeapon;
+    public Transform detector;
 
     private enum State {
         Idle,
         Patrol,
         Chase,
-        Attack
+        Attack,
+        Alert
     }
     public enum TypePatrol {
         MoveAround,
@@ -28,7 +30,8 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Vector3 playerPosition;
     private Transform player;
     private State state, prevState;
-    private float IdleTimer,speedRotation = 7;
+    private float IdleTimer, alertTimer;
+    private bool isDeadBody;
     private void Awake() {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = enemy.speed;
@@ -40,6 +43,12 @@ public class EnemyBehaviourScript : MonoBehaviour
 
         playerScanner.OnDetectedTarget.AddListener(HandleChangeStateWhenDetected);
         playerScanner.OnNotDetectedTarget.AddListener(HandleChangeStateWhenNotDetected);
+        playerScanner.OnDetectedSubTarget.AddListener(transform=> {
+            playerPosition =  transform.position;
+            isDeadBody = true;
+            state = State.Chase;
+        }
+        );
         
     }
 
@@ -47,13 +56,13 @@ public class EnemyBehaviourScript : MonoBehaviour
     void Start()
     {
         //creata field of view
-        FieldOfView = playerScanner.CreataFieldOfView(transform, transform.position, enemy.detectionAngle, enemy.viewDistance);
+        FieldOfView = playerScanner.CreataFieldOfView(detector, detector.position, enemy.detectionAngle, enemy.viewDistance);
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerScanner.Scan(transform);
+        playerScanner.Scan(detector);
         switch(state) {
             case State.Idle:
                 prevState = state;
@@ -72,6 +81,9 @@ public class EnemyBehaviourScript : MonoBehaviour
                 prevState = state;
                 IdleTimer = 0;
                 Chase(playerPosition);
+                break;
+            case State.Alert:
+                Alert();
                 break;
             default:
                 break;
@@ -107,7 +119,7 @@ public class EnemyBehaviourScript : MonoBehaviour
                     IdleTimer += Time.deltaTime;
                     agent.SetDestination(standPos);
                     if(agent.remainingDistance <= agent.stoppingDistance) {
-                        transform.rotation = LerpRotation(walkPoint, transform.position, speedRotation);
+                        transform.rotation = LerpRotation(walkPoint, transform.position, enemy.speedRotation);
                         if(IdleTimer > enemy.IdleTime) {
                             patrolIndex++;
                             if(patrolIndex >= patrolList.Length) {
@@ -126,15 +138,37 @@ public class EnemyBehaviourScript : MonoBehaviour
         agent.SetDestination(transform.position);
         Vector3 dirLook = playerPos - transform.position;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, speedRotation * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
             enemyWeapon.Attack(player);
         }
     }
 
-    private void Chase(Vector3 playerPos) {
-        agent.SetDestination(playerPos);
+    private void Chase(Vector3 pos) {
+        agent.SetDestination(pos);
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
+            if(!isDeadBody) {
+                state = State.Idle;
+            } else {
+                state = State.Alert;
+            }
+        }
+    }
+
+    private void Alert() {
+        if(alertTimer <= enemy.alertTime) {
+            alertTimer += Time.deltaTime;
+            if(agent.remainingDistance <= agent.stoppingDistance) {
+                IdleTimer += Time.deltaTime;
+                Debug.Log(IdleTimer);
+                if(IdleTimer >= 0.5f) {
+                    Vector3 pos = RandomNavmeshLocation(agent.height * 2);
+                    agent.SetDestination(pos);
+                    IdleTimer = 0;
+                }
+            }
+        } else {
+            alertTimer = 0;
             state = State.Idle;
         }
     }
@@ -158,6 +192,17 @@ public class EnemyBehaviourScript : MonoBehaviour
         }
     }
 
+    private Vector3 RandomNavmeshLocation(float radius) {
+        Vector3 finalPosition = Vector3.zero;
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
+            finalPosition = hit.position;            
+        }
+        return finalPosition;
+     }
+
     private void OnDisable() {
         playerScanner.OnDetectedTarget.RemoveListener(HandleChangeStateWhenDetected);
         playerScanner.OnNotDetectedTarget.RemoveListener(HandleChangeStateWhenNotDetected);
@@ -167,7 +212,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        playerScanner.EditorGizmo(transform, enemy.detectionAngle, enemy.viewDistance);
+        playerScanner.EditorGizmo(detector, enemy.detectionAngle, enemy.viewDistance);
     }
 #endif
 }

@@ -78,7 +78,7 @@ public class EditorEnemyBehaviour : Editor {
             }
 
             //Draw a button point
-            Handles.Label(pos, $"Point {i+1}","button");
+            Handles.Label(pos, $"Point {i+1}","TextField");
 
             //begin check change on editor
             EditorGUI.BeginChangeCheck();
@@ -93,7 +93,7 @@ public class EditorEnemyBehaviour : Editor {
     }
 
     private void CustomStandPoint(EnemyBehaviourScript t) {
-        Handles.Label(t.standPos,"Stand Pos","button");
+        Handles.Label(t.standPos,"Stand Pos","TextField");
         Handles.DrawDottedLine(t.standPos, t.transform.position,2);
         EditorGUI.BeginChangeCheck();
         Vector3 newPos = Handles.PositionHandle(t.standPos, Quaternion.identity);

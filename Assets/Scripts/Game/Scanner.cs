@@ -12,13 +12,14 @@ using UnityEditor;
 #endif
 public class Scanner
 {
-    public LayerMask layerMaskTarget, ignoreObstacle;
+    public LayerMask layerMaskTarget, ignoreObstacle, layerMaskSubTarget;
     public Material materialFieldOfView;
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
     private float fov, ViewDistence;
     private List<RaycastHit> listHit = new List<RaycastHit>();
     public UnityEvent<List<RaycastHit>> OnDetectedTarget;
+    public UnityEvent<Transform> OnDetectedSubTarget;
     public UnityEvent OnNotDetectedTarget;
     
     
@@ -84,6 +85,10 @@ public class Scanner
             
             // scan object by raycast
             ScanTarget(origin, rangeScan);
+
+            // scan sub object ex: dead body
+            bool detectSubTarget =  false;
+            ScanSubTarget(origin, rangeScan, ref detectSubTarget);
         }
 
         if(listHit.Count > 0) {
@@ -102,6 +107,17 @@ public class Scanner
         Vector3 end = origin.GetPoint(range - 0.5f);
         if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
             listHit.Add(hit);
+        }
+    }
+
+    private void ScanSubTarget(Ray origin, float range, ref bool detected) {
+        if(!detected) {
+            RaycastHit hit;
+            Vector3 end = origin.GetPoint(range - 0.5f);
+            if(Physics.Linecast(origin.origin, end, out hit, layerMaskSubTarget)) {
+                OnDetectedSubTarget?.Invoke(hit.transform);
+                detected = true;
+            }
         }
     }
 

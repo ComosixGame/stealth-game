@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &657034389430189345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7368117047814226585}
+  m_Layer: 7
+  m_Name: Detector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7368117047814226585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657034389430189345}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.49, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2526349028898946654}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2526349028898946643
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,6 +66,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2526349028592113292}
+  - {fileID: 7368117047814226585}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -124,11 +156,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
   enemyWeapon: {fileID: 2005248119495357407}
+  detector: {fileID: 7368117047814226585}
   typePatrol: 1
   patrolList:
   - {x: -1.3698876, y: 0.73196363, z: 9.050624}
   - {x: 2.4799538, y: 2.14, z: 13.928337}
-  standPos: {x: 5.979986, y: 0.29, z: 9.555962}
+  standPos: {x: 5.591097, y: 0.29, z: 13.381908}
   playerScanner:
     layerMaskTarget:
       serializedVersion: 2
@@ -136,8 +169,14 @@ MonoBehaviour:
     ignoreObstacle:
       serializedVersion: 2
       m_Bits: 196
+    layerMaskSubTarget:
+      serializedVersion: 2
+      m_Bits: 256
     materialFieldOfView: {fileID: 2100000, guid: 840912d4f2257ba46aa56340f5a3b043, type: 2}
     OnDetectedTarget:
+      m_PersistentCalls:
+        m_Calls: []
+    OnDetectedSubTarget:
       m_PersistentCalls:
         m_Calls: []
     OnNotDetectedTarget:
@@ -252,7 +291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2499653005483471678, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
       propertyPath: delayAttack
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2499653005483471678, guid: 28d37cc19fb24a245b64875fac227c4c, type: 3}
       propertyPath: speedBullet
