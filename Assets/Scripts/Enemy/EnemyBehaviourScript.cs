@@ -159,8 +159,8 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void Alert() {
+        alertTimer += Time.deltaTime;
         if(alertTimer <= enemy.alertTime) {
-            alertTimer += Time.deltaTime;
             if(agent.remainingDistance <= agent.stoppingDistance) {
                 IdleTimer += Time.deltaTime;
                 if(IdleTimer >= 0.5f) {
@@ -198,10 +198,10 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleChangeStateWhenDetectedSubtarget(Transform _transform) {
-        bool isDetected = _transform.GetComponent<DeadBody>().isDetected;
-        playerPosition =  _transform.position;
+        bool isDetected = _transform.GetComponentInParent<DeadBody>().isDetected;
         state = State.Chase;
         if(!isDetected) {
+            playerPosition =  _transform.position;
             _transform.GetComponent<DeadBody>().isDetected = true;
             isDeadBody = true;
         }
