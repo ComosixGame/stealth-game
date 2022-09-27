@@ -43,12 +43,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
         playerScanner.OnDetectedTarget.AddListener(HandleChangeStateWhenDetected);
         playerScanner.OnNotDetectedTarget.AddListener(HandleChangeStateWhenNotDetected);
-        playerScanner.OnDetectedSubTarget.AddListener(transform=> {
-            playerPosition =  transform.position;
-            isDeadBody = true;
-            state = State.Chase;
-        }
-        );
+        playerScanner.OnDetectedSubTarget.AddListener(HandleChangeStateWhenDetectedSubtarget);
         
     }
 
@@ -160,7 +155,6 @@ public class EnemyBehaviourScript : MonoBehaviour
             alertTimer += Time.deltaTime;
             if(agent.remainingDistance <= agent.stoppingDistance) {
                 IdleTimer += Time.deltaTime;
-                Debug.Log(IdleTimer);
                 if(IdleTimer >= 0.5f) {
                     Vector3 pos = RandomNavmeshLocation(agent.height * 2);
                     agent.SetDestination(pos);
@@ -192,13 +186,20 @@ public class EnemyBehaviourScript : MonoBehaviour
         }
     }
 
+    private void HandleChangeStateWhenDetectedSubtarget(Transform _transform) {
+        playerPosition =  _transform.position;
+        isDeadBody = true;
+        Destroy(_transform.GetComponent<Collider>());
+        state = State.Chase;
+    }
+
     private Vector3 RandomNavmeshLocation(float radius) {
         Vector3 finalPosition = Vector3.zero;
         Vector3 randomDirection = Random.insideUnitSphere * radius;
         randomDirection += transform.position;
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
-            finalPosition = hit.position;            
+            finalPosition = hit.position;     
         }
         return finalPosition;
      }
@@ -206,6 +207,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void OnDisable() {
         playerScanner.OnDetectedTarget.RemoveListener(HandleChangeStateWhenDetected);
         playerScanner.OnNotDetectedTarget.RemoveListener(HandleChangeStateWhenNotDetected);
+        playerScanner.OnDetectedSubTarget.RemoveListener(HandleChangeStateWhenDetectedSubtarget);
     }
 
     
