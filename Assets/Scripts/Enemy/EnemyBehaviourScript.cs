@@ -47,9 +47,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         gameManager.OnEnemyAlert.AddListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.AddListener(HandleOnAlertOff);
 
-        playerScanner.OnDetectedTarget.AddListener(HandleChangeStateWhenDetected);
-        playerScanner.OnNotDetectedTarget.AddListener(HandleChangeStateWhenNotDetected);
-        playerScanner.OnDetectedSubTarget.AddListener(HandleChangeStateWhenDetectedSubtarget);
+        playerScanner.OnDetectedTarget.AddListener(HandleWhenDetected);
+        playerScanner.OnNotDetectedTarget.AddListener(HandleWhenNotDetected);
+        playerScanner.OnDetectedSubTarget.AddListener(HandleWhenDetectedSubtarget);
         
     }
 
@@ -183,19 +183,19 @@ public class EnemyBehaviourScript : MonoBehaviour
         return Quaternion.Lerp(transform.rotation, rotLook, speed * Time.deltaTime);
     }
     
-    public void HandleChangeStateWhenDetected(List<RaycastHit> hitList) {
+    public void HandleWhenDetected(List<RaycastHit> hitList) {
         player = playerScanner.DetectSingleTarget(hitList);
         playerPosition = player.position;
         state = State.Attack;
     }
 
-    public void HandleChangeStateWhenNotDetected() {
+    public void HandleWhenNotDetected() {
         if(prevState == State.Attack) {
             state = State.Chase;
         }
     }
 
-    private void HandleChangeStateWhenDetectedSubtarget(Transform _transform) {
+    private void HandleWhenDetectedSubtarget(Transform _transform) {
         bool isDetected = _transform.GetComponentInParent<DeadBody>().isDetected;
         state = State.Chase;
         if(!isDetected) {
@@ -232,9 +232,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         gameManager.OnEnemyAlert.RemoveListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.RemoveListener(HandleOnAlertOff);
 
-        playerScanner.OnDetectedTarget.RemoveListener(HandleChangeStateWhenDetected);
-        playerScanner.OnNotDetectedTarget.RemoveListener(HandleChangeStateWhenNotDetected);
-        playerScanner.OnDetectedSubTarget.RemoveListener(HandleChangeStateWhenDetectedSubtarget);
+        playerScanner.OnDetectedTarget.RemoveListener(HandleWhenDetected);
+        playerScanner.OnNotDetectedTarget.RemoveListener(HandleWhenNotDetected);
+        playerScanner.OnDetectedSubTarget.RemoveListener(HandleWhenDetectedSubtarget);
     }
 
     
