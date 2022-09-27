@@ -6,7 +6,7 @@ public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
-    public UnityEvent OnEnemyAlert =  new UnityEvent();
+    public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
     public UnityEvent OnEnemyAlertOff =  new UnityEvent();
     // Start is called before the first frame update
     void Start()
@@ -25,9 +25,9 @@ public class GameManager : Singleton<GameManager>
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
     }
 
-    public void EnemyTriggerAlert(float time) {
+    public void EnemyTriggerAlert(Vector3 pos, float time) {
         StopCoroutine("StartAlert");
-        OnEnemyAlert?.Invoke();
+        OnEnemyAlert?.Invoke(pos);
         StartCoroutine(StartAlert(time));
     }
 

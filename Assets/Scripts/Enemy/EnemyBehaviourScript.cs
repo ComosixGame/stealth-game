@@ -14,7 +14,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Patrol,
         Chase,
         Attack,
-        Alert
+        Looking
     }
     public enum TypePatrol {
         MoveAround,
@@ -30,8 +30,9 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Vector3 playerPosition;
     private Transform player;
     private State state, prevState;
-    private float IdleTimer, alertTimer;
+    private float IdleTimer;
     private bool isDeadBody;
+    private bool isAlert;
     private GameManager gameManager;
     private void Awake() {
         gameManager = GameManager.Instance;
@@ -82,8 +83,8 @@ public class EnemyBehaviourScript : MonoBehaviour
                 IdleTimer = 0;
                 Chase(playerPosition);
                 break;
-            case State.Alert:
-                Alert();
+            case State.Looking:
+                Looking();
                 break;
             default:
                 break;
@@ -100,7 +101,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             }
         } else {
             if(IdleTimer >= 1) {
-                gameManager.EnemyTriggerAlert(enemy.alertTime);
+                gameManager.EnemyTriggerAlert(playerPosition, enemy.alertTime);
                 IdleTimer = 0;
             }
         }
@@ -154,25 +155,22 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void Chase(Vector3 pos) {
         agent.SetDestination(pos);
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
+            if(isAlert) {
+                state = State.Looking;
+                return;
+            }
             state = State.Idle;
         }
     }
 
-    private void Alert() {
-        alertTimer += Time.deltaTime;
-        if(alertTimer <= enemy.alertTime) {
-            if(agent.remainingDistance <= agent.stoppingDistance) {
-                IdleTimer += Time.deltaTime;
-                if(IdleTimer >= 0.5f) {
-                    Vector3 pos = RandomNavmeshLocation(agent.height * 2);
-                    agent.SetDestination(pos);
-                    IdleTimer = 0;
-                }
+    private void Looking() {
+        if(agent.remainingDistance <= agent.stoppingDistance) {
+            IdleTimer += Time.deltaTime;
+            if(IdleTimer >= 0.5f) {
+                Vector3 pos = RandomNavmeshLocation(agent.height * 2);
+                agent.SetDestination(pos);
+                IdleTimer = 0;
             }
-        } else {
-            alertTimer = 0;
-            isDeadBody = false;
-            state = State.Idle;
         }
     }
 
@@ -218,11 +216,15 @@ public class EnemyBehaviourScript : MonoBehaviour
         return finalPosition;
     }
 
-    private void HandleOnAlert() {
-        state = State.Alert;
+    private void HandleOnAlert(Vector3 pos) {
+        isAlert = true;
+        playerPosition = pos;
+        state = State.Chase;
     }
 
     private void HandleOnAlertOff() {
+        isDeadBody = false;
+        isAlert = false;
         state = State.Idle;
     }
 
