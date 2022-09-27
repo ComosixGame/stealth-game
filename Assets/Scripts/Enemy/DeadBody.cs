@@ -25,6 +25,5 @@ public class DeadBody : MonoBehaviour
     IEnumerator startTimer() {
         yield return new WaitForSeconds(3);
         rb.isKinematic = true;
-        colliderComp.isTrigger = true;
     }
 }
