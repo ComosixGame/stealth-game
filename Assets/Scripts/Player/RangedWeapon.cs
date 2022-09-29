@@ -12,7 +12,7 @@ public class RangedWeapon : PlayerWeapon
     {
         transform.LookAt(TargetTransform.position);
         if(Time.time >= timeNextAttack) {
-            GameObject c_bullet = Instantiate(bullet, root.position, Quaternion.identity);
+            GameObject c_bullet = Instantiate(bullet, root.position, transform.rotation);
             shotEffect.Play();
             c_bullet.GetComponent<Bullet>().TriggerFireBullet(root.forward.normalized, speedBullet, damage, force, targets);
             timeNextAttack = Time.time + delayAttack;

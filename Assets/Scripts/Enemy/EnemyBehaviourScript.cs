@@ -196,7 +196,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleWhenDetectedSubtarget(Transform _transform) {
-        bool isDetected = _transform.GetComponentInParent<DeadBody>().isDetected;
+        bool isDetected = _transform.GetComponent<DeadBody>().isDetected;
         state = State.Chase;
         if(!isDetected) {
             playerPosition =  _transform.position;
