@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyBehaviourScript : MonoBehaviour
 {   
     [SerializeField] private Enemy enemy;
     public EnemyWeapon enemyWeapon;
-    public Transform detector;
-
+    public Transform rootScanner, aimLookAt;
+    public Rig aimLayer;
     private enum State {
         Idle,
         Patrol,
@@ -33,6 +34,8 @@ public class EnemyBehaviourScript : MonoBehaviour
     private float IdleTimer;
     private bool isDeadBody;
     private bool isAlert;
+    private Animator animator;
+    private int velocityHash;
     private GameManager gameManager;
     private void Awake() {
         gameManager = GameManager.Instance;
@@ -40,6 +43,10 @@ public class EnemyBehaviourScript : MonoBehaviour
         agent.speed = enemy.speed;
         agent.angularSpeed = enemy.angularSpeed;
         agent.acceleration = enemy.acceleration;
+
+        animator = GetComponent<Animator>();
+        velocityHash = Animator.StringToHash("Velocity");
+
     }
 
     private void OnEnable() {
@@ -57,13 +64,20 @@ public class EnemyBehaviourScript : MonoBehaviour
     void Start()
     {
         //creata field of view
-        FieldOfView = playerScanner.CreataFieldOfView(detector, detector.position, enemy.detectionAngle, enemy.viewDistance);
+        FieldOfView = playerScanner.CreataFieldOfView(rootScanner, rootScanner.position, enemy.detectionAngle, enemy.viewDistance);
+
+        // sửa lỗi khi stoppingDistance enemy không thể chuyển trạng thái sau khi chase
+        if(agent.stoppingDistance == 0) {
+            agent.stoppingDistance = 1;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerScanner.Scan(detector);
+        playerScanner.Scan(rootScanner);
+        Debug.Log(state);
+        HandlAnimation();
         switch(state) {
             case State.Idle:
                 prevState = state;
@@ -147,6 +161,8 @@ public class EnemyBehaviourScript : MonoBehaviour
         Vector3 dirLook = playerPos - transform.position;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
+        aimLayer.weight += Time.deltaTime/0.1f;
+        aimLookAt.position = playerPos;
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
             enemyWeapon.Attack(player, playerScanner.layerMaskTarget);
         }
@@ -190,17 +206,18 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     public void HandleWhenNotDetected() {
+        aimLayer.weight -= Time.deltaTime/0.1f;
         if(prevState == State.Attack) {
             state = State.Chase;
         }
     }
 
     private void HandleWhenDetectedSubtarget(Transform _transform) {
-        bool isDetected = _transform.GetComponent<DeadBody>().isDetected;
-        state = State.Chase;
+        bool isDetected = _transform.GetComponentInParent<DeadBody>().isDetected;
         if(!isDetected) {
+            state = State.Chase;
             playerPosition =  _transform.position;
-            _transform.GetComponent<DeadBody>().isDetected = true;
+            _transform.GetComponentInParent<DeadBody>().isDetected = true;
             isDeadBody = true;
         }
     }
@@ -228,6 +245,19 @@ public class EnemyBehaviourScript : MonoBehaviour
         state = State.Idle;
     }
 
+    
+    private void HandlAnimation() {
+        Vector3 horizontalVelocity = new Vector3(agent.velocity.x, 0, agent.velocity.z);
+        float Velocity = horizontalVelocity.magnitude/enemy.speed;
+        if(Velocity > 0) {
+            animator.SetFloat(velocityHash, Velocity);
+        } else {
+            float v = animator.GetFloat(velocityHash);
+            v = v> 0.01f ? Mathf.Lerp(v, 0, 20f * Time.deltaTime): 0;
+            animator.SetFloat(velocityHash, v);
+        }
+    }
+
     private void OnDisable() {
         gameManager.OnEnemyAlert.RemoveListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.RemoveListener(HandleOnAlertOff);
@@ -241,7 +271,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        playerScanner.EditorGizmo(detector, enemy.detectionAngle, enemy.viewDistance);
+        playerScanner.EditorGizmo(rootScanner, enemy.detectionAngle, enemy.viewDistance);
     }
 #endif
 }

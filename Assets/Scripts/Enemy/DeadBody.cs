@@ -9,18 +9,14 @@ public class DeadBody : MonoBehaviour
     private Collider colliderComp;
     
     private void Awake() {
-        rb = GetComponent<Rigidbody>();
         colliderComp = GetComponent<Collider>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(rb.IsSleeping()) {
-            rb.isKinematic = true;
-            if(isDetected) {
-                Destroy(colliderComp);
-            }
+        if(isDetected) {
+            Destroy(colliderComp);
         }
     }
 }
