@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerDamageable : Damageable
 {
+    Rigidbody[] ragdollRigibodies;
 
     private void Awake() {
         GameManager.Instance.UpdatePlayerHealth(health);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -27,11 +21,12 @@ public class PlayerDamageable : Damageable
         if(health == 0) {
             Destroy(gameObject);
             GameObject deadBody = Instantiate(DestroyedBody, transform.position, transform.rotation);
+            ragdollRigibodies = deadBody.GetComponentsInChildren<Rigidbody>();
             Vector3 dirForce = transform.position - hitPoint;
             dirForce.y = 0;
             dirForce.Normalize();
-            Rigidbody rb = deadBody.GetComponent<Rigidbody>();
-            rb.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.VelocityChange);
+            Rigidbody hitRigi = ragdollRigibodies.OrderBy(rb => Vector3.Distance(rb.position, hitPoint)).First();
+            hitRigi.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.Impulse);
         }
     }
 }

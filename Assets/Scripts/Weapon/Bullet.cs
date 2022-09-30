@@ -37,6 +37,8 @@ public class Bullet : MonoBehaviour
                 damageable.TakeDamge(contact.point, damage, force);
             }
         }
+
+        bulletRigidbody.AddForceAtPosition(transform.forward * force, contact.point, ForceMode.Impulse);
     }
 
     private void FireBullet() {

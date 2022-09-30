@@ -124,9 +124,9 @@ public class EnemyBehaviourScript : MonoBehaviour
                 }
                 break;
             case TypePatrol.StandInPlace:
-                    IdleTimer += Time.deltaTime;
                     agent.SetDestination(standPos);
                     if(agent.remainingDistance <= agent.stoppingDistance) {
+                        IdleTimer += Time.deltaTime;
                         transform.rotation = LerpRotation(walkPoint, transform.position, enemy.speedRotation);
                         if(IdleTimer > enemy.IdleTime) {
                             patrolIndex++;
@@ -148,7 +148,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
-            enemyWeapon.Attack(player);
+            enemyWeapon.Attack(player, playerScanner.layerMaskTarget);
         }
     }
 

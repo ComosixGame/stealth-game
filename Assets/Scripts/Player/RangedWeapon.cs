@@ -2,24 +2,19 @@ using UnityEngine;
 
 public class RangedWeapon : PlayerWeapon
 {
-    public Transform root;
+    public Transform shootPositon;
     public GameObject bullet;
     public ParticleSystem shotEffect;
     public float speedBullet;
     public float force;
 
-    public override void Attack(Transform TargetTransform)
+    public override void Attack(Transform TargetTransform, LayerMask targets)
     {
-        transform.LookAt(TargetTransform.position);
         if(Time.time >= timeNextAttack) {
-            GameObject c_bullet = Instantiate(bullet, root.position, transform.rotation);
+            GameObject c_bullet = Instantiate(bullet, shootPositon.position, transform.rotation);
             shotEffect.Play();
-            c_bullet.GetComponent<Bullet>().TriggerFireBullet(root.forward.normalized, speedBullet, damage, force, targets);
+            c_bullet.GetComponent<Bullet>().TriggerFireBullet(shootPositon.forward.normalized, speedBullet, damage, force, targets);
             timeNextAttack = Time.time + delayAttack;
         }
-    }
-
-    public override void Idle(Transform _transform) {
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_transform.forward), 5f * Time.deltaTime);
     }
 }

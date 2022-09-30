@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 dirMove;
     // private Vector2 joystickOrginPos;
     private float fallingVelocity;
+    private Animator animator;
+    private int velocityHash;
     
     private void Awake() {
         //init input system
@@ -27,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
         //get component
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+        velocityHash = Animator.StringToHash("Velocity");
 
     }
 
@@ -46,6 +50,7 @@ public class PlayerController : MonoBehaviour
         Move();
         RotationLook();
         HandleGravity();
+        HandlAnimation();
     }
 
 
@@ -91,6 +96,18 @@ public class PlayerController : MonoBehaviour
             ForceDir.y = 0;
             ForceDir.Normalize();
             rb.AddForceAtPosition(ForceDir * 0.5f, transform.position, ForceMode.Impulse);
+        }
+    }
+
+    private void HandlAnimation() {
+        Vector3 horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
+        float Velocity = horizontalVelocity.magnitude/speed;
+        if(Velocity > 0) {
+            animator.SetFloat(velocityHash, Velocity);
+        } else {
+            float v = animator.GetFloat(velocityHash);
+            v = v> 0.01f ? Mathf.Lerp(v, 0, 20f * Time.deltaTime): 0;
+            animator.SetFloat(velocityHash, v);
         }
     }
 

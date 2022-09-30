@@ -2,18 +2,20 @@ using UnityEngine;
 
 public class GunnerAttack : EnemyWeapon
 {
-    public Transform root;
+    public Transform shootPositon;
     public GameObject bullet;
     public ParticleSystem shotEffect;
     public float speedBullet;
     public float force;
-    public override void Attack(Transform TargetTransform)
+    public override void Attack(Transform TargetTransform, LayerMask targets)
     {
-        transform.LookAt(TargetTransform.position);
+        Vector3 dir = TargetTransform.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir.normalized);
         if(Time.time >= timeNextAttack) {
-            GameObject c_bullet = Instantiate(bullet, root.position, transform.rotation);
+            GameObject c_bullet = Instantiate(bullet, shootPositon.position, transform.rotation);
             shotEffect.Play();
-            c_bullet.GetComponent<Bullet>().TriggerFireBullet(root.forward.normalized, speedBullet, damage, force, targets);
+            c_bullet.GetComponent<Bullet>().TriggerFireBullet(shootPositon.forward.normalized, speedBullet, damage, force, targets);
             timeNextAttack = Time.time + delayAttack;
         }
     }

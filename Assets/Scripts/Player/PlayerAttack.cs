@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerAttack : MonoBehaviour
 {
     public PlayerWeapon playerWeapon;
+    public Transform rootScanner, aimLookAt;
+    public Rig aimLayer;
+    public Rig bodyAimLayer;
     [SerializeField] private Scanner scanner = new Scanner();
 
     private void OnEnable() {
@@ -13,20 +17,26 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void Start() {
-        scanner.CreataFieldOfView(transform, transform.position, playerWeapon.angel, playerWeapon.range);
+        scanner.CreataFieldOfView(rootScanner, rootScanner.position, playerWeapon.angel, playerWeapon.range);
     }
 
     private void Update() {
-        scanner.Scan(transform);
+        scanner.Scan(rootScanner);
     }
 
     private void HandleNotDetectedTarget() {
-        playerWeapon.Idle(transform);
+        aimLayer.weight -= Time.deltaTime/0.1f;
+        bodyAimLayer.weight -= Time.deltaTime/0.1f;
     }
 
     private void HandleDetectedTarget(List<RaycastHit> listHit) {
         Transform hitTransform = scanner.DetectSingleTarget(listHit);
-        playerWeapon.Attack(hitTransform);
+        aimLayer.weight += Time.deltaTime/0.1f;
+        bodyAimLayer.weight += Time.deltaTime/0.1f;
+        aimLookAt.position = hitTransform.position;
+        if(aimLayer.weight >= 1) {
+            playerWeapon.Attack(hitTransform, scanner.layerMaskTarget);
+        }
     }
 
     private void OnDisable() {
@@ -37,7 +47,7 @@ public class PlayerAttack : MonoBehaviour
 
     #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        scanner.EditorGizmo(transform, playerWeapon.angel, playerWeapon.range);
+        scanner.EditorGizmo(rootScanner, playerWeapon.angel, playerWeapon.range);
     }
     #endif
 }
