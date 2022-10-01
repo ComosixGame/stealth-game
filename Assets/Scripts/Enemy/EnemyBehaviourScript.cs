@@ -7,7 +7,7 @@ using UnityEngine.Animations.Rigging;
 public class EnemyBehaviourScript : MonoBehaviour
 {   
     [SerializeField] private Enemy enemy;
-    public EnemyWeapon enemyWeapon;
+    public Weapon enemyWeapon;
     public Transform rootScanner, aimLookAt;
     public Rig aimLayer;
     private enum State {
@@ -76,7 +76,6 @@ public class EnemyBehaviourScript : MonoBehaviour
     void Update()
     {
         playerScanner.Scan(rootScanner);
-        Debug.Log(state);
         HandlAnimation();
         switch(state) {
             case State.Idle:

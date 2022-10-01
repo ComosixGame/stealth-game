@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private InputAssets inputs;
     private CharacterController controller;
     private Vector3 dirMove;
-    // private Vector2 joystickOrginPos;
     private float fallingVelocity;
     private Animator animator;
     private int velocityHash;

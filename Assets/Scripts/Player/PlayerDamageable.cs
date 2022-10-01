@@ -9,11 +9,6 @@ public class PlayerDamageable : Damageable
         GameManager.Instance.UpdatePlayerHealth(health);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public override void TakeDamge(Vector3 hitPoint ,float damage, float force)
     {   
         health -= damage;

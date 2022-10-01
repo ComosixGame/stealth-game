@@ -4,10 +4,13 @@ using UnityEngine.Animations.Rigging;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public PlayerWeapon playerWeapon;
+    public Weapon playerWeapon;
     public Transform rootScanner, aimLookAt;
     public Rig aimLayer;
     public Rig bodyAimLayer;
+    private float delayAttack = 0.3f;
+    [SerializeField] private float range;
+    [SerializeField] [Range(0, 360)] private float angel;
     [SerializeField] private Scanner scanner = new Scanner();
 
     private void OnEnable() {
@@ -16,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void Start() {
-        scanner.CreataFieldOfView(rootScanner, rootScanner.position, playerWeapon.angel, playerWeapon.range);
+        scanner.CreataFieldOfView(rootScanner, rootScanner.position, angel, range);
     }
 
     private void Update() {
@@ -24,16 +27,20 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void HandleNotDetectedTarget() {
-        aimLayer.weight -= Time.deltaTime/0.1f;
-        bodyAimLayer.weight -= Time.deltaTime/0.1f;
+        float weight = Time.deltaTime/0.1f;
+        aimLayer.weight -= weight;
+        bodyAimLayer.weight -= weight;
+        delayAttack = delayAttack > 0 ? delayAttack - weight : 0;
     }
 
     private void HandleDetectedTarget(List<RaycastHit> listHit) {
         Transform hitTransform = scanner.DetectSingleTarget(listHit);
-        aimLayer.weight += Time.deltaTime/0.1f;
-        bodyAimLayer.weight += Time.deltaTime/0.1f;
         aimLookAt.position = hitTransform.position;
-        if(aimLayer.weight >= 1) {
+        float weight = Time.deltaTime/0.1f;
+        aimLayer.weight += weight;
+        bodyAimLayer.weight += weight;
+        delayAttack = delayAttack < 2 ? delayAttack + weight : 2;
+        if(delayAttack >= 2f) {
             playerWeapon.Attack(hitTransform, scanner.layerMaskTarget);
         }
     }
@@ -46,7 +53,7 @@ public class PlayerAttack : MonoBehaviour
 
     #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        scanner.EditorGizmo(rootScanner, playerWeapon.angel, playerWeapon.range);
+        scanner.EditorGizmo(rootScanner, angel, range);
     }
     #endif
 }
