@@ -53,7 +53,9 @@ public class PlayerAttack : MonoBehaviour
 
     #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        scanner.EditorGizmo(rootScanner, angel, range);
+        if(rootScanner != null) {
+            scanner.EditorGizmo(rootScanner, angel, range);
+        }
     }
     #endif
 }

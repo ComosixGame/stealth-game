@@ -270,7 +270,9 @@ public class EnemyBehaviourScript : MonoBehaviour
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        playerScanner.EditorGizmo(rootScanner, enemy.detectionAngle, enemy.viewDistance);
+        if(rootScanner != null || enemy != null) {
+            playerScanner.EditorGizmo(rootScanner, enemy.detectionAngle, enemy.viewDistance);
+        }
     }
 #endif
 }
