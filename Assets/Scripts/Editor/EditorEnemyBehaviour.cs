@@ -10,7 +10,7 @@ public class EditorEnemyBehaviour : Editor {
     bool showToggle;
     private void OnSceneGUI() {
         EnemyBehaviourScript t = target as EnemyBehaviourScript;
-        if(t.patrolList.Length > 0) {
+        if(t.patrolList != null) {
             CustomPatrolPoint(t);
             if(t.typePatrol == EnemyBehaviourScript.TypePatrol.StandInPlace) {
                 CustomStandPoint(t);

@@ -7,9 +7,11 @@ using UnityEngine.Animations.Rigging;
 public class EnemyBehaviourScript : MonoBehaviour
 {   
     [SerializeField] private Enemy enemy;
-    public Weapon enemyWeapon;
-    public Transform rootScanner, aimLookAt;
+    public Transform rootScanner;
     public Rig aimLayer;
+    public GameObject weapon;
+    [SerializeField] private WeaponHolder weaponHolder;
+    private Weapon enemyWeapon;
     private enum State {
         Idle,
         Patrol,
@@ -47,6 +49,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
 
+        GameObject w = weaponHolder.AddWeapon(weapon);
+
+        enemyWeapon = w.GetComponent<Weapon>();
     }
 
     private void OnEnable() {
@@ -121,37 +126,39 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void Patrol() {
-        Vector3 walkPoint = patrolList[patrolIndex];
-        switch(typePatrol) {
-            case TypePatrol.MoveAround:
-                if(agent.remainingDistance <= agent.stoppingDistance) {
-                    IdleTimer += Time.deltaTime;
-                    if(IdleTimer > enemy.IdleTime) {
-                        patrolIndex++;
-                        if(patrolIndex >= patrolList.Length) {
-                            patrolIndex = 0;
-                        }
-                        agent.SetDestination(walkPoint);
-                        IdleTimer = 0;
-                    }
-                }
-                break;
-            case TypePatrol.StandInPlace:
-                    agent.SetDestination(standPos);
+        if(patrolList != null && patrolList.Length > 0) {
+            Vector3 walkPoint = patrolList[patrolIndex];
+            switch(typePatrol) {
+                case TypePatrol.MoveAround:
                     if(agent.remainingDistance <= agent.stoppingDistance) {
                         IdleTimer += Time.deltaTime;
-                        transform.rotation = LerpRotation(walkPoint, transform.position, enemy.speedRotation);
                         if(IdleTimer > enemy.IdleTime) {
                             patrolIndex++;
                             if(patrolIndex >= patrolList.Length) {
                                 patrolIndex = 0;
                             }
+                            agent.SetDestination(walkPoint);
                             IdleTimer = 0;
                         }
                     }
-                break;
-            default:
-                break;
+                    break;
+                case TypePatrol.StandInPlace:
+                        agent.SetDestination(standPos);
+                        if(agent.remainingDistance <= agent.stoppingDistance) {
+                            IdleTimer += Time.deltaTime;
+                            transform.rotation = LerpRotation(walkPoint, transform.position, enemy.speedRotation);
+                            if(IdleTimer > enemy.IdleTime) {
+                                patrolIndex++;
+                                if(patrolIndex >= patrolList.Length) {
+                                    patrolIndex = 0;
+                                }
+                                IdleTimer = 0;
+                            }
+                        }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -160,10 +167,11 @@ public class EnemyBehaviourScript : MonoBehaviour
         Vector3 dirLook = playerPos - transform.position;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
-        aimLayer.weight += Time.deltaTime/0.1f;
-        aimLookAt.position = playerPos;
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
-            enemyWeapon.Attack(player, playerScanner.layerMaskTarget);
+            aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 0.1f);
+            if(aimLayer.weight == 1) {
+                enemyWeapon.Attack(player, playerScanner.layerMaskTarget);
+            }
         }
     }
 
@@ -205,7 +213,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     public void HandleWhenNotDetected() {
-        aimLayer.weight -= Time.deltaTime/0.1f;
+        aimLayer.weight = Mathf.Lerp(aimLayer.weight, -0.1f, 0.1f);
         if(prevState == State.Attack) {
             state = State.Chase;
         }
@@ -270,7 +278,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
-        if(rootScanner != null || enemy != null) {
+        if(rootScanner != null && enemy != null) {
             playerScanner.EditorGizmo(rootScanner, enemy.detectionAngle, enemy.viewDistance);
         }
     }

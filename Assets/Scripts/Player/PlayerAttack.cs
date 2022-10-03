@@ -4,11 +4,11 @@ using UnityEngine.Animations.Rigging;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public Weapon playerWeapon;
-    public Transform rootScanner, aimLookAt;
-    public Rig aimLayer;
-    public Rig bodyAimLayer;
-    private float delayAttack = 0.3f;
+    public GameObject weapon;
+    public WeaponHolder weaponHolder;
+    private Weapon playerWeapon;
+    public Transform rootScanner;
+    public Rig rigAimLayer;
     [SerializeField] private float range;
     [SerializeField] [Range(0, 360)] private float angel;
     [SerializeField] private Scanner scanner = new Scanner();
@@ -20,6 +20,10 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start() {
         scanner.CreataFieldOfView(rootScanner, rootScanner.position, angel, range);
+        
+        GameObject w = weaponHolder.AddWeapon(weapon);
+        playerWeapon = w.GetComponent<Weapon>();
+
     }
 
     private void Update() {
@@ -27,20 +31,16 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void HandleNotDetectedTarget() {
-        float weight = Time.deltaTime/0.1f;
-        aimLayer.weight -= weight;
-        bodyAimLayer.weight -= weight;
-        delayAttack = delayAttack > 0 ? delayAttack - weight : 0;
+        rigAimLayer.weight = rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, -0.1f, 0.1f);
     }
 
     private void HandleDetectedTarget(List<RaycastHit> listHit) {
         Transform hitTransform = scanner.DetectSingleTarget(listHit);
-        aimLookAt.position = hitTransform.position;
-        float weight = Time.deltaTime/0.1f;
-        aimLayer.weight += weight;
-        bodyAimLayer.weight += weight;
-        delayAttack = delayAttack < 2 ? delayAttack + weight : 2;
-        if(delayAttack >= 2f) {
+        Vector3 dirLook = hitTransform.position - transform.position;
+        dirLook.y = 0;
+        transform.rotation = Quaternion.LookRotation(dirLook.normalized);
+        rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, 1.1f, 0.1f);
+        if(rigAimLayer.weight == 1) {
             playerWeapon.Attack(hitTransform, scanner.layerMaskTarget);
         }
     }
