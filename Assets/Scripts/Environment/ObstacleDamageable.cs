@@ -19,21 +19,21 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
 
     }
 
-    private void Update() {
-        if(destroyed && Time.time > timeDelay) {
+    private void FixedUpdate() {
+        if(destroyed && Time.time > timeDelay && destroyAfterHit) {
             foreach(Rigidbody rigidbody in rigidbodies) {
-                rigidbody.isKinematic = true;
+                // rigidbody.isKinematic = true;
+                rigidbody.velocity = Vector3.down * 5f;
                 Destroy(rigidbody.GetComponent<Collider>());
             }
 
-            transform.Translate(Vector3.down * 1f * Time.deltaTime);
         }
     }
 
     public void TakeDamge(Vector3 hitPoint, float force)
     {
         if(!destroyed) {
-            timeDelay = Time.time + 8;
+            timeDelay = Time.time + 5;
             //tính hướng tác động
             Vector3 dirForce = transform.position - hitPoint;
             dirForce.y = 0;
@@ -47,7 +47,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
 
             destroyed = true;
             if(destroyAfterHit) {
-                Destroy(gameObject, 20f);
+                Destroy(gameObject, 10f);
             }
         }
 

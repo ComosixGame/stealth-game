@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3763988800744994764}
   - component: {fileID: 9001709460663935205}
   - component: {fileID: 2164680796561702396}
-  - component: {fileID: 8451241619207174040}
   - component: {fileID: 2350283297897684857}
+  - component: {fileID: 4168966263705970128}
   m_Layer: 12
   m_Name: toon_office_water_gallon
   m_TagString: Untagged
@@ -85,20 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8451241619207174040
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985660273511326303}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.6726342
-  m_Height: 1.6
-  m_Direction: 1
-  m_Center: {x: 4.9588824e-15, y: -0.08, z: -0.0000019073486}
 --- !u!54 &2350283297897684857
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -115,6 +101,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &4168966263705970128
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985660273511326303}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.3452684, y: 1.594916, z: 1.3452684}
+  m_Center: {x: 6.9227156e-16, y: -0.0416556, z: -0.0000019073486}
 --- !u!1 &5709132663547345864
 GameObject:
   m_ObjectHideFlags: 0
