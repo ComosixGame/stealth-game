@@ -42,7 +42,6 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void Awake() {
         gameManager = GameManager.Instance;
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = enemy.speed;
         agent.angularSpeed = enemy.angularSpeed;
         agent.acceleration = enemy.acceleration;
 
@@ -108,6 +107,12 @@ public class EnemyBehaviourScript : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        if(state == State.Patrol) {
+            agent.speed = enemy.speedPatrol;
+        } else {
+            agent.speed = enemy.speed;
         }
     }
 
@@ -262,7 +267,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             animator.SetFloat(velocityHash, Velocity);
         } else {
             float v = animator.GetFloat(velocityHash);
-            v = v> 0.01f ? Mathf.Lerp(v, 0, 20f * Time.deltaTime): 0;
+            v = Mathf.Lerp(v, -0.1f, 20f * Time.deltaTime);
             animator.SetFloat(velocityHash, v);
         }
     }

@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnEnable() {
-        inputs.Enable();
+        inputs.PlayerControl.Enable();
     }
     // Start is called before the first frame update
     void Start()
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnDisable() {
-        inputs.Disable();
+        inputs.PlayerControl.Disable();
         // unsubscribe active input
         inputs.PlayerControl.Move.performed -= GetDirection;
         inputs.PlayerControl.Move.canceled -= GetDirection;

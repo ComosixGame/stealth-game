@@ -7,6 +7,7 @@ public class Enemy : ScriptableObject
     public float
         viewDistance,
         speed = 3,
+        speedPatrol = 5,
         angularSpeed = 120,
         acceleration = 8,
         IdleTime = 2,
