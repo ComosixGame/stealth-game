@@ -1,15 +1,16 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlayerDamageable : Damageable
+public class PlayerDamageable : MonoBehaviour, Damageable
 {
+    [SerializeField] private float health;
+    public GameObject DestroyedBody;
     Rigidbody[] ragdollRigibodies;
-
     private void Awake() {
         GameManager.Instance.UpdatePlayerHealth(health);
     }
 
-    public override void TakeDamge(Vector3 hitPoint ,float damage, float force)
+    public  void TakeDamge(Vector3 hitPoint ,float damage, float force)
     {   
         health -= damage;
         GameManager.Instance.UpdatePlayerHealth(health);
@@ -39,5 +40,10 @@ public class PlayerDamageable : Damageable
             //thêm lực văng vào súng
             rigidbodyWeapon.AddForce(dirForce * 5f, ForceMode.Impulse);
         }
+    }
+
+    public void TakeDamge(Vector3 hitPoint, float force)
+    {
+        throw new System.NotImplementedException();
     }
 }

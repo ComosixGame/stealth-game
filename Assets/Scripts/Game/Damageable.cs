@@ -1,7 +1,7 @@
-
 using UnityEngine;
-public abstract class Damageable: MonoBehaviour {
-    public GameObject DestroyedBody;
-    [SerializeField] protected float health;
-    public abstract void TakeDamge(Vector3 hitPoint, float damage, float force);
+
+
+public interface Damageable {
+    public void TakeDamge(Vector3 hitPoint, float force);
+    public void TakeDamge(Vector3 hitPoint, float force, float damage);
 }

@@ -94,7 +94,12 @@ public class PlayerController : MonoBehaviour
             Vector3 ForceDir = hit.transform.position - transform.position;
             ForceDir.y = 0;
             ForceDir.Normalize();
-            rb.AddForceAtPosition(ForceDir * 0.5f, transform.position, ForceMode.Impulse);
+            rb.AddForceAtPosition(ForceDir * 0.3f, transform.position, ForceMode.Impulse);
+        }
+
+        if(hit.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
+            ObstacleDamageable damageable = hit.transform.GetComponentInParent<ObstacleDamageable>();
+            damageable.TakeDamge(hit.point, 10f);
         }
     }
 
