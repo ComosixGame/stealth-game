@@ -10,6 +10,7 @@ public class RangedWeapon : Weapon
     public override void Attack(Transform TargetTransform, LayerMask targets)
     {
         if(Time.time >= timeNextAttack) {
+            OnAttack?.Invoke();
             GameObject c_bullet = Instantiate(bullet, shootPositon.position, transform.rotation);
             shotEffect.Play();
             c_bullet.GetComponent<Bullet>().TriggerFireBullet(shootPositon.forward.normalized, speedBullet, damage, force, targets);
