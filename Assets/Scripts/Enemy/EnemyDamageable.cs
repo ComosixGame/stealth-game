@@ -31,7 +31,7 @@ public class EnemyDamageable : MonoBehaviour, Damageable
 
             //thêm lực vào bộ phận gần vị trí trúng nhất
             ragdollRigibodies = deadBody.GetComponentsInChildren<Rigidbody>();
-            Rigidbody hitRigi = ragdollRigibodies.OrderBy(rb => Vector3.Distance(rb.position, hitPoint)).First();
+            Rigidbody hitRigi = getHitRigi(ragdollRigibodies, hitPoint);
             hitRigi.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.Impulse);
             //thêm lực văng vào súng
             rigidbodyWeapon.AddForce(dirForce * 5f, ForceMode.Impulse);
@@ -41,5 +41,13 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     public void TakeDamge(Vector3 hitPoint, float force)
     {
         throw new System.NotImplementedException();
+    }
+
+    private Rigidbody getHitRigi(Rigidbody[]ragdollRigibodies, Vector3 hitPoint) {
+        Rigidbody hitRigi =
+            ragdollRigibodies
+                .OrderBy(rb => Vector3.Distance(rb.position, hitPoint))
+                .First(rb => rb.gameObject.layer != LayerMask.NameToLayer("Weapon"));
+        return hitRigi;
     }
 }

@@ -26,19 +26,22 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         Destroy(gameObject);
         ContactPoint contact = other.GetContact(0);
-        if(other.gameObject.layer.Equals(layerMask)) {
-            GameObject obj = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
-            if(obj.GetComponent<ParticleSystem>().isStopped) {
-                Destroy(obj);
-            }
-        } else {
+        if((layerMask & (1 << other.gameObject.layer)) != 0) {
             Damageable damageable =  other.transform.GetComponentInParent<Damageable>();
             if(damageable != null) {
                 damageable.TakeDamge(contact.point, damage, force);
             }
+        } else {
+            GameObject obj = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
+            if(obj.GetComponent<ParticleSystem>().isStopped) {
+                Destroy(obj);
+            }
         }
 
-        bulletRigidbody.AddForceAtPosition(transform.forward * force, contact.point, ForceMode.Impulse);
+        if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
+            ObstacleDamageable damageable = other.transform.GetComponentInParent<ObstacleDamageable>();
+            damageable.TakeDamge(contact.point, 8f);
+        }
     }
 
     private void FireBullet() {
