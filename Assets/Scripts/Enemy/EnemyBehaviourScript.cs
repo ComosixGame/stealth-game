@@ -52,6 +52,8 @@ public class EnemyBehaviourScript : MonoBehaviour
         GameObject w = weaponHolder.AddWeapon(weapon);
 
         enemyWeapon = w.GetComponent<Weapon>();
+
+        enemyWeapon.getAnimationWeaponPlay(animator);
     }
 
     private void OnEnable() {

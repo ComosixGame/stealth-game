@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -14,11 +13,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float range;
     [SerializeField] [Range(0, 360)] private float angel;
     [SerializeField] private Scanner scanner = new Scanner();
-    private int AttackHash;
     private Animator animator;
-    private AnimationClip weaponPlayAnimation;
-    private AnimatorController controller;
-    private AnimatorState weaponPlayState;
 
 
     private void Awake() {
@@ -34,19 +29,9 @@ public class PlayerAttack : MonoBehaviour
     private void Start() {
         scanner.CreataFieldOfView(rootScanner, rootScanner.position, angel, range);
 
-        AttackHash = Animator.StringToHash("Attack");
         GameObject w = weaponHolder.AddWeapon(weapon);
         playerWeapon = w.GetComponent<Weapon>();
-        
-
-        //set motion animation cho layer weaponPlay
-        weaponPlayAnimation = playerWeapon.weaponPlayAnimation;
-        controller = (AnimatorController)animator.runtimeAnimatorController;
-        int indexlayer = animator.GetLayerIndex("WeaponPlay");
-        weaponPlayState = controller.layers[indexlayer].stateMachine.states[1].state;
-        controller.SetStateEffectiveMotion(weaponPlayState, weaponPlayAnimation);
-        
-        playerWeapon.OnAttack.AddListener(ChangeStateWeaponPlayAnimation);
+        playerWeapon.getAnimationWeaponPlay(animator);
 
     }
 
@@ -69,17 +54,9 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void ChangeStateWeaponPlayAnimation() {
-        animator.SetTrigger(AttackHash);
-    }
-
     private void OnDisable() {
         scanner.OnDetectedTarget.RemoveListener(HandleDetectedTarget);
         scanner.OnNotDetectedTarget.RemoveListener(HandleNotDetectedTarget);
-        playerWeapon.OnAttack.RemoveListener(ChangeStateWeaponPlayAnimation);
-
-        //remove animaion motion
-        controller.SetStateEffectiveMotion(weaponPlayState, null);
     }
 
 
