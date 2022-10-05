@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,6 +42,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private int velocityHash;
     private GameManager gameManager;
     private EnemyDamageable enemyDamageable;
+    private bool readyAttack;
     private void Awake() {
         gameManager = GameManager.Instance;
         agent = GetComponent<NavMeshAgent>();
@@ -181,8 +183,11 @@ public class EnemyBehaviourScript : MonoBehaviour
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
-            aimLayer.weight = 1;
-            if(aimLayer.weight == 1) {
+            aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 20f * Time.deltaTime);
+            if(aimLayer.weight == 1 && !readyAttack) {
+                StartCoroutine(WaitForReadyAttack());
+            }
+            if(readyAttack) {
                 IdleTimer += Time.deltaTime;
                 enemyWeapon.Attack(player, playerScanner.layerMaskTarget, "FromEnemy");
             }
@@ -295,6 +300,11 @@ public class EnemyBehaviourScript : MonoBehaviour
             playerPosition = hit.position;
             state = State.Chase;   
         }
+    }
+
+    IEnumerator WaitForReadyAttack() {
+        yield return new WaitForSeconds(0.1f);
+        readyAttack = true;
     }
 
     private void OnDisable() {

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -13,6 +14,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] [Range(0, 360)] private float angel;
     [SerializeField] private Scanner scanner = new Scanner();
     private Animator animator;
+    private bool readyAttack;
 
 
     private void Awake() {
@@ -39,6 +41,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void HandleNotDetectedTarget() {
+        readyAttack = false;
         rigAimLayer.weight = rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, -0.1f, 20f * Time.deltaTime);
     }
 
@@ -47,8 +50,11 @@ public class PlayerAttack : MonoBehaviour
         Vector3 dirLook = hitTransform.position - transform.position;
         dirLook.y = 0;
         transform.rotation = Quaternion.LookRotation(dirLook.normalized);
-        rigAimLayer.weight = 1;
-        if(rigAimLayer.weight == 1) {
+        rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, 1.1f, 20f * Time.deltaTime);
+        if(rigAimLayer.weight == 1 && !readyAttack) {
+            StartCoroutine(WaitForReadyAttack());
+        }
+        if(readyAttack) {
             playerWeapon.Attack(hitTransform, scanner.layerMaskTarget, "FromPlayer");
         }
     }
@@ -56,6 +62,11 @@ public class PlayerAttack : MonoBehaviour
     private void OnDisable() {
         scanner.OnDetectedTarget.RemoveListener(HandleDetectedTarget);
         scanner.OnNotDetectedTarget.RemoveListener(HandleNotDetectedTarget);
+    }
+
+    IEnumerator WaitForReadyAttack() {
+        yield return new WaitForSeconds(0.1f);
+        readyAttack = true;
     }
 
 
