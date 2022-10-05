@@ -47,7 +47,7 @@ public class PlayerAttack : MonoBehaviour
         Vector3 dirLook = hitTransform.position - transform.position;
         dirLook.y = 0;
         transform.rotation = Quaternion.LookRotation(dirLook.normalized);
-        rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, 1.1f, 20f * Time.deltaTime);
+        rigAimLayer.weight = 1;
         if(rigAimLayer.weight == 1) {
             playerWeapon.Attack(hitTransform, scanner.layerMaskTarget, "FromPlayer");
         }

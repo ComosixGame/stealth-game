@@ -181,7 +181,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
-            aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 20f * Time.deltaTime);
+            aimLayer.weight = 1;
             if(aimLayer.weight == 1) {
                 IdleTimer += Time.deltaTime;
                 enemyWeapon.Attack(player, playerScanner.layerMaskTarget, "FromEnemy");
