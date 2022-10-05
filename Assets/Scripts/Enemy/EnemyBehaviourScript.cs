@@ -39,6 +39,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Animator animator;
     private int velocityHash;
     private GameManager gameManager;
+    private EnemyDamageable enemyDamageable;
     private void Awake() {
         gameManager = GameManager.Instance;
         agent = GetComponent<NavMeshAgent>();
@@ -53,6 +54,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         enemyWeapon = w.GetComponent<Weapon>();
 
         enemyWeapon.getAnimationWeaponPlay(animator);
+
+        enemyDamageable = GetComponent<EnemyDamageable>();
+        enemyDamageable.OnTakeDamge.AddListener(HandleWhenTakeDamge);
     }
 
     private void OnEnable() {
@@ -82,7 +86,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     void Update()
     {
         playerScanner.Scan(rootScanner);
-        HandlAnimation();
+        HandleAnimation();
         switch(state) {
             case State.Idle:
                 prevState = state;
@@ -206,6 +210,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
 
     private Quaternion LerpRotation(Vector3 pos1, Vector3 pos2, float speed) {
+        //tính nội suy phép quay
         Vector3 dirLook = pos1 - pos2;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         rotLook.x = 0;
@@ -237,6 +242,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private Vector3 RandomNavmeshLocation(float radius) {
+        //tính random điểm có thể đi trên nav mesh
         Vector3 finalPosition = Vector3.zero;
         Vector3 randomDirection = Random.insideUnitSphere * radius;
         randomDirection += transform.position;
@@ -260,7 +266,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     
-    private void HandlAnimation() {
+    private void HandleAnimation() {
         Vector3 horizontalVelocity = new Vector3(agent.velocity.x, 0, agent.velocity.z);
         float Velocity = horizontalVelocity.magnitude/enemy.speed;
         if(Velocity > 0) {
@@ -272,6 +278,14 @@ public class EnemyBehaviourScript : MonoBehaviour
         }
     }
 
+    private void HandleWhenTakeDamge(Vector3 dir) {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(dir, out hit, agent.height * 2, 1)) {
+            playerPosition = hit.position;
+            state = State.Chase;   
+        }
+    }
+
     private void OnDisable() {
         gameManager.OnEnemyAlert.RemoveListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.RemoveListener(HandleOnAlertOff);
@@ -279,6 +293,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         playerScanner.OnDetectedTarget.RemoveListener(HandleWhenDetected);
         playerScanner.OnNotDetectedTarget.RemoveListener(HandleWhenNotDetected);
         playerScanner.OnDetectedSubTarget.RemoveListener(HandleWhenDetectedSubtarget);
+
+        enemyDamageable.OnTakeDamge.RemoveListener(HandleWhenTakeDamge);
+
     }
 
     

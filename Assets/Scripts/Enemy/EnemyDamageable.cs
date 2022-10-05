@@ -1,20 +1,23 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyDamageable : MonoBehaviour, Damageable
 {
     [SerializeField] private float health;
     public GameObject DestroyedBody;
     Rigidbody[] ragdollRigibodies;
+    public UnityEvent<Vector3> OnTakeDamge;
 
     public void TakeDamge(Vector3 hitPoint, float damage, float force)
     {
         health -= damage;
+        //tính hướng tấn công
+        Vector3 dirForce = transform.position - hitPoint;
+        dirForce.y = 0;
+        dirForce.Normalize();
+        OnTakeDamge?.Invoke(dirForce);
         if(health <= 0) {
-            //tính hướng tấn công
-            Vector3 dirForce = transform.position - hitPoint;
-            dirForce.y = 0;
-            dirForce.Normalize();
 
             GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
 
