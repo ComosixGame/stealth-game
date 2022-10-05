@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,9 +19,9 @@ public class OpenDoor : Command
     }
     public Transform door;
     public TypeOpen typeOpen;
-    public Axis axis;
-    public float angel;
-    public float distance;
+    [HideInInspector] public Axis axis;
+    [HideInInspector] public float angel;
+    [HideInInspector] public Vector3 PosMove;
     private bool beginExecute;
     private Vector3 orginPos;
     private Vector3 axisVector;
@@ -52,9 +53,7 @@ public class OpenDoor : Command
             rot = Quaternion.AngleAxis(angel, axisVector);
             door.rotation = Quaternion.Lerp(door.rotation, rot, 2f * Time.deltaTime);
         } else {
-            Vector3 pos = door.position;
-            pos = orginPos + Vector3.right * distance;
-            door.position = Vector3.Lerp(door.position, pos, 2f * Time.deltaTime);
+            door.position = Vector3.Lerp(door.position, PosMove, 2f * Time.deltaTime);
         }
     }
 
@@ -77,8 +76,61 @@ public class OpenDoor : Command
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         GetAxisVector();
-        Handles.color = Color.blue;
-        Handles.DrawSolidArc(door.position, axisVector, -door.right, angel, 2f);
+        Mesh Doormesh = door.GetComponent<MeshFilter>().sharedMesh;
+        Gizmos.color = Color.blue;
+        if(typeOpen == TypeOpen.Rotate) {
+            Quaternion rot = Quaternion.AngleAxis(angel, axisVector);
+            Gizmos.DrawMesh(Doormesh, door.position, rot);
+        }
+    }
+    
+    [CustomEditor(typeof(OpenDoor))]
+    public class editorOpenDoor : Editor {
+
+        private void OnSceneGUI() {
+            OpenDoor t = target as OpenDoor;
+            if(t.typeOpen == TypeOpen.Translate) {
+                Handles.color = Color.blue;
+                Handles.Label(t.door.position,"Start", "Button");
+                Handles.Label(t.PosMove,"End", "Button");
+                Handles.DrawDottedLine(t.door.position, t.PosMove, 3f);
+                EditorGUI.BeginChangeCheck();
+                Vector3 newPos = Handles.PositionHandle(t.PosMove, t.transform.rotation);
+                if(EditorGUI.EndChangeCheck()) {
+                    UnityEditor.Undo.RecordObject(t, "update Position Move");
+                    t.PosMove = newPos;
+                }
+            }
+        }
+        public override void OnInspectorGUI() {
+            base.OnInspectorGUI();
+            OpenDoor t = target as OpenDoor;
+            if(t.typeOpen == TypeOpen.Rotate) {
+                string[] options = Enum.GetNames(typeof(Axis));
+
+                EditorGUI.BeginChangeCheck();
+                int axisIndex = EditorGUILayout.Popup("Axis", (int)t.axis, options);
+                if(EditorGUI.EndChangeCheck()) {
+                    UnityEditor.Undo.RecordObject(t, "update axis");
+                    t.axis = (Axis)axisIndex;
+                }
+
+                EditorGUI.BeginChangeCheck();
+                float angel = EditorGUILayout.FloatField("Angle", t.angel);
+                if(EditorGUI.EndChangeCheck()) {
+                    UnityEditor.Undo.RecordObject(t, "update angel");
+                    t.angel = angel;
+                }
+            } else {
+                EditorGUI.BeginChangeCheck();
+                Vector3 pos = EditorGUILayout.Vector3Field("Move To Position", t.PosMove);
+                if(EditorGUI.EndChangeCheck()) {
+                    UnityEditor.Undo.RecordObject(t, "update Position Move");
+                    t.PosMove = pos;
+                }
+            }
+        }
+
     }
 #endif
 }
