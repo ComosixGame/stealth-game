@@ -1,4 +1,4 @@
-using UnityEditor.Animations;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,12 +7,12 @@ public abstract class Weapon : MonoBehaviour
     public float force;
     public AudioClip audioEffect;
     [SerializeField] protected float damage, delayAttack;
-    [SerializeField] protected RuntimeAnimatorController runtimeAnimatorController;
+    [SerializeField] private RuntimeAnimatorController runtimeAnimatorController;
     protected float timeNextAttack;
-    public UnityEvent OnAttack;
     private Animator _animator;
     private int attackHash;
-    public abstract void Attack(Transform target, LayerMask layerMask);
+    public UnityEvent OnAttack;
+    public abstract void Attack(Transform target, LayerMask targets, String namelayerMask);
 
     protected virtual void Awake() {
         attackHash = Animator.StringToHash("Attack");
@@ -32,10 +32,6 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void OnDisable() {
         OnAttack.RemoveListener(WeaponPlayAnimation);
-    }
-
-    protected virtual void OnDestroy() {
-
     }
     
 }

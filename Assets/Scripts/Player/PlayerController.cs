@@ -90,8 +90,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         if(hit.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
-            ObstacleDamageable damageable = hit.transform.GetComponentInParent<ObstacleDamageable>();
-            damageable.TakeDamge(hit.point, 5f);
+            ObstacleDamageable obstacleDamageable = hit.transform.GetComponentInParent<ObstacleDamageable>();
+            obstacleDamageable.TakeDamge(hit.point, 10f);
         }
     }
 

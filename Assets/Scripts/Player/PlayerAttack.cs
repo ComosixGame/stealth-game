@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -40,7 +39,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void HandleNotDetectedTarget() {
-        rigAimLayer.weight = rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, -0.1f, 0.1f);
+        rigAimLayer.weight = rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, -0.1f, 20f * Time.deltaTime);
     }
 
     private void HandleDetectedTarget(List<RaycastHit> listHit) {
@@ -48,9 +47,9 @@ public class PlayerAttack : MonoBehaviour
         Vector3 dirLook = hitTransform.position - transform.position;
         dirLook.y = 0;
         transform.rotation = Quaternion.LookRotation(dirLook.normalized);
-        rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, 1.1f, 0.1f);
+        rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, 1.1f, 20f * Time.deltaTime);
         if(rigAimLayer.weight == 1) {
-            playerWeapon.Attack(hitTransform, scanner.layerMaskTarget);
+            playerWeapon.Attack(hitTransform, scanner.layerMaskTarget, "FromPlayer");
         }
     }
 

@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
             ObstacleDamageable damageable = other.transform.GetComponentInParent<ObstacleDamageable>();
-            damageable.TakeDamge(contact.point, 8f);
+            damageable.TakeDamge(contact.point, 15f);
         }
     }
 

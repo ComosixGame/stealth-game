@@ -10,6 +10,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     public Transform rootScanner;
     public Rig aimLayer;
     public GameObject weapon;
+    public GameObject bullet;
     [SerializeField] private WeaponHolder weaponHolder;
     private Weapon enemyWeapon;
     private enum State {
@@ -52,7 +53,6 @@ public class EnemyBehaviourScript : MonoBehaviour
         GameObject w = weaponHolder.AddWeapon(weapon);
 
         enemyWeapon = w.GetComponent<Weapon>();
-
         enemyWeapon.getAnimationWeaponPlay(animator);
 
         enemyDamageable = GetComponent<EnemyDamageable>();
@@ -181,10 +181,10 @@ public class EnemyBehaviourScript : MonoBehaviour
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
-            aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 0.1f);
+            aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 20f * Time.deltaTime);
             if(aimLayer.weight == 1) {
                 IdleTimer += Time.deltaTime;
-                enemyWeapon.Attack(player, playerScanner.layerMaskTarget);
+                enemyWeapon.Attack(player, playerScanner.layerMaskTarget, "FromEnemy");
             }
         }
 
@@ -232,7 +232,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     public void HandleWhenNotDetected() {
-        aimLayer.weight = Mathf.Lerp(aimLayer.weight, -0.1f, 0.1f);
+        aimLayer.weight = Mathf.Lerp(aimLayer.weight, -0.1f, 20f * Time.deltaTime);
         if(prevState == State.Attack) {
             state = State.Chase;
         }
