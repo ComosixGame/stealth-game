@@ -7,12 +7,10 @@ public abstract class Weapon : MonoBehaviour
     public float force;
     public AudioClip audioEffect;
     [SerializeField] protected float damage, delayAttack;
+    [SerializeField] protected RuntimeAnimatorController runtimeAnimatorController;
     protected float timeNextAttack;
     public UnityEvent OnAttack;
     private Animator _animator;
-    public AnimationClip weaponPlayAnimation;
-    private AnimatorController controller;
-    private AnimatorState weaponPlayState;
     private int attackHash;
     public abstract void Attack(Transform target, LayerMask layerMask);
 
@@ -24,12 +22,8 @@ public abstract class Weapon : MonoBehaviour
     }
 
     public void getAnimationWeaponPlay(Animator animator) {
-        //set motion animation cho layer weaponPlay
-        controller = (AnimatorController)animator.runtimeAnimatorController;
-        int indexlayer = animator.GetLayerIndex("WeaponPlay");
-        weaponPlayState = controller.layers[indexlayer].stateMachine.states[1].state;
-        controller.SetStateEffectiveMotion(weaponPlayState, weaponPlayAnimation);
         _animator = animator;
+        _animator.runtimeAnimatorController = runtimeAnimatorController;
     }
 
     private void WeaponPlayAnimation() {
@@ -41,10 +35,7 @@ public abstract class Weapon : MonoBehaviour
     }
 
     protected virtual void OnDestroy() {
-        //remove animaion motion
-        if(controller != null){
-            controller.SetStateEffectiveMotion(weaponPlayState, null);
-        }
+
     }
     
 }

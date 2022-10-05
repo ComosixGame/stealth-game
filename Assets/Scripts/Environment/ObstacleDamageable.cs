@@ -33,7 +33,6 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
     public void TakeDamge(Vector3 hitPoint, float force)
     {
         if(!destroyed) {
-            StartCoroutine(ChangeLayer());
             timeDelay = Time.time + 5;
             //tính hướng tác động
             Vector3 dirForce = transform.position - hitPoint;
@@ -47,6 +46,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
 
             destroyed = true;
             if(destroyAfterHit) {
+                StartCoroutine(ChangeLayer());
                 Destroy(gameObject, 10f);
             }
         }

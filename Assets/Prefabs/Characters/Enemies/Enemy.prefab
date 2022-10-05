@@ -125,7 +125,7 @@ MonoBehaviour:
       m_Bits: 64
     ignoreObstacle:
       serializedVersion: 2
-      m_Bits: 7876
+      m_Bits: 8132
     layerMaskSubTarget:
       serializedVersion: 2
       m_Bits: 256
@@ -175,6 +175,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   DestroyedBody: {fileID: 2250050854710427473, guid: 0a2c5aa1e46896640b483dab86f978e3, type: 3}
+  OnTakeDamge:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8011620415286768496
 GameObject:
   m_ObjectHideFlags: 0
