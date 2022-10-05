@@ -35,7 +35,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private State state, prevState;
     private float IdleTimer;
     private bool isDeadBody;
-    private bool isAlert;
+    private bool Alerted;
     private Animator animator;
     private int velocityHash;
     private GameManager gameManager;
@@ -57,6 +57,8 @@ public class EnemyBehaviourScript : MonoBehaviour
 
         enemyDamageable = GetComponent<EnemyDamageable>();
         enemyDamageable.OnTakeDamge.AddListener(HandleWhenTakeDamge);
+
+        enemyDamageable.setHealth(enemy.health);
     }
 
     private void OnEnable() {
@@ -98,13 +100,13 @@ public class EnemyBehaviourScript : MonoBehaviour
                 break;
             case State.Attack:
                 prevState = state;
-                IdleTimer = 0;
                 Attack(playerPosition);
                 break;
             case State.Chase:
                 prevState = state;
                 IdleTimer = 0;
                 Chase(playerPosition);
+                Debug.DrawLine(transform.position, playerPosition);
                 break;
             case State.Looking:
                 Looking();
@@ -129,7 +131,7 @@ public class EnemyBehaviourScript : MonoBehaviour
                 IdleTimer = 0;
             }
         } else {
-            if(IdleTimer >= 1) {
+            if(IdleTimer >= 0.5) {
                 gameManager.EnemyTriggerAlert(playerPosition, enemy.alertTime);
                 IdleTimer = 0;
             }
@@ -181,15 +183,20 @@ public class EnemyBehaviourScript : MonoBehaviour
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
             aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 0.1f);
             if(aimLayer.weight == 1) {
+                IdleTimer += Time.deltaTime;
                 enemyWeapon.Attack(player, playerScanner.layerMaskTarget);
             }
+        }
+
+        if(!Alerted && IdleTimer >= 1.5f) {
+            gameManager.EnemyTriggerAlert(playerPos, enemy.alertTime);
         }
     }
 
     private void Chase(Vector3 pos) {
         agent.SetDestination(pos);
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
-            if(isAlert) {
+            if(Alerted) {
                 state = State.Looking;
                 return;
             }
@@ -200,7 +207,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void Looking() {
         if(agent.remainingDistance <= agent.stoppingDistance) {
             IdleTimer += Time.deltaTime;
-            if(IdleTimer >= 0.5f) {
+            if(IdleTimer >= 0.3f) {
                 Vector3 pos = RandomNavmeshLocation(agent.height * 2);
                 agent.SetDestination(pos);
                 IdleTimer = 0;
@@ -244,7 +251,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Vector3 RandomNavmeshLocation(float radius) {
         //tính random điểm có thể đi trên nav mesh
         Vector3 finalPosition = Vector3.zero;
-        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        Vector3 randomDirection = Random.insideUnitSphere * 5f;
         randomDirection += transform.position;
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
@@ -254,15 +261,19 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleOnAlert(Vector3 pos) {
-        isAlert = true;
+        Alerted = true;
         playerPosition = pos;
-        state = State.Chase;
+        if(state != State.Attack) {
+            state = State.Chase; 
+        }
     }
 
     private void HandleOnAlertOff() {
         isDeadBody = false;
-        isAlert = false;
-        state = State.Idle;
+        Alerted = false;
+        if(state != State.Attack) {
+            state = State.Patrol;
+        }
     }
 
     
@@ -280,7 +291,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
     private void HandleWhenTakeDamge(Vector3 dir) {
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(dir, out hit, agent.height * 2, 1)) {
+        if (NavMesh.SamplePosition(transform.position - dir * 5f, out hit, agent.height * 2, 1)) {
             playerPosition = hit.position;
             state = State.Chase;   
         }

@@ -5,6 +5,7 @@ public class Enemy : ScriptableObject
 {
     [Range(0, 360)] public float detectionAngle;
     public float
+        health = 1,
         viewDistance,
         speed = 3,
         speedPatrol = 5,

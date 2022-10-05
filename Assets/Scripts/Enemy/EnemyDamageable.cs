@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class EnemyDamageable : MonoBehaviour, Damageable
 {
-    [SerializeField] private float health;
+    private float health;
     public GameObject DestroyedBody;
     Rigidbody[] ragdollRigibodies;
     public UnityEvent<Vector3> OnTakeDamge;
@@ -52,5 +52,9 @@ public class EnemyDamageable : MonoBehaviour, Damageable
                 .OrderBy(rb => Vector3.Distance(rb.position, hitPoint))
                 .First(rb => rb.gameObject.layer != LayerMask.NameToLayer("Weapon"));
         return hitRigi;
+    }
+
+    public void setHealth(float h) {
+        health = h;
     }
 }
