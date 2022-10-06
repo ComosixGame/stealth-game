@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RangedWeapon : Weapon
+public class RangeWeapon : Weapon
 {
     public GameObject _bullet;
     public Transform shootPositon;
