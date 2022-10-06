@@ -9,7 +9,8 @@ using UnityEditor;
 [RequireComponent(typeof(Collider))]
 public class InteractOnTrigger : MonoBehaviour
 {
-    public Command command;
+    [SerializeField] private Command command;
+    public LayerMask layer;
     public UnityEvent OnEnter;
     public UnityEvent OnExit;
     private void Awake() {
@@ -22,14 +23,16 @@ public class InteractOnTrigger : MonoBehaviour
 
 
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
-            command.Execute();
+        if((layer & (1<<other.gameObject.layer)) != 0) {
+            if(command != null) {
+                command.Execute();
+            }
             OnEnter?.Invoke();
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+        if((layer & (1<<other.gameObject.layer)) != 0) {
             OnExit?.Invoke();
         }
     }
@@ -46,7 +49,10 @@ public class InteractOnTrigger : MonoBehaviour
 
     private void OnDrawGizmos() {
         Handles.color = Color.blue;
-        Handles.DrawDottedLine(transform.position, command.transform.position, 3f);
+        if(command != null) {
+            Handles.DrawDottedLine(transform.position, command.transform.position, 3f);
+        }
+        
     }
 #endif
 }

@@ -22,7 +22,7 @@ public class OpenDoor : Command
     [HideInInspector] public Axis axis;
     [HideInInspector] public float angel;
     [HideInInspector] public Vector3 PosMove;
-    private bool beginExecute;
+    private bool beginExecute, unLocked;
     private Vector3 orginPos;
     private Vector3 axisVector;
 
@@ -30,8 +30,14 @@ public class OpenDoor : Command
         orginPos = door.position;
     }
     private void Update() {
-        if(beginExecute) {
+        if(beginExecute && unLocked) {
             Open();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+            unLocked = true;
         }
     }
 
