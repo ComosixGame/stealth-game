@@ -26,7 +26,6 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
             foreach(Rigidbody rigidbody in rigidbodies) {
                 Destroy(rigidbody.GetComponent<Collider>());
             }
-
         }
     }
 

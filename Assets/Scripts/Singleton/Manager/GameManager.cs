@@ -19,7 +19,7 @@ public class GameManager : Singleton<GameManager>
     {
         
     }
-
+    
     public void UpdatePlayerHealth(float hp) {
         healthPlayer = hp;
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
