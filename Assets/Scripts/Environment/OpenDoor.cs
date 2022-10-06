@@ -82,20 +82,7 @@ public class OpenDoor : Command
             Gizmos.DrawMesh(Doormesh, door.position, rot);
         }
 
-        foreach(Transform commander in commanders) {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, commander.position);
-            Handles.Label(commander.position, "Commander","TextField");
-        }
-
         Handles.Label(transform.position, "Interact Object","TextField");
-    }
-
-    private void OnDrawGizmos() {
-        foreach(Transform commander in commanders) {
-            Handles.color = Color.blue;
-            Handles.DrawDottedLine(door.position, commander.position, 3f);
-        }
     }
     
     [CustomEditor(typeof(OpenDoor))]
@@ -143,7 +130,6 @@ public class OpenDoor : Command
                     t.PosMove = pos;
                 }
             }
-            t.ShowCommanders();
 
         }
 

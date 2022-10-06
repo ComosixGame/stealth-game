@@ -7,7 +7,6 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Collider))]
-[ExecuteInEditMode]
 public class InteractOnTrigger : MonoBehaviour
 {
     public Command command;
@@ -21,22 +20,6 @@ public class InteractOnTrigger : MonoBehaviour
             
     }
 
-    [ExecuteInEditMode]
-    // Start is called before the first frame update
-    private void OnEnable()
-    {
-    #if UNITY_EDITOR
-        StartCoroutine(WaitCommand());
-    #endif
-    }
-
-    private void OnDisable() {
-    #if UNITY_EDITOR
-        if(command != null) {
-            command.RemoveCommander(transform);
-        }
-    #endif 
-    }
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
@@ -52,10 +35,6 @@ public class InteractOnTrigger : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    IEnumerator WaitCommand() {
-        yield return new WaitUntil(()=>command != null);
-        command.SetCommander(transform);
-    }
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Handles.Label(transform.position, "Commander","TextField");
@@ -66,7 +45,8 @@ public class InteractOnTrigger : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-
+        Handles.color = Color.blue;
+        Handles.DrawDottedLine(transform.position, command.transform.position, 3f);
     }
 #endif
 }
