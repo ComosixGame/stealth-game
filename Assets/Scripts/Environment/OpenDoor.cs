@@ -6,6 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(Collider))]
 public class OpenDoor : Command
 {
     public enum TypeOpen {
@@ -22,28 +23,31 @@ public class OpenDoor : Command
     [HideInInspector] public Axis axis;
     [HideInInspector] public float angel;
     [HideInInspector] public Vector3 PosMove;
-    private bool beginExecute, unLocked;
+    private bool haveKey, unLocked;
     private Vector3 orginPos;
     private Vector3 axisVector;
 
     private void Start() {
         orginPos = door.position;
+        GetComponent<Collider>().isTrigger = true;
     }
     private void Update() {
-        if(beginExecute && unLocked) {
+        if(unLocked) {
             Open();
         }
     }
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
-            unLocked = true;
+            if(haveKey) {
+                unLocked = true;
+            }
         }
     }
 
     public override void Execute()
     {
-        beginExecute = true;
+        haveKey = true;
     }
 
     public override void Undo()
