@@ -26,13 +26,15 @@ public class InteractOnTrigger : MonoBehaviour
     private void OnEnable()
     {
     #if UNITY_EDITOR
-        command.SetCommander(transform);
+        StartCoroutine(WaitCommand());
     #endif
     }
 
     private void OnDisable() {
     #if UNITY_EDITOR
-        command.RemoveCommander(transform);
+        if(command != null) {
+            command.RemoveCommander(transform);
+        }
     #endif 
     }
 
@@ -50,11 +52,17 @@ public class InteractOnTrigger : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    IEnumerator WaitCommand() {
+        yield return new WaitUntil(()=>command != null);
+        command.SetCommander(transform);
+    }
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(command.transform.position, transform.position);
         Handles.Label(transform.position, "Commander","TextField");
-        Handles.Label(command.transform.position, "Interact Object","TextField");
+        if(command != null) {
+            Gizmos.DrawLine(command.transform.position, transform.position);
+            Handles.Label(command.transform.position, "Interact Object","TextField");
+        }
     }
 
     private void OnDrawGizmos() {
