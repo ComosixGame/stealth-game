@@ -204,14 +204,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             agent.SetDestination(hit.position);
         }
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
-            if(Alerted) {
-                state = State.Looking;
-                return;
-            }
             state = State.Idle;
-        } else if(Alerted && agent.velocity.magnitude == 0) {
-            Debug.Log(gameObject);
-            state = State.Looking;
         }
     }
 
@@ -275,7 +268,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Alerted = true;
         playerPosition = pos;
         if(state != State.Attack) {
-            state = State.Chase; 
+            state = State.Looking; 
         }
     }
 
