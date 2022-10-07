@@ -36,13 +36,11 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Transform player;
     private State state, prevState;
     private float IdleTimer;
-    private bool isDeadBody;
-    private bool Alerted;
+    private bool isDeadBody, readyAttack, Alerted, triggerAlertOnAttack;
     private Animator animator;
     private int velocityHash;
     private GameManager gameManager;
     private EnemyDamageable enemyDamageable;
-    private bool readyAttack;
     private void Awake() {
         gameManager = GameManager.Instance;
         agent = GetComponent<NavMeshAgent>();
@@ -193,7 +191,8 @@ public class EnemyBehaviourScript : MonoBehaviour
             }
         }
 
-        if(!Alerted && IdleTimer >= 1.5f) {
+        if(!triggerAlertOnAttack && IdleTimer >= 1.5f) {
+            triggerAlertOnAttack = true;
             gameManager.EnemyTriggerAlert(playerPos, enemy.alertTime);
         }
     }
@@ -207,7 +206,6 @@ public class EnemyBehaviourScript : MonoBehaviour
         }
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
             if(Alerted) {
-                Debug.Log("alert");
                 agent.ResetPath();
                 state = State.Looking;
                 return;
@@ -246,6 +244,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
     public void HandleWhenNotDetected() {
         aimLayer.weight = Mathf.Lerp(aimLayer.weight, -0.1f, 20f * Time.deltaTime);
+        triggerAlertOnAttack = false;
         if(prevState == State.Attack) {
             state = State.Chase;
         }
