@@ -87,7 +87,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerScanner.Scan(rootScanner);
+        playerScanner.Scan();
         HandleAnimation();
         switch(state) {
             case State.Idle:

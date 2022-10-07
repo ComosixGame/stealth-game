@@ -115,6 +115,7 @@ MonoBehaviour:
   rootScanner: {fileID: 5330644504181789907}
   aimLayer: {fileID: 5330644503871557453}
   weapon: {fileID: 1772224381378265087, guid: 0dd47a78b37e14b449d89073a4f4430c, type: 3}
+  bullet: {fileID: 0}
   weaponHolder: {fileID: 5330644503846150503}
   typePatrol: 0
   patrolList: []
@@ -173,7 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e588bfb35ab12f45b9259ccbe97b2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
   DestroyedBody: {fileID: 2250050854710427473, guid: 0a2c5aa1e46896640b483dab86f978e3, type: 3}
   OnTakeDamge:
     m_PersistentCalls:
@@ -774,7 +774,7 @@ GameObject:
   m_Layer: 7
   m_Name: rootScanner
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

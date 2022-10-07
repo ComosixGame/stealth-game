@@ -37,7 +37,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void Update() {
-        scanner.Scan(rootScanner);
+        scanner.Scan();
     }
 
     private void HandleNotDetectedTarget() {

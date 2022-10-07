@@ -17,6 +17,7 @@ public class Scanner
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
     private float fov, ViewDistence;
+    private Transform _detector;
     private List<RaycastHit> listHit = new List<RaycastHit>();
     public UnityEvent<List<RaycastHit>> OnDetectedTarget;
     public UnityEvent<Transform> OnDetectedSubTarget;
@@ -25,11 +26,12 @@ public class Scanner
     
     public GameObject CreataFieldOfView(Transform detector, Vector3 pos, float angel, float distance) {
         //creata field of view
+        _detector = detector;
         mesh = new Mesh();
         GameObject FieldOfView = new GameObject("FieldOfView");
-        FieldOfView.transform.SetParent(detector);
+        FieldOfView.transform.SetParent(_detector);
         FieldOfView.transform.position = pos;
-        FieldOfView.transform.rotation = detector.rotation;
+        FieldOfView.transform.rotation = _detector.rotation;
         MeshRenderer meshRendererFOV = FieldOfView.AddComponent<MeshRenderer>();
         meshFilterFOV =  FieldOfView.AddComponent<MeshFilter>();
         meshRendererFOV.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -40,7 +42,7 @@ public class Scanner
         return FieldOfView;
     }
 
-    public void Scan(Transform detector) {
+    public void Scan() {
         // remove all element in list detect
         listHit.RemoveAll(el => true);
 
@@ -60,9 +62,9 @@ public class Scanner
         for(int i = 0; i<=rayCount; i++) {
             // render FOV when have Obstacle
             Vector3 dir = Quaternion.Euler(0, angel, 0) * Vector3.forward;
-            Vector3 dirRaycast = Quaternion.Euler(0, angel, 0) * detector.forward.normalized;
+            Vector3 dirRaycast = Quaternion.Euler(0, angel, 0) * _detector.forward.normalized;
 
-            Ray origin = new Ray(detector.position, dirRaycast);
+            Ray origin = new Ray(_detector.position, dirRaycast);
             Vector3 vertex = Vector3.zero +  (dir * ViewDistence);
             float rangeScan = ViewDistence;
             RaycastHit hit;
@@ -136,7 +138,7 @@ public class Scanner
 #if UNITY_EDITOR
     public void EditorGizmo(Transform transform, float angle, float radius) {
         Handles.color = new Color32(76, 122, 90, 80);
-        Vector3 vectorStart = Quaternion.Euler(0, -angle/2, 0) * transform.forward;
+        Vector3 vectorStart = Quaternion.Euler(0, - angle/2, 0) * transform.forward;
         Handles.DrawSolidArc(transform.position, Vector3.up, vectorStart, angle, radius);
     }
 # endif

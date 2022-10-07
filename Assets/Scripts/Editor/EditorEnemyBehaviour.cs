@@ -58,24 +58,25 @@ public class EditorEnemyBehaviour : Editor {
             prevIndex = i;
                 
             //Draw a list of indexed dotted line segments
-            Handles.color = Color.blue;
 
             if(t.typePatrol == EnemyBehaviourScript.TypePatrol.MoveAround) {
                 // Draw arrow dir if type patrol is move around
-                Handles.DrawDottedLines(listPoint, segmentIndices, 2);
+                Handles.color = Color.blue;
+                Handles.DrawDottedLines(listPoint, segmentIndices, 3);
                 int nextIndexPoint = i >= listPoint.Length - 1 ? 0 : i + 1;
                 float distanceToNextPoint = Vector3.Distance(pos, listPoint[nextIndexPoint]);
+                Handles.color = Color.yellow;
                 for(int j = 0; j <= distanceToNextPoint/4; j += 2) {
                     Vector3 dir = (listPoint[nextIndexPoint] - pos).normalized;
                     if(dir != Vector3.zero) {
                         Vector3 posOfArrow = pos + dir * j;
-                        Handles.ArrowHandleCap(i,posOfArrow ,Quaternion.LookRotation(dir), 2.5f, EventType.Repaint);
+                        Handles.ArrowHandleCap(i,posOfArrow ,Quaternion.LookRotation(dir), 2f, EventType.Repaint);
                     }
                 }
             } else {
                 // Draw arrow dir if type patrol is stand in place
-                Handles.color = Color.blue;
                 Quaternion rot = Quaternion.LookRotation((pos - t.transform.position).normalized);
+                Handles.color = Color.yellow;
                 Handles.ArrowHandleCap(i, t.transform.position, rot, 5f, EventType.Repaint);
             }
 
@@ -96,6 +97,7 @@ public class EditorEnemyBehaviour : Editor {
 
     private void CustomStandPoint(EnemyBehaviourScript t) {
         Handles.Label(t.standPos,"Stand Pos","TextField");
+        Handles.color = Color.blue;
         Handles.DrawDottedLine(t.standPos, t.transform.position,2);
         EditorGUI.BeginChangeCheck();
         Vector3 newPos = Handles.PositionHandle(t.standPos, Quaternion.identity);

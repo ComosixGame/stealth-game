@@ -33,7 +33,7 @@ public class PlayerDamageable : MonoBehaviour, Damageable
             Rigidbody hitRigi = ragdollRigibodies.OrderBy(rb => Vector3.Distance(rb.position, hitPoint)).First();
             hitRigi.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
             //thêm lực văng vào súng
-            rigidbodyWeapon.AddForce(force * 5f, ForceMode.Impulse);
+            rigidbodyWeapon.AddForce(force.normalized * 5f, ForceMode.Impulse);
         }
     }
 
