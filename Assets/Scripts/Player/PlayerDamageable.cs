@@ -10,16 +10,11 @@ public class PlayerDamageable : MonoBehaviour, Damageable
         GameManager.Instance.UpdatePlayerHealth(health);
     }
 
-    public  void TakeDamge(Vector3 hitPoint ,float damage, float force)
+    public  void TakeDamge(Vector3 hitPoint , Vector3 force, float damage)
     {   
         health -= damage;
         GameManager.Instance.UpdatePlayerHealth(health);
         if(health == 0) {
-            //tính hướng tấn công
-            Vector3 dirForce = transform.position - hitPoint;
-            dirForce.y = 0;
-            dirForce.Normalize();
-
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
 
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
@@ -36,13 +31,13 @@ public class PlayerDamageable : MonoBehaviour, Damageable
             //thêm lực vào bộ phận gần vị trí trúng nhất
             ragdollRigibodies = deadBody.GetComponentsInChildren<Rigidbody>();
             Rigidbody hitRigi = ragdollRigibodies.OrderBy(rb => Vector3.Distance(rb.position, hitPoint)).First();
-            hitRigi.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.Impulse);
+            hitRigi.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
             //thêm lực văng vào súng
-            rigidbodyWeapon.AddForce(dirForce * 5f, ForceMode.Impulse);
+            rigidbodyWeapon.AddForce(force * 5f, ForceMode.Impulse);
         }
     }
 
-    public void TakeDamge(Vector3 hitPoint, float force)
+    public void TakeDamge(Vector3 hitPoint, Vector3 force)
     {
         throw new System.NotImplementedException();
     }

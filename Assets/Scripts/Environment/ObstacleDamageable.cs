@@ -29,7 +29,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
         }
     }
 
-    public void TakeDamge(Vector3 hitPoint, float force)
+    public void TakeDamge(Vector3 hitPoint, Vector3 force)
     {
         if(!destroyed) {
             timeDelay = Time.time + 5;
@@ -39,8 +39,8 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
             dirForce.Normalize();
 
             foreach(Rigidbody rigidbody in rigidbodies) {
-                float f = force / Vector3.Distance(rigidbody.position, hitPoint);
-                rigidbody.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.Impulse);
+                float f = force.magnitude / Vector3.Distance(rigidbody.position, hitPoint);
+                rigidbody.AddForceAtPosition(force.normalized * f, hitPoint, ForceMode.Impulse);
             }
 
             destroyed = true;
@@ -60,7 +60,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
         }
     }
 
-    public void TakeDamge(Vector3 hitPoint, float force, float damage)
+    public void TakeDamge(Vector3 hitPoint, Vector3 force, float damage)
     {
         throw new System.NotImplementedException();
     }

@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
         if((layerMask & (1 << other.gameObject.layer)) != 0) {
             Damageable damageable =  other.transform.GetComponentInParent<Damageable>();
             if(damageable != null) {
-                damageable.TakeDamge(contact.point, damage, force);
+                damageable.TakeDamge(contact.point, dir * force, damage);
             }
         } else {
             GameObject obj = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
             ObstacleDamageable damageable = other.transform.GetComponentInParent<ObstacleDamageable>();
-            damageable.TakeDamge(contact.point, 15f);
+            damageable.TakeDamge(contact.point, dir * 15);
         }
     }
 

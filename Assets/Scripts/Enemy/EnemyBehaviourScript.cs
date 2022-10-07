@@ -201,11 +201,20 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void Chase(Vector3 pos) {
         NavMeshHit hit;
         if (NavMesh.SamplePosition(playerPosition, out hit, agent.height * 2, 1)) {
-            agent.SetDestination(hit.position);
+            if(!agent.hasPath) {
+                agent.SetDestination(hit.position);
+            }
         }
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
+            if(Alerted) {
+                Debug.Log("alert");
+                agent.ResetPath();
+                state = State.Looking;
+                return;
+            }
             state = State.Idle;
         }
+
     }
 
     private void Looking() {
@@ -267,8 +276,9 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void HandleOnAlert(Vector3 pos) {
         Alerted = true;
         playerPosition = pos;
+        agent.ResetPath();
         if(state != State.Attack) {
-            state = State.Looking; 
+            state = State.Chase; 
         }
     }
 
@@ -294,11 +304,9 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleWhenTakeDamge(Vector3 dir) {
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(transform.position - dir * 5f, out hit, agent.height * 2, 1)) {
-            playerPosition = hit.position;
-            state = State.Chase;   
-        }
+        playerPosition = transform.position - dir.normalized * 3f;
+        agent.ResetPath();
+        agent.SetDestination(playerPosition);  
     }
 
     IEnumerator WaitForReadyAttack() {

@@ -9,14 +9,10 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     Rigidbody[] ragdollRigibodies;
     public UnityEvent<Vector3> OnTakeDamge;
 
-    public void TakeDamge(Vector3 hitPoint, float damage, float force)
+    public void TakeDamge(Vector3 hitPoint,Vector3 force, float damage)
     {
         health -= damage;
-        //tính hướng tấn công
-        Vector3 dirForce = transform.position - hitPoint;
-        dirForce.y = 0;
-        dirForce.Normalize();
-        OnTakeDamge?.Invoke(dirForce);
+        OnTakeDamge?.Invoke(force);
         if(health <= 0) {
 
             GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
@@ -35,13 +31,13 @@ public class EnemyDamageable : MonoBehaviour, Damageable
             //thêm lực vào bộ phận gần vị trí trúng nhất
             ragdollRigibodies = deadBody.GetComponentsInChildren<Rigidbody>();
             Rigidbody hitRigi = getHitRigi(ragdollRigibodies, hitPoint);
-            hitRigi.AddForceAtPosition(dirForce * force, hitPoint, ForceMode.Impulse);
+            hitRigi.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
             //thêm lực văng vào súng
-            rigidbodyWeapon.AddForce(dirForce * 5f, ForceMode.Impulse);
+            rigidbodyWeapon.AddForce(force * 5f, ForceMode.Impulse);
         }
     }
 
-    public void TakeDamge(Vector3 hitPoint, float force)
+    public void TakeDamge(Vector3 hitPoint, Vector3 force)
     {
         throw new System.NotImplementedException();
     }

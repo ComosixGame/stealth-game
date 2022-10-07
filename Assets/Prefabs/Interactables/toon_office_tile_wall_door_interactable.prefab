@@ -47,6 +47,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 8610139810316049578}
   typeOpen: 0
+  layer:
+    serializedVersion: 2
+    m_Bits: 64
+  layerOnAlert:
+    serializedVersion: 2
+    m_Bits: 128
   axis: 1
   angel: -90
   PosMove: {x: 0, y: 0, z: 0}
@@ -371,7 +377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5423305078329565909, guid: 85bb36dacd5804745a0d8fc8e3b3b108, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.45
+      value: -1.54
       objectReference: {fileID: 0}
     - target: {fileID: 5423305078329565909, guid: 85bb36dacd5804745a0d8fc8e3b3b108, type: 3}
       propertyPath: m_LocalPosition.y

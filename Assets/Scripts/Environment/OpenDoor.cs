@@ -20,13 +20,13 @@ public class OpenDoor : Command
     }
     public Transform door;
     public TypeOpen typeOpen;
+    public LayerMask layer, layerOnAlert;
     [HideInInspector] public Axis axis;
     [HideInInspector] public float angel;
     [HideInInspector] public Vector3 PosMove;
     private bool haveKey, unLocked;
     private Vector3 orginPos;
     private Vector3 axisVector;
-
     private void Start() {
         orginPos = door.position;
         GetComponent<Collider>().isTrigger = true;
@@ -35,10 +35,11 @@ public class OpenDoor : Command
         if(unLocked) {
             Open();
         }
+
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+        if((layer & (1<<other.gameObject.layer)) != 0) {
             if(haveKey) {
                 unLocked = true;
             }
