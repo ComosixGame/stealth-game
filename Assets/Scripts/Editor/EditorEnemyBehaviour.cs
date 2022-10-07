@@ -27,6 +27,7 @@ public class EditorEnemyBehaviour : Editor {
             if(EditorGUI.EndChangeCheck()) {
                 Undo.RecordObject(enemyBehaviour, "Update stand point");
                 enemyBehaviour.standPos = standPos;
+                EditorUtility.SetDirty(enemyBehaviour);
             }
         }
     }
@@ -91,6 +92,8 @@ public class EditorEnemyBehaviour : Editor {
                 // update position point
                 Undo.RecordObject(t, "Update Patrol point");
                 listPoint[i] = newPos;
+                EditorUtility.SetDirty(t);
+
             }
         }
     }
@@ -104,6 +107,7 @@ public class EditorEnemyBehaviour : Editor {
         if(EditorGUI.EndChangeCheck()) {
             Undo.RecordObject(t, "Update stand point");
             t.standPos = newPos;
+            EditorUtility.SetDirty(t);
         }
     }
 }

@@ -111,6 +111,7 @@ public class OpenDoor : Command
                 if(EditorGUI.EndChangeCheck()) {
                     UnityEditor.Undo.RecordObject(t, "update Position Move");
                     t.PosMove = newPos;
+                    EditorUtility.SetDirty(t);
                 }
             }
         }
@@ -125,6 +126,7 @@ public class OpenDoor : Command
                 if(EditorGUI.EndChangeCheck()) {
                     UnityEditor.Undo.RecordObject(t, "update axis");
                     t.axis = (Axis)axisIndex;
+                    EditorUtility.SetDirty(t);
                 }
 
                 EditorGUI.BeginChangeCheck();
@@ -132,6 +134,7 @@ public class OpenDoor : Command
                 if(EditorGUI.EndChangeCheck()) {
                     UnityEditor.Undo.RecordObject(t, "update angel");
                     t.angel = angel;
+                    EditorUtility.SetDirty(t);
                 }
             } else {
                 EditorGUI.BeginChangeCheck();
@@ -139,6 +142,7 @@ public class OpenDoor : Command
                 if(EditorGUI.EndChangeCheck()) {
                     UnityEditor.Undo.RecordObject(t, "update Position Move");
                     t.PosMove = pos;
+                    EditorUtility.SetDirty(t);
                 }
             }
 

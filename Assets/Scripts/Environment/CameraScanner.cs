@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +11,10 @@ public class CameraScanner : MonoBehaviour
     public Transform rootScanner, Camera;
     public float range, speed, alertTime;
     public Vector3[] listPatrol;
-    [HideInInspector] public int indexSelect;
+    [HideInInspector] public int indexSelectUp, indexSelectForward;
     [SerializeField] private Scanner scanner = new Scanner();
     private int patrolIndex = 0;
     private bool detected;
-    private Vector3 axisUp;
     private GameManager gameManager;
 
     private void Awake() {
@@ -23,6 +23,7 @@ public class CameraScanner : MonoBehaviour
 
     private void OnEnable() {
         scanner.OnDetectedTarget.AddListener(HandleWhenDetected);
+        scanner.OnDetectedSubTarget.AddListener(HandleWhenDetectedSubTarget);
         scanner.OnNotDetectedTarget.AddListener(NotDetect);
     }
     
@@ -35,7 +36,8 @@ public class CameraScanner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Camera.LookAt(rootScanner, axisUp);
+        Camera.LookAt(rootScanner.position, GetAxisUp());
+        AxisForward();
         scanner.Scan();
         if(!detected) {
             Patrol();
@@ -61,13 +63,61 @@ public class CameraScanner : MonoBehaviour
         }
         detected = true;
     }
+
+    private void HandleWhenDetectedSubTarget(Transform subTarget) {
+        bool isDetected = subTarget.GetComponentInParent<DeadBody>().isDetected;
+        if(!isDetected) {
+            gameManager.EnemyTriggerAlert(subTarget.position, alertTime);
+            subTarget.GetComponentInParent<DeadBody>().isDetected = true;
+        }
+    }
     
     private void NotDetect() {
         detected = false;
     }
 
+    private Vector3 GetAxisUp() {
+        switch(indexSelectUp) {
+            case 0:
+                return Vector3.up;
+            case 1:
+                return Vector3.down;
+            case 2:
+                return Vector3.right;
+            case 3:
+                return Vector3.left;
+            case 4:
+                return Vector3.forward;
+            default:
+                return Vector3.back;
+        }
+    }
+
+    private void AxisForward() {
+        switch(indexSelectForward) {
+            case 0:
+                Camera.RotateAround(Camera.position, Camera.right, 90);
+                break;
+            case 1:
+                Camera.RotateAround(Camera.position, -Camera.right, 90);
+                break;
+            case 2:
+                Camera.RotateAround(Camera.position, -Camera.up, 90);
+                break;
+            case 3:
+                Camera.RotateAround(Camera.position, Camera.up, 90);
+                break;
+            case 4:
+                break;
+            default:
+                Camera.RotateAround(Camera.position, Camera.right, 180);
+                break;
+        }
+    }
+
     private void OnDisable() {
         scanner.OnDetectedTarget.RemoveListener(HandleWhenDetected);
+        scanner.OnDetectedSubTarget.RemoveListener(HandleWhenDetectedSubTarget);
         scanner.OnNotDetectedTarget.RemoveListener(NotDetect);
     }
 
@@ -92,6 +142,7 @@ public class CameraScanner : MonoBehaviour
                 if(EditorGUI.EndChangeCheck()) {
                     Undo.RecordObject(cam,"update patrol position");
                     cam.listPatrol[i] = pos;
+                    EditorUtility.SetDirty(cam);
                 }
 
                 if(i == cam.listPatrol.Length - 1) {
@@ -118,30 +169,19 @@ public class CameraScanner : MonoBehaviour
             CameraScanner cam = target as CameraScanner;
             string[] options = new string[6] {"Y","-Y","X","-X","Z","-Z"};
             EditorGUI.BeginChangeCheck();
-            int index = EditorGUILayout.Popup("Axis Up", cam.indexSelect, options);
+            int indexUp = EditorGUILayout.Popup("Axis Up", cam.indexSelectUp, options);
             if(EditorGUI.EndChangeCheck()) {
                 Undo.RecordObject(cam, "Update axis up");
-                cam.indexSelect = index; 
-                switch(cam.indexSelect) {
-                    case 1:
-                        cam.axisUp = Vector3.down;
-                        break;
-                    case 2:
-                        cam.axisUp = Vector3.right;
-                        break;
-                    case 3:
-                        cam.axisUp = Vector3.left;
-                        break;
-                    case 4:
-                        cam.axisUp = Vector3.forward;
-                        break;
-                    case 5:
-                        cam.axisUp = Vector3.back;
-                        break;
-                    default:
-                        cam.axisUp = Vector3.up;
-                        break;
-                }
+                cam.indexSelectUp = indexUp;
+                EditorUtility.SetDirty(cam);
+
+            }
+            EditorGUI.BeginChangeCheck();
+            int indexForward = EditorGUILayout.Popup("Axis Forward", cam.indexSelectForward, options);
+            if(EditorGUI.EndChangeCheck()) {
+                Undo.RecordObject(cam, "Update axis forward");
+                cam.indexSelectForward = indexForward;
+                EditorUtility.SetDirty(cam);
             }
         }
     }
