@@ -191,7 +191,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             }
         }
 
-        if(!triggerAlertOnAttack && IdleTimer >= 1.5f) {
+        if(!triggerAlertOnAttack && IdleTimer >= 2f) {
             triggerAlertOnAttack = true;
             gameManager.EnemyTriggerAlert(playerPos, enemy.alertTime);
         }
@@ -253,6 +253,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void HandleWhenDetectedSubtarget(Transform _transform) {
         bool isDetected = _transform.GetComponentInParent<DeadBody>().isDetected;
         if(!isDetected) {
+            agent.ResetPath();
             state = State.Chase;
             playerPosition =  _transform.position;
             _transform.GetComponentInParent<DeadBody>().isDetected = true;
