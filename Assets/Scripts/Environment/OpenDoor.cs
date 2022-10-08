@@ -42,6 +42,7 @@ public class OpenDoor : Command
         if((layer & (1<<other.gameObject.layer)) != 0) {
             if(haveKey) {
                 unLocked = true;
+                door.GetComponent<Collider>().isTrigger = true;
             }
         }
     }
