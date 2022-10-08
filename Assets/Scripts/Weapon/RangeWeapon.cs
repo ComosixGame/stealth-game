@@ -18,8 +18,4 @@ public class RangeWeapon : Weapon
             timeNextAttack = Time.time + delayAttack;
         }
     }
-
-    public void setBullet(GameObject bullet) {
-        _bullet = bullet;
-    }
 }
