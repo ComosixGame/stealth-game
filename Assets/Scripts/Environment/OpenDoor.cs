@@ -20,6 +20,7 @@ public class OpenDoor : Command
     }
     public Transform door;
     public TypeOpen typeOpen;
+    public GameObject locks;
     public LayerMask layer, layerOnAlert;
     [HideInInspector] public Axis axis;
     [HideInInspector] public float angel;
@@ -50,6 +51,7 @@ public class OpenDoor : Command
     public override void Execute()
     {
         haveKey = true;
+        locks.SetActive(false);
     }
 
     public override void Undo()
