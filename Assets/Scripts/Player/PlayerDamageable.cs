@@ -13,8 +13,8 @@ public class PlayerDamageable : MonoBehaviour, Damageable
     public  void TakeDamge(Vector3 hitPoint , Vector3 force, float damage)
     {   
         health -= damage;
-        GameManager.Instance.UpdatePlayerHealth(health);
-        if(health == 0) {
+        if(health <= 0) {
+            health = 0;
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
 
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
@@ -35,10 +35,6 @@ public class PlayerDamageable : MonoBehaviour, Damageable
             //thêm lực văng vào súng
             rigidbodyWeapon.AddForce(force.normalized * 5f, ForceMode.Impulse);
         }
-    }
-
-    public void TakeDamge(Vector3 hitPoint, Vector3 force)
-    {
-        throw new System.NotImplementedException();
+        GameManager.Instance.UpdatePlayerHealth(health);
     }
 }

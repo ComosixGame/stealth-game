@@ -14,7 +14,7 @@ public class CameraScanner : MonoBehaviour
     [HideInInspector] public int indexSelectUp, indexSelectForward;
     [SerializeField] private Scanner scanner = new Scanner();
     private int patrolIndex = 0;
-    private bool detected;
+    [SerializeField] private bool detected;
     private GameManager gameManager;
 
     private void Awake() {

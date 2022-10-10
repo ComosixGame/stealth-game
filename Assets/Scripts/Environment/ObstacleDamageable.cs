@@ -29,7 +29,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
         }
     }
 
-    public void TakeDamge(Vector3 hitPoint, Vector3 force)
+    public void TakeDamge(Vector3 hitPoint, Vector3 force, float damage = 0)
     {
         if(!destroyed) {
             timeDelay = Time.time + 5;
@@ -58,10 +58,5 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
         foreach(Transform child in children) {
             child.gameObject.layer = LayerMask.NameToLayer("BrokenThing");
         }
-    }
-
-    public void TakeDamge(Vector3 hitPoint, Vector3 force, float damage)
-    {
-        throw new System.NotImplementedException();
     }
 }
