@@ -14,10 +14,10 @@ public class Trap : Command
 
     public float damage;
     [HideInInspector] public float delayTimeAttack;
-    [HideInInspector] public float onDuration;
-    [HideInInspector] public float offDuration;
+    [HideInInspector] public float onDuration, offDuration, warningBeforeOn;
     public LayerMask layer;
     public GameObject effect;
+    [HideInInspector] public ParticleSystem warningEffect;
     public Typemode typemode;
     private bool ready, PowerOff, turnOn = true;
     private float timeNextAttack, nextSwitch;
@@ -38,15 +38,25 @@ public class Trap : Command
                     }
                 }
             }
+
+            if(nextSwitch - Time.time <= warningBeforeOn && !turnOn) {
+                if(warningEffect.isStopped) {
+                    warningEffect.Play();
+                }
+            } else {
+                if(warningEffect.isPlaying) {
+                    warningEffect.Stop();
+                }
+            }
         }
     }
 
     private void OnTriggerStay(Collider other) {
-        if(PowerOff) {
+        if(PowerOff || !turnOn) {
             return;
         }
         
-        if((layer & (1 << other.gameObject.layer)) != 0 ) {
+        if((layer & (1 << other.gameObject.layer)) != 0) {
             Vector3  dir = other.transform.position - transform.position;
             dir.y = 0;
 
@@ -70,6 +80,7 @@ public class Trap : Command
     public override void Execute()
     {
         PowerOff = true;
+        effect.SetActive(false);
     }
 
     public override void Undo()
@@ -85,13 +96,21 @@ public class Trap : Command
             base.OnInspectorGUI();
             Trap trap =  target as Trap;
             EditorGUI.BeginChangeCheck();
-            float delayTime = EditorGUILayout.FloatField("Time Charge", trap.delayTimeAttack);
+            float delayTime = EditorGUILayout.FloatField("Delay Time Attack", trap.delayTimeAttack);
             if(EditorGUI.EndChangeCheck()) {
                 UnityEditor.Undo.RecordObject(trap, "Update Delay Time Attack");
                 trap.delayTimeAttack = delayTime;
                 // EditorUtility.SetDirty();
             }
             if(trap.typemode == Trap.Typemode.Blink) {
+                EditorGUI.BeginChangeCheck();
+                ParticleSystem particleSystem = EditorGUILayout.ObjectField("Warning Effect",trap.warningEffect, typeof(ParticleSystem), true) as ParticleSystem;
+                if(EditorGUI.EndChangeCheck()) {
+                    UnityEditor.Undo.RecordObject(trap, "Update Warning Effect");
+                    trap.warningEffect =  particleSystem;
+                    EditorUtility.SetDirty(trap);
+                }
+
                 EditorGUI.BeginChangeCheck();
                 float timeTurnOff = EditorGUILayout.FloatField("Off Duration", trap.offDuration);
                 if(EditorGUI.EndChangeCheck()) {
@@ -103,6 +122,13 @@ public class Trap : Command
                 if(EditorGUI.EndChangeCheck()) {
                     UnityEditor.Undo.RecordObject(trap, "Update On Duration");
                     trap.onDuration = timeTurnOn;
+                }
+
+                EditorGUI.BeginChangeCheck();
+                float warningBeforeOn = EditorGUILayout.FloatField("Warning Before Turn On", trap.warningBeforeOn);
+                if(EditorGUI.EndChangeCheck()) {
+                    UnityEditor.Undo.RecordObject(trap, "Update warning Before On");
+                    trap.warningBeforeOn = warningBeforeOn;
                 }
             }
         }
