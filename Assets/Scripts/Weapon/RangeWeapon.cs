@@ -11,7 +11,7 @@ public class RangeWeapon : Weapon
     {
         if(Time.time >= timeNextAttack) {
             OnAttack?.Invoke();
-            GameObject c_bullet = Instantiate(_bullet, shootPositon.position, transform.rotation);
+            GameObject c_bullet = Instantiate(_bullet, shootPositon.position, shootPositon.rotation);
             c_bullet.layer = LayerMask.NameToLayer(namelayerMask);
             shotEffect.Play();
             c_bullet.GetComponent<Bullet>().TriggerFireBullet(shootPositon.forward.normalized, speedBullet, damage, force, targets);

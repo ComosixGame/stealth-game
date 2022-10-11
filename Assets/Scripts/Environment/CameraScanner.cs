@@ -8,13 +8,27 @@ using UnityEditor;
 
 public class CameraScanner : MonoBehaviour
 {
+    public enum Typemode {
+        Camera,
+        Turret
+    };
+    public Typemode typemode;
     public Transform rootScanner, Camera;
-    public float range, speed, alertTime;
+    public float range, speed;
+    [HideInInspector] public float alertTime;
+    [HideInInspector] public GameObject bullet;
+    [HideInInspector] public Transform shootPositon;
+    [HideInInspector] public ParticleSystem shotEffect;
+    [HideInInspector] public float damage;
+    [HideInInspector] public float speedBullet;
+    [HideInInspector] public float delayAttack;
     public Vector3[] listPatrol;
     [HideInInspector] public int indexSelectUp, indexSelectForward;
     [SerializeField] private Scanner scanner = new Scanner();
     private int patrolIndex = 0;
-    [SerializeField] private bool detected;
+    private bool detected;
+    private Vector3 targetLookAt;
+    private float timeNextAttack;
     private GameManager gameManager;
 
     private void Awake() {
@@ -36,7 +50,7 @@ public class CameraScanner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Camera.LookAt(rootScanner.position, GetAxisUp());
+        Camera.LookAt(targetLookAt, GetAxisUp());
         AxisForward();
         scanner.Scan();
         if(!detected) {
@@ -58,10 +72,21 @@ public class CameraScanner : MonoBehaviour
 
     private void HandleWhenDetected(List<RaycastHit> listHits) {
         Transform hitTransform = scanner.DetectSingleTarget(listHits);
-        if(!detected) {
-            gameManager.EnemyTriggerAlert(hitTransform.position, alertTime);
-        }
         detected = true;
+        if(typemode ==  Typemode.Camera) {
+            if(!detected) {
+                gameManager.EnemyTriggerAlert(hitTransform.position, alertTime);
+            }
+        } else {
+            if(Time.time >= timeNextAttack) {
+                targetLookAt = hitTransform.position;
+                GameObject c_bullet = Instantiate(bullet, shootPositon.position, shootPositon.rotation);
+                c_bullet.layer = LayerMask.NameToLayer("Player");
+                shotEffect.Play();
+                c_bullet.GetComponent<Bullet>().TriggerFireBullet(shootPositon.forward.normalized, speedBullet, damage, 100, scanner.layerMaskTarget);
+                timeNextAttack = Time.time + delayAttack;
+            } 
+        }
     }
 
     private void HandleWhenDetectedSubTarget(Transform subTarget) {
@@ -73,6 +98,7 @@ public class CameraScanner : MonoBehaviour
     }
     
     private void NotDetect() {
+        targetLookAt = rootScanner.position;
         detected = false;
     }
 
@@ -182,6 +208,59 @@ public class CameraScanner : MonoBehaviour
                 Undo.RecordObject(cam, "Update axis forward");
                 cam.indexSelectForward = indexForward;
                 EditorUtility.SetDirty(cam);
+            }
+
+            if(cam.typemode == Typemode.Turret) {
+                EditorGUI.BeginChangeCheck();
+                GameObject bullet = EditorGUILayout.ObjectField("Bullet", cam.bullet, typeof(GameObject), true) as GameObject;
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update bullet");
+                    cam.bullet = bullet;
+                    EditorUtility.SetDirty(cam);
+                }
+                EditorGUI.BeginChangeCheck();
+                Transform shootPositon = EditorGUILayout.ObjectField("Shoot Positon", cam.shootPositon, typeof(Transform), true) as Transform;
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update Shoot Positon");
+                    cam.shootPositon = shootPositon;
+                    EditorUtility.SetDirty(cam);
+                }
+                EditorGUI.BeginChangeCheck();
+                ParticleSystem shotEffect = EditorGUILayout.ObjectField("Shot Effect", cam.shotEffect, typeof(ParticleSystem), true) as ParticleSystem;
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update Shot Effect");
+                    cam.shotEffect = shotEffect;
+                    EditorUtility.SetDirty(cam);
+                }
+                EditorGUI.BeginChangeCheck();
+                float damage = EditorGUILayout.FloatField("Damage", cam.damage);
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update Damage");
+                    cam.damage = damage;
+                    EditorUtility.SetDirty(cam);
+                }
+                EditorGUI.BeginChangeCheck();
+                float speedBullet = EditorGUILayout.FloatField("Speed Bullet", cam.speedBullet);
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update Speed Bullet");
+                    cam.speedBullet = speedBullet;
+                    EditorUtility.SetDirty(cam);
+                }
+                EditorGUI.BeginChangeCheck();
+                float delayAttack = EditorGUILayout.FloatField("Delay Attack", cam.delayAttack);
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update Delay Attack");
+                    cam.delayAttack = delayAttack;
+                    EditorUtility.SetDirty(cam);
+                }
+            } else {
+                EditorGUI.BeginChangeCheck();
+                float alertTime = EditorGUILayout.FloatField("Alert Time", cam.alertTime);
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update Alert Time");
+                    cam.alertTime = alertTime;
+                    EditorUtility.SetDirty(cam);
+                }
             }
         }
     }
