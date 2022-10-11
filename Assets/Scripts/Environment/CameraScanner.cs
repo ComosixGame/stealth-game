@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -78,12 +77,14 @@ public class CameraScanner : MonoBehaviour
                 gameManager.EnemyTriggerAlert(hitTransform.position, alertTime);
             }
         } else {
+            targetLookAt = hitTransform.position;
             if(Time.time >= timeNextAttack) {
-                targetLookAt = hitTransform.position;
+                Vector3 dir = targetLookAt -  shootPositon.position;
+                dir.y = UnityEngine.Random.Range(dir.y + 1, dir.y + 2);
                 GameObject c_bullet = Instantiate(bullet, shootPositon.position, shootPositon.rotation);
-                c_bullet.layer = LayerMask.NameToLayer("Player");
                 shotEffect.Play();
-                c_bullet.GetComponent<Bullet>().TriggerFireBullet(shootPositon.forward.normalized, speedBullet, damage, 100, scanner.layerMaskTarget);
+                c_bullet.layer = LayerMask.NameToLayer("FromEnemy");
+                c_bullet.GetComponent<Bullet>().TriggerFireBullet(dir.normalized, speedBullet, damage, 100, scanner.layerMaskTarget);
                 timeNextAttack = Time.time + delayAttack;
             } 
         }

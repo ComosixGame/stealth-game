@@ -52,9 +52,11 @@ public class Trap : Command
     }
 
     private void OnTriggerStay(Collider other) {
+        Debug.Log("ok");
         if(PowerOff || !turnOn) {
             return;
         }
+        
         
         if((layer & (1 << other.gameObject.layer)) != 0) {
             Vector3  dir = other.transform.position - transform.position;
@@ -65,7 +67,7 @@ public class Trap : Command
             }
 
             if(ready) {
-                other.GetComponent<Damageable>().TakeDamge(transform.position, dir * 20, damage);
+                other.GetComponent<Damageable>().TakeDamge(other.transform.position, dir * 20, damage);
                 timeNextAttack = Time.time + delayTimeAttack;
                 ready = false;
             }
