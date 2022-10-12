@@ -5,14 +5,18 @@ public class PlayerDamageable : MonoBehaviour, Damageable
 {
     [SerializeField] private float health;
     public GameObject DestroyedBody;
-    Rigidbody[] ragdollRigibodies;
+    private Rigidbody[] ragdollRigibodies;
+    private HealthBarRennder healthBar;
     private void Awake() {
         GameManager.Instance.UpdatePlayerHealth(health);
+        healthBar = GetComponent<HealthBarRennder>();
+        healthBar.initHealthBar(health);
     }
 
     public  void TakeDamge(Vector3 hitPoint , Vector3 force, float damage)
     {   
         health -= damage;
+        healthBar.UpdateHealthBar(health);
         if(health <= 0) {
             health = 0;
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
