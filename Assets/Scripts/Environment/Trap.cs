@@ -52,7 +52,6 @@ public class Trap : Command
     }
 
     private void OnTriggerStay(Collider other) {
-        Debug.Log("ok");
         if(PowerOff || !turnOn) {
             return;
         }

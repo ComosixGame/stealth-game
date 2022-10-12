@@ -58,7 +58,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         enemyDamageable = GetComponent<EnemyDamageable>();
         enemyDamageable.OnTakeDamge.AddListener(HandleWhenTakeDamge);
 
-        enemyDamageable.setHealth(enemy.health);
+        enemyDamageable.setInit(enemy.health, enemy.moneyBonus);
     }
 
     private void OnEnable() {

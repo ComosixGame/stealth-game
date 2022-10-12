@@ -213,7 +213,7 @@ Shader "Cartoon FX/Remaster/Particle Ubershader"
 				#define LIGHTING_BACK
 			#endif
 
-			#include "CFXR_SETTINGS.cginc"
+			#include "/CFXR_SETTINGS.cginc"
 
 			// --------------------------------
 

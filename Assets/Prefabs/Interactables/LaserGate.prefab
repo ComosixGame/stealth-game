@@ -112,11 +112,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  TimeCharge: 1.5
+  delayTimeAttack: 0
+  onDuration: 0
+  offDuration: 0
+  warningBeforeOn: 0
   layer:
     serializedVersion: 2
     m_Bits: 64
   effect: {fileID: 3378359723569231214}
+  warningEffect: {fileID: 0}
+  typemode: 0
 --- !u!1 &3378359723569231214
 GameObject:
   m_ObjectHideFlags: 0

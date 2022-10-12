@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &1866990976696967806
 Transform:
@@ -61,7 +61,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &466865039431987101
 Transform:
@@ -123,7 +123,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &1226239714545306977
 Transform:
@@ -210,7 +210,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &1041661007125324314
 Transform:
@@ -266,6 +266,10 @@ PrefabInstance:
     - target: {fileID: 4614117659340421231, guid: 85bb36dacd5804745a0d8fc8e3b3b108, type: 3}
       propertyPath: m_Name
       value: toon_office_door
+      objectReference: {fileID: 0}
+    - target: {fileID: 4614117659340421231, guid: 85bb36dacd5804745a0d8fc8e3b3b108, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5423305078329565909, guid: 85bb36dacd5804745a0d8fc8e3b3b108, type: 3}
       propertyPath: m_RootOrder
@@ -323,6 +327,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4614117659340421231, guid: 85bb36dacd5804745a0d8fc8e3b3b108, type: 3}
   m_PrefabInstance: {fileID: 970361076042684185}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &7946103642306012656
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5584403964288593782}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.4382758, y: 3.6758318, z: 0.33}
+  m_Center: {x: -0.988876, y: 1.8379159, z: 0.00000023841858}
 --- !u!208 &7997297143315671727
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -339,16 +356,3 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.989, y: 1.838, z: 0}
   m_TimeToStationary: 0.5
---- !u!65 &7946103642306012656
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5584403964288593782}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.4382758, y: 3.6758318, z: 0.33}
-  m_Center: {x: -0.988876, y: 1.8379159, z: 0.00000023841858}

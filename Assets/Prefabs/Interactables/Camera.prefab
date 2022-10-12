@@ -612,11 +612,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 548f7cdf0de5bfa4ba5e667a504e4a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typemode: 0
   rootScanner: {fileID: 7243111836923937924}
   Camera: {fileID: 7908136501588315517}
   range: 2
   speed: 1
   alertTime: 10
+  bullet: {fileID: 0}
+  shootPositon: {fileID: 0}
+  shotEffect: {fileID: 0}
+  damage: 0
+  speedBullet: 0
+  delayAttack: 0
   listPatrol: []
   indexSelectUp: 0
   indexSelectForward: 0
