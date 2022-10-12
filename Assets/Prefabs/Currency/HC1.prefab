@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2921527178196283158}
   - component: {fileID: 8908168110968679830}
   - component: {fileID: 8908168110968679835}
-  - component: {fileID: 8908168110968679828}
   - component: {fileID: 8908168110968679829}
+  - component: {fileID: 7940333146363136350}
   m_Layer: 14
   m_Name: HC1
   m_TagString: Untagged
@@ -116,19 +116,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4685993, y: 0.9625461, z: 0.27701008}
   m_Center: {x: 0, y: 0, z: 0.13850504}
---- !u!135 &8908168110968679828
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3510432154072636362}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0.13850504}
 --- !u!114 &8908168110968679829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,3 +132,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   point: 1
+--- !u!135 &7940333146363136350
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3510432154072636362}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Center: {x: 0, y: 0, z: 0.13850504}

@@ -15,7 +15,7 @@ public class CurrencyBonus : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -24,4 +24,6 @@ public class CurrencyBonus : MonoBehaviour
             Destroy(gameObject);
         } 
     }
+
+
 }
