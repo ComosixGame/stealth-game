@@ -71,7 +71,6 @@ public class CameraScanner : MonoBehaviour
 
     private void HandleWhenDetected(List<RaycastHit> listHits) {
         Transform hitTransform = scanner.DetectSingleTarget(listHits);
-        detected = true;
         if(typemode ==  Typemode.Camera) {
             if(!detected) {
                 gameManager.EnemyTriggerAlert(hitTransform.position, alertTime);
@@ -80,7 +79,7 @@ public class CameraScanner : MonoBehaviour
             targetLookAt = hitTransform.position;
             if(Time.time >= timeNextAttack) {
                 Vector3 dir = targetLookAt -  shootPositon.position;
-                dir.y = UnityEngine.Random.Range(dir.y + 1, dir.y + 2);
+                dir.y += 2;
                 GameObject c_bullet = Instantiate(bullet, shootPositon.position, shootPositon.rotation);
                 shotEffect.Play();
                 c_bullet.layer = LayerMask.NameToLayer("FromEnemy");
@@ -88,6 +87,7 @@ public class CameraScanner : MonoBehaviour
                 timeNextAttack = Time.time + delayAttack;
             } 
         }
+        detected = true;
     }
 
     private void HandleWhenDetectedSubTarget(Transform subTarget) {

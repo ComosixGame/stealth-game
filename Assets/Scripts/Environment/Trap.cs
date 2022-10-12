@@ -48,6 +48,7 @@ public class Trap : Command
                     warningEffect.Stop();
                 }
             }
+
         }
     }
 
@@ -82,6 +83,9 @@ public class Trap : Command
     {
         PowerOff = true;
         effect.SetActive(false);
+        if(typemode == Typemode.Blink) {
+            warningEffect.Stop();
+        }
     }
 
     public override void Undo()
