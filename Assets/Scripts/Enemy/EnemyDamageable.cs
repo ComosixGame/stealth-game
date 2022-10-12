@@ -4,22 +4,27 @@ using UnityEngine.Events;
 
 public class EnemyDamageable : MonoBehaviour, Damageable
 {
-    private float health;
-    public GameObject DestroyedBody;
+    public GameObject DestroyedBody, Currency;
     Rigidbody[] ragdollRigibodies;
+    private float _coinBonus;
+    private float _health;
     public UnityEvent<Vector3> OnTakeDamge;
 
     public void TakeDamge(Vector3 hitPoint,Vector3 force, float damage)
     {
-        health -= damage;
+        _health -= damage;
         OnTakeDamge?.Invoke(force);
-        if(health <= 0) {
+        if(_health <= 0) {
 
             GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
-
+        
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
             Destroy(gameObject);
             GameObject deadBody = Instantiate(DestroyedBody, transform.position, transform.rotation);
+            while(_coinBonus > 0) {
+                Instantiate(Currency, deadBody.transform.position, Quaternion.identity);
+                _coinBonus--;
+            }
 
             // thêm súng của nhân vật vào ragdoll
             Transform gunHolder =  deadBody.transform.Find("GunHolder").transform;
@@ -34,6 +39,7 @@ public class EnemyDamageable : MonoBehaviour, Damageable
             hitRigi.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
             //thêm lực văng vào súng
             rigidbodyWeapon.AddForce(force.normalized * 5f, ForceMode.Impulse);
+            
         }
     }
 
@@ -45,7 +51,8 @@ public class EnemyDamageable : MonoBehaviour, Damageable
         return hitRigi;
     }
 
-    public void setHealth(float h) {
-        health = h;
+    public void setInit(float health, float coinBonus) {
+        _health = health;
+        _coinBonus = coinBonus;
     }
 }

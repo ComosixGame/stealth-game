@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
+    public int money;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
     public UnityEvent OnEnemyAlertOff =  new UnityEvent();
@@ -23,6 +24,10 @@ public class GameManager : Singleton<GameManager>
     public void UpdatePlayerHealth(float hp) {
         healthPlayer = hp;
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
+    }
+
+    public void UpdateCurrency(int point) {
+        money += point;
     }
 
     public void EnemyTriggerAlert(Vector3 pos, float time) {
