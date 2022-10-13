@@ -1,39 +1,37 @@
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-public class HealthBarRennder : MonoBehaviour
+[System.Serializable]
+#if UNITY_EDITOR
+[CanEditMultipleObjects]
+#endif
+public class HealthBarRennder
 {
     public GameObject healthBar;
     public Transform healthBarHolder;
     public float offset;
     private GameObject _healthBar;
     private Slider sliderHealthBar;
-    // Start is called before the first frame update
-    void Awake()
-    {
-        _healthBar = Instantiate(healthBar);
+
+    public GameObject CreateHealthBar(float Maxhealth) {
+        _healthBar = GameObject.Instantiate(healthBar);
         _healthBar.transform.SetParent(healthBarHolder);
         sliderHealthBar = _healthBar.GetComponent<Slider>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        _healthBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * offset);
-        
-    }
-
-    public void initHealthBar(float Maxhealth) {
         sliderHealthBar.maxValue = Maxhealth;
         sliderHealthBar.value = Maxhealth;
+        return _healthBar;
     }
 
-    public void UpdateHealthBar(float health) {
+    public void UpdateHealthBarPosition(Vector3 position)
+    {
+        _healthBar.transform.position = Camera.main.WorldToScreenPoint(position + Vector3.up * offset);
+    }
+
+    public void UpdateHealthBarValue(float health) {
         sliderHealthBar.value = health;
     }
 
-
-    private void OnDestroy() {
-        Destroy(_healthBar);
-    }
 }

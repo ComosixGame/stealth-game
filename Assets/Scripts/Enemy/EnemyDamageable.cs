@@ -8,18 +8,20 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     Rigidbody[] ragdollRigibodies;
     private float _coinBonus;
     private float _health;
-    private HealthBarRennder healthBar;
+    [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
+    private GameObject healthBar;
     public UnityEvent<Vector3> OnTakeDamge;
 
-    private void Awake() {
-        healthBar = GetComponent<HealthBarRennder>();
+
+    private void Update() {
+        healthBarRennder.UpdateHealthBarPosition(transform.position);
     }
 
     public void TakeDamge(Vector3 hitPoint,Vector3 force, float damage)
     {
         _health -= damage;
+        healthBarRennder.UpdateHealthBarValue(_health);
         OnTakeDamge?.Invoke(force);
-        healthBar.UpdateHealthBar(_health);
         if(_health <= 0) {
 
             GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
@@ -60,6 +62,10 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     public void setInit(float health, float coinBonus) {
         _health = health;
         _coinBonus = coinBonus;
-        healthBar.initHealthBar(_health);
+        healthBar = healthBarRennder.CreateHealthBar(health);
+    }
+
+    private void OnDestroy() {
+        Destroy(healthBar);
     }
 }

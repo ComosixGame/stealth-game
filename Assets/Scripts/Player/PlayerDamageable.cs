@@ -6,17 +6,21 @@ public class PlayerDamageable : MonoBehaviour, Damageable
     [SerializeField] private float health;
     public GameObject DestroyedBody;
     private Rigidbody[] ragdollRigibodies;
-    private HealthBarRennder healthBar;
+    [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
+    private GameObject healthBar;
     private void Awake() {
+        healthBar = healthBarRennder.CreateHealthBar(health);
         GameManager.Instance.UpdatePlayerHealth(health);
-        healthBar = GetComponent<HealthBarRennder>();
-        healthBar.initHealthBar(health);
+    }
+
+    private void Update() {
+        healthBarRennder.UpdateHealthBarPosition(transform.position);
     }
 
     public  void TakeDamge(Vector3 hitPoint , Vector3 force, float damage)
     {   
         health -= damage;
-        healthBar.UpdateHealthBar(health);
+        healthBarRennder.UpdateHealthBarValue(health);
         if(health <= 0) {
             health = 0;
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
@@ -41,4 +45,9 @@ public class PlayerDamageable : MonoBehaviour, Damageable
         }
         GameManager.Instance.UpdatePlayerHealth(health);
     }
+
+    private void OnDestroy() {
+        Destroy(healthBar);
+    }
+
 }
