@@ -5,14 +5,16 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
-    public int money;
+    private int money;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
+    public UnityEvent<int> OnUpdateMoney =  new UnityEvent<int>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
     public UnityEvent OnEnemyAlertOff =  new UnityEvent();
     // Start is called before the first frame update
     void Start()
     {
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
+        OnUpdateMoney?.Invoke(money);
     }
 
     // Update is called once per frame
@@ -28,6 +30,7 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateCurrency(int point) {
         money += point;
+        OnUpdateMoney?.Invoke(money);
     }
 
     public void EnemyTriggerAlert(Vector3 pos, float time) {
