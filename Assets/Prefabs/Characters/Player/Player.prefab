@@ -1289,7 +1289,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5889856630948886754
 MonoBehaviour:
@@ -3163,11 +3163,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8387942142390567456}
   - component: {fileID: 8353418176290418074}
-  - component: {fileID: 8353418176290418072}
-  - component: {fileID: 8353418176290418079}
   - component: {fileID: 8353418176290418076}
   - component: {fileID: 5595006028527849079}
+  - component: {fileID: 2030791553}
+  - component: {fileID: 8353418176290418072}
   - component: {fileID: 6500938791478508929}
+  - component: {fileID: 8353418176290418079}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3219,62 +3220,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8353418176290418072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9163739213769234586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad5383d45715b394a9f520e346f724ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapon: {fileID: 1772224381378265087, guid: 0dd47a78b37e14b449d89073a4f4430c, type: 3}
-  weaponHolder: {fileID: 8353418176104301339}
-  rootScanner: {fileID: 8353418176305477295}
-  rigAimLayer: {fileID: 8353418175995014449}
-  range: 5
-  angel: 90
-  scanner:
-    layerMaskTarget:
-      serializedVersion: 2
-      m_Bits: 128
-    ignoreObstacle:
-      serializedVersion: 2
-      m_Bits: 32708
-    layerMaskSubTarget:
-      serializedVersion: 2
-      m_Bits: 0
-    materialFieldOfView: {fileID: 2100000, guid: 25cfa743ea307e44087a7da889335d1a, type: 2}
-    OnDetectedTarget:
-      m_PersistentCalls:
-        m_Calls: []
-    OnDetectedSubTarget:
-      m_PersistentCalls:
-        m_Calls: []
-    OnNotDetectedTarget:
-      m_PersistentCalls:
-        m_Calls: []
---- !u!114 &8353418176290418079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9163739213769234586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f857d5df5f85f2498e0eae5b43abceb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 10
-  DestroyedBody: {fileID: 2250050854710427473, guid: 1d419c40832550c4681cd2541317a720, type: 3}
-  healthBarRennder:
-    healthBar: {fileID: 7001907032435340959, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
-    healthBarHolder: {fileID: 0}
-    offset: 4
 --- !u!114 &8353418176290418076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3313,6 +3258,58 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.33, z: 0}
+--- !u!136 &2030791553
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9163739213769234586}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.6
+  m_Height: 2.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.33, z: 0}
+--- !u!114 &8353418176290418072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9163739213769234586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5383d45715b394a9f520e346f724ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 1772224381378265087, guid: 0dd47a78b37e14b449d89073a4f4430c, type: 3}
+  weaponHolder: {fileID: 8353418176104301339}
+  rootScanner: {fileID: 8353418176305477295}
+  rigAimLayer: {fileID: 8353418175995014449}
+  range: 5
+  angel: 90
+  scanner:
+    layerMaskTarget:
+      serializedVersion: 2
+      m_Bits: 128
+    ignoreObstacle:
+      serializedVersion: 2
+      m_Bits: 32708
+    layerMaskSubTarget:
+      serializedVersion: 2
+      m_Bits: 0
+    materialFieldOfView: {fileID: 2100000, guid: 25cfa743ea307e44087a7da889335d1a, type: 2}
+    OnDetectedTarget:
+      m_PersistentCalls:
+        m_Calls: []
+    OnDetectedSubTarget:
+      m_PersistentCalls:
+        m_Calls: []
+    OnNotDetectedTarget:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &6500938791478508929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3328,3 +3325,21 @@ MonoBehaviour:
   speed: 10
   joystickRectTrans: {fileID: 0}
   gravity: -9.81
+--- !u!114 &8353418176290418079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9163739213769234586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f857d5df5f85f2498e0eae5b43abceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  DestroyedBody: {fileID: 2250050854710427473, guid: 1d419c40832550c4681cd2541317a720, type: 3}
+  healthBarRennder:
+    healthBar: {fileID: 7001907032435340959, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
+    healthBarHolder: {fileID: 0}
+    offset: 4

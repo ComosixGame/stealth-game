@@ -9,12 +9,12 @@ public class PlayerDamageable : MonoBehaviour, Damageable
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
     private GameObject healthBar;
     private void Awake() {
-        healthBar = healthBarRennder.CreateHealthBar(health);
+        healthBar = healthBarRennder.CreateHealthBar(transform, health);
         GameManager.Instance.UpdatePlayerHealth(health);
     }
 
     private void Update() {
-        healthBarRennder.UpdateHealthBarPosition(transform.position);
+        healthBarRennder.UpdateHealthBarRotation();
     }
 
     public  void TakeDamge(Vector3 hitPoint , Vector3 force, float damage)

@@ -12,10 +12,10 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     private GameObject healthBar;
     public UnityEvent<Vector3> OnTakeDamge;
 
-
     private void Update() {
-        healthBarRennder.UpdateHealthBarPosition(transform.position);
+        healthBarRennder.UpdateHealthBarRotation();
     }
+
 
     public void TakeDamge(Vector3 hitPoint,Vector3 force, float damage)
     {
@@ -62,7 +62,7 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     public void setInit(float health, float coinBonus) {
         _health = health;
         _coinBonus = coinBonus;
-        healthBar = healthBarRennder.CreateHealthBar(health);
+        healthBar = healthBarRennder.CreateHealthBar(transform, health);
     }
 
     private void OnDestroy() {

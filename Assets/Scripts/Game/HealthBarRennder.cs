@@ -11,23 +11,26 @@ using UnityEditor;
 public class HealthBarRennder
 {
     public GameObject healthBar;
-    public Transform healthBarHolder;
     public float offset;
+    public Camera camera;
     private GameObject _healthBar;
     private Slider sliderHealthBar;
 
-    public GameObject CreateHealthBar(float Maxhealth) {
+    public GameObject CreateHealthBar(Transform parent ,float Maxhealth) {
         _healthBar = GameObject.Instantiate(healthBar);
-        _healthBar.transform.SetParent(healthBarHolder);
-        sliderHealthBar = _healthBar.GetComponent<Slider>();
+        _healthBar.transform.SetParent(parent,false);
+        _healthBar.transform.position = parent.position + Vector3.up * offset;
+        sliderHealthBar = _healthBar.GetComponentInChildren<Slider>();
         sliderHealthBar.maxValue = Maxhealth;
         sliderHealthBar.value = Maxhealth;
         return _healthBar;
     }
 
-    public void UpdateHealthBarPosition(Vector3 position)
-    {
-        _healthBar.transform.position = Camera.main.WorldToScreenPoint(position + Vector3.up * offset);
+    public void UpdateHealthBarRotation() {;
+        Vector3 dirCam = camera.transform.position - _healthBar.transform.position;
+        dirCam.x = 0;
+        
+        _healthBar.transform.rotation = Quaternion.LookRotation(dirCam.normalized);
     }
 
     public void UpdateHealthBarValue(float health) {
