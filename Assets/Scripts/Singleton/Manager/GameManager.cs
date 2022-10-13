@@ -5,22 +5,18 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
-    private int money;
+    [SerializeField] private int money;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
     public UnityEvent<int> OnUpdateMoney =  new UnityEvent<int>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
     public UnityEvent OnEnemyAlertOff =  new UnityEvent();
+    public UnityEvent OnPause =  new UnityEvent();
+    public UnityEvent OnResume =  new UnityEvent();
     // Start is called before the first frame update
     void Start()
     {
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
         OnUpdateMoney?.Invoke(money);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     
     public void UpdatePlayerHealth(float hp) {
@@ -37,6 +33,16 @@ public class GameManager : Singleton<GameManager>
         StopCoroutine("StartAlert");
         OnEnemyAlert?.Invoke(pos);
         StartCoroutine(StartAlert(time));
+    }
+
+    public void PauseGame() {
+        OnPause?.Invoke();
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame() {
+        OnResume?.Invoke();
+        Time.timeScale = 1;
     }
 
     IEnumerator StartAlert(float time) {

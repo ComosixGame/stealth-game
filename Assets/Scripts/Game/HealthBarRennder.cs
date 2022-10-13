@@ -16,20 +16,18 @@ public class HealthBarRennder
     private GameObject _healthBar;
     private Slider sliderHealthBar;
 
-    public GameObject CreateHealthBar(Transform parent ,float Maxhealth) {
+    public void CreateHealthBar(Transform parent ,float Maxhealth) {
         _healthBar = GameObject.Instantiate(healthBar);
         _healthBar.transform.SetParent(parent,false);
         _healthBar.transform.position = parent.position + Vector3.up * offset;
         sliderHealthBar = _healthBar.GetComponentInChildren<Slider>();
         sliderHealthBar.maxValue = Maxhealth;
         sliderHealthBar.value = Maxhealth;
-        return _healthBar;
     }
 
     public void UpdateHealthBarRotation() {;
         Vector3 dirCam = camera.transform.position - _healthBar.transform.position;
         dirCam.x = 0;
-        
         _healthBar.transform.rotation = Quaternion.LookRotation(dirCam.normalized);
     }
 

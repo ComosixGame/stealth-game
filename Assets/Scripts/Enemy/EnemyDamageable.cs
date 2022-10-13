@@ -9,7 +9,6 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     private float _coinBonus;
     private float _health;
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
-    private GameObject healthBar;
     public UnityEvent<Vector3> OnTakeDamge;
 
     private void Update() {
@@ -25,14 +24,17 @@ public class EnemyDamageable : MonoBehaviour, Damageable
         if(_health <= 0) {
 
             GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
-        
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
             Destroy(gameObject);
+
+            // rớt tiền thưởng
             while(_coinBonus > 0) {
                 Instantiate(Currency, transform.position, transform.rotation);
                 _coinBonus--;
             }
+        
             GameObject deadBody = Instantiate(DestroyedBody, transform.position, transform.rotation);
+            
 
             // thêm súng của nhân vật vào ragdoll
             Transform gunHolder =  deadBody.transform.Find("GunHolder").transform;
@@ -62,10 +64,6 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     public void setInit(float health, float coinBonus) {
         _health = health;
         _coinBonus = coinBonus;
-        healthBar = healthBarRennder.CreateHealthBar(transform, health);
-    }
-
-    private void OnDestroy() {
-        Destroy(healthBar);
+        healthBarRennder.CreateHealthBar(transform, health);
     }
 }

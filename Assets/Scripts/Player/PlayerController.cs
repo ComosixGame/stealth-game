@@ -15,26 +15,33 @@ public class PlayerController : MonoBehaviour
     private float fallingVelocity;
     private Animator animator;
     private int velocityHash;
+    private bool isPause;
+    private GameManager gameManager;
     
     private void Awake() {
         //init input system
         inputs = new InputAssets();
         
         // subscribe active input
-        inputs.PlayerControl.Move.performed += GetDirection;
-        inputs.PlayerControl.Move.canceled += GetDirection;
-        inputs.PlayerControl.StartTouch.performed += ShowJoystick;
-        inputs.PlayerControl.HoldTouch.canceled += HideJoystick;
 
         //get component
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
 
+        gameManager = GameManager.Instance;
+
     }
 
     private void OnEnable() {
         inputs.PlayerControl.Enable();
+        inputs.PlayerControl.Move.performed += GetDirection;
+        inputs.PlayerControl.Move.canceled += GetDirection;
+        inputs.PlayerControl.StartTouch.performed += ShowJoystick;
+        inputs.PlayerControl.HoldTouch.canceled += HideJoystick;
+
+        gameManager.OnPause.AddListener(OnPauseGame);
+        gameManager.OnResume.AddListener(OnResumeGame);
     }
     // Start is called before the first frame update
     void Start()
@@ -72,7 +79,9 @@ public class PlayerController : MonoBehaviour
     }
 
     private void ShowJoystick(InputAction.CallbackContext ctx) {
-        joystickRectTrans.position = ctx.ReadValue<Vector2>();
+        if(!isPause) {
+            joystickRectTrans.position = ctx.ReadValue<Vector2>();
+        }
     }
 
     private void HideJoystick(InputAction.CallbackContext ctx) {
@@ -109,6 +118,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnPauseGame() {
+        isPause = true;
+    }
+
+    private void OnResumeGame() {
+        isPause = false;
+    }
+
     private void OnDisable() {
         inputs.PlayerControl.Disable();
         // unsubscribe active input
@@ -116,5 +133,8 @@ public class PlayerController : MonoBehaviour
         inputs.PlayerControl.Move.canceled -= GetDirection;
         inputs.PlayerControl.StartTouch.performed -= ShowJoystick;
         inputs.PlayerControl.HoldTouch.canceled -= HideJoystick;
+
+        gameManager.OnPause.RemoveListener(OnPauseGame);
+        gameManager.OnResume.RemoveListener(OnResumeGame);
     }
 }

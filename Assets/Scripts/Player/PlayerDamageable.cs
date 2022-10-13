@@ -7,9 +7,8 @@ public class PlayerDamageable : MonoBehaviour, Damageable
     public GameObject DestroyedBody;
     private Rigidbody[] ragdollRigibodies;
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
-    private GameObject healthBar;
     private void Awake() {
-        healthBar = healthBarRennder.CreateHealthBar(transform, health);
+        healthBarRennder.CreateHealthBar(transform, health);
         GameManager.Instance.UpdatePlayerHealth(health);
     }
 
@@ -44,10 +43,6 @@ public class PlayerDamageable : MonoBehaviour, Damageable
             rigidbodyWeapon.AddForce(force.normalized * 5f, ForceMode.Impulse);
         }
         GameManager.Instance.UpdatePlayerHealth(health);
-    }
-
-    private void OnDestroy() {
-        Destroy(healthBar);
     }
 
 }
