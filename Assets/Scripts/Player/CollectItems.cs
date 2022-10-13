@@ -12,7 +12,7 @@ public class CollectItems : MonoBehaviour
         GameObject item = other.gameObject;
         if((layer & (1 << item.layer)) != 0) {
             Transform itemTrans = item.transform;
-            itemTrans.position = Vector3.MoveTowards(itemTrans.position, transform.position, 10f * Time.deltaTime);
+            itemTrans.position = Vector3.Lerp(itemTrans.position, transform.position, 3f * Time.deltaTime);
         }
     }
 }

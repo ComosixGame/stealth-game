@@ -13,7 +13,7 @@ public class CameraScanner : MonoBehaviour
     };
     public Typemode typemode;
     public Transform rootScanner, Camera;
-    public float range, speed;
+    public float range, speed, idleTime;
     [HideInInspector] public float alertTime;
     [HideInInspector] public GameObject bullet;
     [HideInInspector] public Transform shootPositon;
@@ -27,7 +27,7 @@ public class CameraScanner : MonoBehaviour
     private int patrolIndex = 0;
     private bool detected;
     private Vector3 targetLookAt;
-    private float timeNextAttack;
+    private float timeNextAttack, idleTimer;
     private GameManager gameManager;
 
     private void Awake() {
@@ -60,12 +60,16 @@ public class CameraScanner : MonoBehaviour
     private void Patrol() {
         if(listPatrol.Length > 0) {
             if(Vector3.Distance(rootScanner.position, listPatrol[patrolIndex]) <= 0.1) {
-                patrolIndex ++;
-                if(patrolIndex >= listPatrol.Length) {
-                    patrolIndex = 0;
+                idleTimer += Time.deltaTime;
+                if(idleTimer >= idleTime) {
+                    patrolIndex ++;
+                    if(patrolIndex >= listPatrol.Length) {
+                        patrolIndex = 0;
+                    }
+                    idleTimer = 0;
                 }
             }
-            rootScanner.position = Vector3.Lerp(rootScanner.position, listPatrol[patrolIndex], speed * Time.deltaTime);
+            rootScanner.position = Vector3.MoveTowards(rootScanner.position, listPatrol[patrolIndex], speed * Time.deltaTime);
         }
     }
 

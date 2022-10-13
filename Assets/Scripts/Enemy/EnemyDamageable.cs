@@ -28,11 +28,11 @@ public class EnemyDamageable : MonoBehaviour, Damageable
         
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
             Destroy(gameObject);
-            GameObject deadBody = Instantiate(DestroyedBody, transform.position, transform.rotation);
             while(_coinBonus > 0) {
-                Instantiate(Currency, deadBody.transform.position, Quaternion.identity);
+                Instantiate(Currency, transform.position, transform.rotation);
                 _coinBonus--;
             }
+            GameObject deadBody = Instantiate(DestroyedBody, transform.position, transform.rotation);
 
             // thêm súng của nhân vật vào ragdoll
             Transform gunHolder =  deadBody.transform.Find("GunHolder").transform;

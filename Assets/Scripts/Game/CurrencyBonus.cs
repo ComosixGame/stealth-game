@@ -7,15 +7,18 @@ public class CurrencyBonus : MonoBehaviour
 {
     public LayerMask layer;
     [SerializeField] private int point;
+    private Rigidbody rb;
     private GameManager gameManager;
 
     private void Awake() {
         gameManager = GameManager.Instance;
+        rb = GetComponent<Rigidbody>();
     }
     // Start is called before the first frame update
     void Start()
     {
-
+        Vector3 dir = Random.insideUnitSphere.normalized;
+        rb.AddForce(dir * 8f, ForceMode.Impulse);
     }
 
     private void OnTriggerEnter(Collider other) {
