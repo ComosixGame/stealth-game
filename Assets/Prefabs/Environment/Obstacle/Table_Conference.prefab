@@ -13,14 +13,13 @@ GameObject:
   - component: {fileID: 23851940809679506}
   - component: {fileID: -8292016922343268008}
   - component: {fileID: 5335632803449337627}
-  - component: {fileID: 6016818396657622166}
   - component: {fileID: -8983721106525099105}
   m_Layer: 12
   m_Name: Table_Conference
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &4227113826914546
 Transform:
@@ -116,19 +115,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.91700006, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &6016818396657622166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1289936835854364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1626a0ab1ba32d4f8a490f5af2595ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyAfterHit: 0
 --- !u!54 &-8983721106525099105
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -3106,7 +3106,6 @@ GameObject:
   - component: {fileID: 3898913450214407820}
   - component: {fileID: 3898913450214407822}
   - component: {fileID: 3898913450214407823}
-  - component: {fileID: 4670382796969854888}
   - component: {fileID: 5066645109627592638}
   - component: {fileID: 8295788977764397068}
   m_Layer: 7
@@ -3261,21 +3260,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4670382796969854888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3898913450214407817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b160ad0f8f06c3d4fa4a51f2ab5bf7a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 7001907032435340959, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
-  healthBarHolder: {fileID: 0}
-  offset: 3
 --- !u!114 &5066645109627592638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3290,6 +3274,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DestroyedBody: {fileID: 2250050854710427473, guid: 0a2c5aa1e46896640b483dab86f978e3, type: 3}
   Currency: {fileID: 3510432154072636362, guid: 679f72609ca3dba45b9b8810009a0e8e, type: 3}
+  healthBarRennder:
+    healthBar: {fileID: 7001907032435340959, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
+    healthBarHolder: {fileID: 0}
+    offset: 3
   OnTakeDamge:
     m_PersistentCalls:
       m_Calls: []

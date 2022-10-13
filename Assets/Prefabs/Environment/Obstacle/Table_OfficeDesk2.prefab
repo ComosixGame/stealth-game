@@ -13,14 +13,13 @@ GameObject:
   - component: {fileID: 23890184108809586}
   - component: {fileID: -1858820881043961821}
   - component: {fileID: -1664840058229584008}
-  - component: {fileID: -8471123868474180295}
   - component: {fileID: 1428303188470067685}
   m_Layer: 12
   m_Name: Table_OfficeDesk2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &4574124760409694
 Transform:
@@ -116,19 +115,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.91800004, z: -0.008}
   m_TimeToStationary: 0.5
---- !u!114 &-8471123868474180295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338192570120840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1626a0ab1ba32d4f8a490f5af2595ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyAfterHit: 0
 --- !u!54 &1428303188470067685
 Rigidbody:
   m_ObjectHideFlags: 0
