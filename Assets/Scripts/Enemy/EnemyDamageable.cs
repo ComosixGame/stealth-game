@@ -11,7 +11,7 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
     public UnityEvent<Vector3> OnTakeDamge;
 
-    private void Update() {
+    private void LateUpdate() {
         healthBarRennder.UpdateHealthBarRotation();
     }
 

@@ -12,7 +12,7 @@ public class PlayerDamageable : MonoBehaviour, Damageable
         GameManager.Instance.UpdatePlayerHealth(health);
     }
 
-    private void Update() {
+    private void LateUpdate() {
         healthBarRennder.UpdateHealthBarRotation();
     }
 
