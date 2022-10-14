@@ -19,8 +19,21 @@ public class Trap : Command
     public GameObject effect;
     [HideInInspector] public ParticleSystem warningEffect;
     public Typemode typemode;
+    public AudioClip audioClip;
+    public float volumeScale;
     private bool ready, PowerOff, turnOn = true;
     private float timeNextAttack, nextSwitch;
+    private AudioSource audioSource;
+    private SoundManager soundManager;
+
+    private void Awake() {
+        soundManager = SoundManager.Instance;
+        audioSource = soundManager.AddAudioSource(gameObject);
+        audioSource.clip = audioClip;
+        audioSource.volume = volumeScale;
+        audioSource.loop = true;
+
+    }
 
 
     private void Update() {
@@ -54,9 +67,12 @@ public class Trap : Command
 
     private void OnTriggerStay(Collider other) {
         if(PowerOff || !turnOn) {
+            audioSource.Stop();
             return;
         }
-        
+        if(!audioSource.isPlaying) {
+            audioSource.Play();
+        }
         
         if((layer & (1 << other.gameObject.layer)) != 0) {
             Vector3  dir = other.transform.position - transform.position;
@@ -77,6 +93,10 @@ public class Trap : Command
     private void OnTriggerEnter(Collider other) {
         ready = true;
         timeNextAttack = 0;
+    }
+
+    private void OnTriggerExit(Collider other) {
+        audioSource.Stop();
     }
     
     public override void Execute()

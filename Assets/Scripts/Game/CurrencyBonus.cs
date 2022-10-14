@@ -7,11 +7,15 @@ public class CurrencyBonus : MonoBehaviour
 {
     public LayerMask layer;
     [SerializeField] private int point;
+    public AudioClip audioClip;
+    public float volumeScale = 1;
     private Rigidbody rb;
     private GameManager gameManager;
+    private SoundManager soundManager;
 
     private void Awake() {
         gameManager = GameManager.Instance;
+        soundManager = SoundManager.Instance;
         rb = GetComponent<Rigidbody>();
     }
     // Start is called before the first frame update
@@ -28,6 +32,7 @@ public class CurrencyBonus : MonoBehaviour
     }
 
     private void OnDestroy() {
+        soundManager.PlayOneShot(audioClip, volumeScale);
         gameManager.UpdateCurrency(point);
     }
 }

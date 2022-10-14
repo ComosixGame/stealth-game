@@ -22,12 +22,20 @@ public class OpenDoor : Command
     public TypeOpen typeOpen;
     public GameObject locks;
     public LayerMask layer, layerOnAlert;
+    public AudioClip audioClip;
+    public float volumeScale;
     [HideInInspector] public Axis axis;
     [HideInInspector] public float angel;
     [HideInInspector] public Vector3 PosMove;
     private bool haveKey, unLocked;
     private Vector3 orginPos;
     private Vector3 axisVector;
+    private SoundManager soundManager;
+
+    private void Awake() {
+        soundManager = SoundManager.Instance;
+    }
+
     private void Start() {
         orginPos = door.position;
         GetComponent<Collider>().isTrigger = true;
@@ -41,7 +49,8 @@ public class OpenDoor : Command
 
     private void OnTriggerEnter(Collider other) {
         if((layer & (1<<other.gameObject.layer)) != 0) {
-            if(haveKey) {
+            if(haveKey && !unLocked) {
+                soundManager.PlayOneShot(audioClip, volumeScale);
                 unLocked = true;
                 door.GetComponent<Collider>().isTrigger = true;
             }

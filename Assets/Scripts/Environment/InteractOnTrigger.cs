@@ -9,23 +9,33 @@ public class InteractOnTrigger : MonoBehaviour
 {
     [SerializeField] private Command command;
     public LayerMask layer;
+    public AudioClip audioClip;
+    public float volumeScale = 1;
     public UnityEvent OnEnter;
     public UnityEvent OnExit;
+    private SoundManager soundManager;
+    private bool triggered;
     private void Awake() {
         Collider collider = GetComponent<Collider>();
         if(!collider.isTrigger) {
             collider.isTrigger = true;
         }
+
+        soundManager = SoundManager.Instance;
             
     }
 
 
     private void OnTriggerEnter(Collider other) {
-        if((layer & (1<<other.gameObject.layer)) != 0) {
+        if((layer & (1<<other.gameObject.layer)) != 0 && !triggered) {
+            if(audioClip != null) {
+                soundManager.PlayOneShot(audioClip, volumeScale);
+            }
             if(command != null) {
                 command.Execute();
             }
             OnEnter?.Invoke();
+            triggered = true;
         }
     }
 

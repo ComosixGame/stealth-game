@@ -5,6 +5,8 @@ using UnityEngine;
 public class ObstacleDamageable : MonoBehaviour, Damageable
 {
     public bool destroyAfterHit;
+    public AudioClip audioClip;
+    public float volumeScale;
     private Rigidbody[] rigidbodies;
     private Renderer rd;
     private bool destroyed;

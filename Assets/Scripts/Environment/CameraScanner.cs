@@ -21,6 +21,7 @@ public class CameraScanner : MonoBehaviour
     [HideInInspector] public float damage;
     [HideInInspector] public float speedBullet;
     [HideInInspector] public float delayAttack;
+    [HideInInspector] public AudioClip audioClip;
     public Vector3[] listPatrol;
     [HideInInspector] public int indexSelectUp, indexSelectForward;
     [SerializeField] private Scanner scanner = new Scanner();
@@ -28,10 +29,18 @@ public class CameraScanner : MonoBehaviour
     private bool detected;
     private Vector3 targetLookAt;
     private float timeNextAttack, idleTimer;
+    private AudioSource audioSource;
     private GameManager gameManager;
+    private SoundManager soundManager;
 
     private void Awake() {
         gameManager = GameManager.Instance;
+        soundManager = SoundManager.Instance;
+
+        audioSource = soundManager.AddAudioSource(gameObject);
+        audioSource.clip = audioClip;
+        audioSource.volume = 0.5f;
+        audioSource.loop = true;
     }
 
     private void OnEnable() {
@@ -81,6 +90,9 @@ public class CameraScanner : MonoBehaviour
             }
         } else {
             targetLookAt = hitTransform.position;
+            if(!audioSource.isPlaying) {
+                audioSource.Play();
+            }
             if(Time.time >= timeNextAttack) {
                 Vector3 dir = targetLookAt -  shootPositon.position;
                 dir.y += 2;
@@ -89,7 +101,8 @@ public class CameraScanner : MonoBehaviour
                 c_bullet.layer = LayerMask.NameToLayer("FromEnemy");
                 c_bullet.GetComponent<Bullet>().TriggerFireBullet(dir.normalized, speedBullet, damage, 100, scanner.layerMaskTarget);
                 timeNextAttack = Time.time + delayAttack;
-            } 
+            }
+
         }
         detected = true;
     }
@@ -104,7 +117,10 @@ public class CameraScanner : MonoBehaviour
     
     private void NotDetect() {
         targetLookAt = rootScanner.position;
-        detected = false;
+        if(detected) {
+            audioSource.Stop();
+            detected = false;
+        }
     }
 
     private Vector3 GetAxisUp() {
@@ -256,6 +272,13 @@ public class CameraScanner : MonoBehaviour
                 if(EditorGUI.EndChangeCheck()) {
                     Undo.RecordObject(cam, "Update Delay Attack");
                     cam.delayAttack = delayAttack;
+                    EditorUtility.SetDirty(cam);
+                }
+                EditorGUI.BeginChangeCheck();
+                AudioClip audioClip = EditorGUILayout.ObjectField("Bullet", cam.audioClip, typeof(AudioClip), true) as AudioClip;
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update audioClip");
+                    cam.audioClip = audioClip;
                     EditorUtility.SetDirty(cam);
                 }
             } else {
