@@ -35,6 +35,10 @@ public class Trap : Command
         audioSource.playOnAwake = false;
     }
 
+    private void OnEnable() {
+        soundManager.OnMute.AddListener(OnMuteGame);
+    }
+
 
     private void Update() {
         if(typemode == Typemode.Blink && !PowerOff) {
@@ -98,6 +102,10 @@ public class Trap : Command
     private void OnTriggerExit(Collider other) {
         audioSource.Stop();
     }
+
+    private void OnMuteGame(bool isMute) {
+        audioSource.mute = isMute;
+    }
     
     public override void Execute()
     {
@@ -111,6 +119,10 @@ public class Trap : Command
     public override void Undo()
     {
         throw new System.NotImplementedException();
+    }
+
+    private void OnDisable() {
+        soundManager.OnMute.RemoveListener(OnMuteGame);
     }
 
 #if UNITY_EDITOR
