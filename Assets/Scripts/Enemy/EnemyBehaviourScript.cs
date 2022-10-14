@@ -10,8 +10,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     [SerializeField] private Enemy enemy;
     public Transform rootScanner;
     public Rig aimLayer;
-    public GameObject weapon;
-    public GameObject bullet;
+    public GameObject weapon, bullet, exclamation, questionMark;
     [SerializeField] private WeaponHolder weaponHolder;
     private Weapon enemyWeapon;
     private enum State {
@@ -41,6 +40,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private int velocityHash;
     private GameManager gameManager;
     private EnemyDamageable enemyDamageable;
+    private Camera cam;
     private void Awake() {
         gameManager = GameManager.Instance;
         agent = GetComponent<NavMeshAgent>();
@@ -59,6 +59,8 @@ public class EnemyBehaviourScript : MonoBehaviour
         enemyDamageable.OnTakeDamge.AddListener(HandleWhenTakeDamge);
 
         enemyDamageable.setInit(enemy.health, enemy.moneyBonus);
+
+        cam = Camera.main;
     }
 
     private void OnEnable() {
@@ -91,24 +93,34 @@ public class EnemyBehaviourScript : MonoBehaviour
         HandleAnimation();
         switch(state) {
             case State.Idle:
+                exclamation.SetActive(false);
+                questionMark.SetActive(false);
                 prevState = state;
                 Idle();
                 break;
             case State.Patrol:
+                exclamation.SetActive(false);
+                questionMark.SetActive(false);
                 prevState = state;
                 Patrol();
                 break;
             case State.Attack:
                 prevState = state;
+                exclamation.SetActive(true);
+                questionMark.SetActive(false);
                 Attack(playerPosition);
                 break;
             case State.Chase:
                 prevState = state;
                 IdleTimer = 0;
+                questionMark.SetActive(true);
+                exclamation.SetActive(false);
                 Chase(playerPosition);
-                Debug.DrawLine(transform.position, playerPosition);
                 break;
             case State.Looking:
+                prevState = state;
+                questionMark.SetActive(true);
+                exclamation.SetActive(false);
                 Looking();
                 break;
             default:
@@ -120,6 +132,15 @@ public class EnemyBehaviourScript : MonoBehaviour
         } else {
             agent.speed = enemy.speed;
         }
+        
+    }
+
+    private void LateUpdate() {
+        Vector3 dirCam = cam.transform.position - transform.position;
+        dirCam.x = 0;
+
+        exclamation.transform.rotation = Quaternion.LookRotation(dirCam.normalized);
+        questionMark.transform.rotation = Quaternion.LookRotation(dirCam.normalized);
     }
 
     private void Idle() {
@@ -304,9 +325,11 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleWhenTakeDamge(Vector3 dir) {
-        playerPosition = transform.position - dir.normalized * 3f;
-        agent.ResetPath();
-        agent.SetDestination(playerPosition);  
+        if(state != State.Attack) {
+            playerPosition = transform.position - dir.normalized * 3f;
+            agent.ResetPath();
+            state = State.Chase;
+        }
     }
 
     IEnumerator WaitForReadyAttack() {
