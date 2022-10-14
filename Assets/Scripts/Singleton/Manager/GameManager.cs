@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
-    [SerializeField] private int money;
+    private int money;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
     public UnityEvent<int> OnUpdateMoney =  new UnityEvent<int>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();

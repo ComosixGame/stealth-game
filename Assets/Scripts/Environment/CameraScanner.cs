@@ -13,7 +13,7 @@ public class CameraScanner : MonoBehaviour
     };
     public Typemode typemode;
     public Transform rootScanner, Camera;
-    public float range, speed, idleTime, volumeScale;
+    public float range, speed, idleTime;
     [HideInInspector] public float alertTime;
     [HideInInspector] public GameObject bullet;
     [HideInInspector] public Transform shootPositon;
@@ -22,6 +22,7 @@ public class CameraScanner : MonoBehaviour
     [HideInInspector] public float speedBullet;
     [HideInInspector] public float delayAttack;
     [HideInInspector] public AudioClip audioClip;
+    [HideInInspector] public float volumeScale;
     public Vector3[] listPatrol;
     [HideInInspector] public int indexSelectUp, indexSelectForward;
     [SerializeField] private Scanner scanner = new Scanner();
@@ -283,10 +284,17 @@ public class CameraScanner : MonoBehaviour
                     EditorUtility.SetDirty(cam);
                 }
                 EditorGUI.BeginChangeCheck();
-                AudioClip audioClip = EditorGUILayout.ObjectField("Bullet", cam.audioClip, typeof(AudioClip), true) as AudioClip;
+                AudioClip audioClip = EditorGUILayout.ObjectField("Audio Clip", cam.audioClip, typeof(AudioClip), true) as AudioClip;
                 if(EditorGUI.EndChangeCheck()) {
                     Undo.RecordObject(cam, "Update audioClip");
                     cam.audioClip = audioClip;
+                    EditorUtility.SetDirty(cam);
+                }
+                EditorGUI.BeginChangeCheck();
+                float volume = EditorGUILayout.Slider("Volume Scale",cam.volumeScale,0,1);
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(cam, "Update volume Scale");
+                    cam.volumeScale = volume;
                     EditorUtility.SetDirty(cam);
                 }
             } else {
