@@ -23,7 +23,7 @@ public class OpenDoor : Command
     public GameObject locks;
     public LayerMask layer, layerOnAlert;
     public AudioClip audioClip;
-    public float volumeScale;
+    [Range(0,1)] public float volumeScale;
     [HideInInspector] public Axis axis;
     [HideInInspector] public float angel;
     [HideInInspector] public Vector3 PosMove;

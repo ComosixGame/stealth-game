@@ -4,12 +4,20 @@ using UnityEngine.Events;
 
 public class EnemyDamageable : MonoBehaviour, Damageable
 {
+    public AudioClip audioClip, deathAudioClip;
+    [Range(0,1)] public float volumeScale;
     public GameObject DestroyedBody, Currency;
     Rigidbody[] ragdollRigibodies;
     private float _coinBonus;
     private float _health;
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
     public UnityEvent<Vector3> OnTakeDamge;
+
+    private SoundManager soundManager;
+
+    private void Awake() {
+        soundManager = SoundManager.Instance;
+    }
 
     private void LateUpdate() {
         healthBarRennder.UpdateHealthBarRotation();
@@ -18,11 +26,12 @@ public class EnemyDamageable : MonoBehaviour, Damageable
 
     public void TakeDamge(Vector3 hitPoint,Vector3 force, float damage)
     {
+        soundManager.PlayOneShot(audioClip, volumeScale);
         _health -= damage;
         healthBarRennder.UpdateHealthBarValue(_health);
         OnTakeDamge?.Invoke(force);
         if(_health <= 0) {
-
+            soundManager.PlayOneShot(deathAudioClip,volumeScale);
             GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
             Destroy(gameObject);

@@ -3337,9 +3337,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f857d5df5f85f2498e0eae5b43abceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: acae9fece4d79f9498f8815731ddb7b4, type: 3}
+  deathAudioClip: {fileID: 8300000, guid: 0a1e37d2320c1b2459842447e3faded7, type: 3}
+  volumeScale: 0.3
   health: 10
   DestroyedBody: {fileID: 2250050854710427473, guid: 1d419c40832550c4681cd2541317a720, type: 3}
   healthBarRennder:
     healthBar: {fileID: 7001907032435340959, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
-    healthBarHolder: {fileID: 0}
     offset: 4
+    camera: {fileID: 0}

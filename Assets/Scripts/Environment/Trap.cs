@@ -20,7 +20,7 @@ public class Trap : Command
     [HideInInspector] public ParticleSystem warningEffect;
     public Typemode typemode;
     public AudioClip audioClip;
-    public float volumeScale;
+    [Range(0,1)] public float volumeScale;
     private bool ready, PowerOff, turnOn = true;
     private float timeNextAttack, nextSwitch;
     private AudioSource audioSource;
@@ -32,7 +32,7 @@ public class Trap : Command
         audioSource.clip = audioClip;
         audioSource.volume = volumeScale;
         audioSource.loop = true;
-
+        audioSource.playOnAwake = false;
     }
 
 
@@ -70,11 +70,11 @@ public class Trap : Command
             audioSource.Stop();
             return;
         }
-        if(!audioSource.isPlaying) {
-            audioSource.Play();
-        }
         
         if((layer & (1 << other.gameObject.layer)) != 0) {
+            if(!audioSource.isPlaying) {
+                audioSource.Play();
+            }
             Vector3  dir = other.transform.position - transform.position;
             dir.y = 0;
 

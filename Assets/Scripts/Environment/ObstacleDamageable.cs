@@ -6,15 +6,17 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
 {
     public bool destroyAfterHit;
     public AudioClip audioClip;
-    public float volumeScale;
+    [Range(0,1)] public float volumeScale;
     private Rigidbody[] rigidbodies;
     private Renderer rd;
     private bool destroyed;
     private float timeDelay;
+    private SoundManager soundManager;
 
 
     private void Awake() {
         rd = GetComponent<Renderer>();
+        soundManager = SoundManager.Instance;
     }
 
     private void Start() {
@@ -34,6 +36,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
     public void TakeDamge(Vector3 hitPoint, Vector3 force, float damage = 0)
     {
         if(!destroyed) {
+            soundManager.PlayOneShot(audioClip, volumeScale);
             timeDelay = Time.time + 5;
             //tính hướng tác động
             Vector3 dirForce = transform.position - hitPoint;

@@ -3,13 +3,20 @@ using UnityEngine;
 
 public class PlayerDamageable : MonoBehaviour, Damageable
 {
+    public AudioClip audioClip, deathAudioClip;
+    [Range(0,1)] public float volumeScale;
     [SerializeField] private float health;
     public GameObject DestroyedBody;
     private Rigidbody[] ragdollRigibodies;
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
+    private SoundManager soundManager;
+    private GameManager gameManager;
     private void Awake() {
         healthBarRennder.CreateHealthBar(transform, health);
-        GameManager.Instance.UpdatePlayerHealth(health);
+        gameManager = GameManager.Instance;
+        soundManager = SoundManager.Instance;
+
+        gameManager.UpdatePlayerHealth(health);
     }
 
     private void LateUpdate() {
@@ -18,9 +25,11 @@ public class PlayerDamageable : MonoBehaviour, Damageable
 
     public  void TakeDamge(Vector3 hitPoint , Vector3 force, float damage)
     {   
+        soundManager.PlayOneShot(audioClip, volumeScale);
         health -= damage;
         healthBarRennder.UpdateHealthBarValue(health);
         if(health <= 0) {
+            soundManager.PlayOneShot(deathAudioClip,volumeScale);
             health = 0;
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
 
@@ -42,7 +51,7 @@ public class PlayerDamageable : MonoBehaviour, Damageable
             //thêm lực văng vào súng
             rigidbodyWeapon.AddForce(force.normalized * 5f, ForceMode.Impulse);
         }
-        GameManager.Instance.UpdatePlayerHealth(health);
+        gameManager.UpdatePlayerHealth(health);
     }
 
 }

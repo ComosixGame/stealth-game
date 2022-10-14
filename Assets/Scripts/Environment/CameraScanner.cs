@@ -13,7 +13,7 @@ public class CameraScanner : MonoBehaviour
     };
     public Typemode typemode;
     public Transform rootScanner, Camera;
-    public float range, speed, idleTime;
+    public float range, speed, idleTime, volumeScale;
     [HideInInspector] public float alertTime;
     [HideInInspector] public GameObject bullet;
     [HideInInspector] public Transform shootPositon;
@@ -39,14 +39,17 @@ public class CameraScanner : MonoBehaviour
 
         audioSource = soundManager.AddAudioSource(gameObject);
         audioSource.clip = audioClip;
-        audioSource.volume = 0.5f;
+        audioSource.volume = volumeScale;
         audioSource.loop = true;
+        audioSource.playOnAwake = false;
     }
 
     private void OnEnable() {
         scanner.OnDetectedTarget.AddListener(HandleWhenDetected);
         scanner.OnDetectedSubTarget.AddListener(HandleWhenDetectedSubTarget);
         scanner.OnNotDetectedTarget.AddListener(NotDetect);
+
+        soundManager.OnMute.AddListener(OnMuteGame);
     }
     
     // Start is called before the first frame update
@@ -162,10 +165,15 @@ public class CameraScanner : MonoBehaviour
         }
     }
 
+    private void OnMuteGame(bool isMute) {
+        audioSource.mute = isMute;
+    }
+
     private void OnDisable() {
         scanner.OnDetectedTarget.RemoveListener(HandleWhenDetected);
         scanner.OnDetectedSubTarget.RemoveListener(HandleWhenDetectedSubTarget);
         scanner.OnNotDetectedTarget.RemoveListener(NotDetect);
+        soundManager.OnMute.RemoveListener(OnMuteGame);
     }
 
 #if UNITY_EDITOR
