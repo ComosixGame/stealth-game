@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private float fallingVelocity;
     private Animator animator;
     private int velocityHash;
-    private bool isPause;
+    private bool isStart, isPause;
     private GameManager gameManager;
     
     private void Awake() {
@@ -40,8 +40,10 @@ public class PlayerController : MonoBehaviour
         inputs.PlayerControl.StartTouch.performed += ShowJoystick;
         inputs.PlayerControl.HoldTouch.canceled += HideJoystick;
 
+        gameManager.OnStart.AddListener(OnStartGame);
         gameManager.OnPause.AddListener(OnPauseGame);
         gameManager.OnResume.AddListener(OnResumeGame);
+        gameManager.OnEndGame.AddListener(OnEndGame);
     }
     // Start is called before the first frame update
     void Start()
@@ -53,8 +55,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        RotationLook();
+        if(isStart) {
+            Move();
+            RotationLook();
+        }
         HandleGravity();
         HandlAnimation();
     }
@@ -79,7 +83,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void ShowJoystick(InputAction.CallbackContext ctx) {
-        if(!isPause) {
+        if(!isPause && isStart) {
             joystickRectTrans.position = ctx.ReadValue<Vector2>();
         }
     }
@@ -118,12 +122,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnStartGame() {
+        isStart = true;
+    }
     private void OnPauseGame() {
         isPause = true;
     }
 
     private void OnResumeGame() {
         isPause = false;
+    }
+
+    private void OnEndGame(bool isWin, int money) {
+        isPause = true;
     }
 
     private void OnDisable() {
@@ -134,7 +145,10 @@ public class PlayerController : MonoBehaviour
         inputs.PlayerControl.StartTouch.performed -= ShowJoystick;
         inputs.PlayerControl.HoldTouch.canceled -= HideJoystick;
 
+        gameManager.OnStart.RemoveListener(OnStartGame);
         gameManager.OnPause.RemoveListener(OnPauseGame);
         gameManager.OnResume.RemoveListener(OnResumeGame);
+        gameManager.OnEndGame.RemoveListener(OnEndGame);
+
     }
 }

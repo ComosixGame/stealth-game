@@ -27,7 +27,7 @@ public class CameraScanner : MonoBehaviour
     [HideInInspector] public int indexSelectUp, indexSelectForward;
     [SerializeField] private Scanner scanner = new Scanner();
     private int patrolIndex = 0;
-    private bool detected;
+    private bool isStart, detected;
     private Vector3 targetLookAt;
     private float timeNextAttack, idleTimer;
     private AudioSource audioSource;
@@ -46,6 +46,7 @@ public class CameraScanner : MonoBehaviour
     }
 
     private void OnEnable() {
+        gameManager.OnStart.AddListener(OnStartGame);
         scanner.OnDetectedTarget.AddListener(HandleWhenDetected);
         scanner.OnDetectedSubTarget.AddListener(HandleWhenDetectedSubTarget);
         scanner.OnNotDetectedTarget.AddListener(NotDetect);
@@ -65,7 +66,7 @@ public class CameraScanner : MonoBehaviour
         Camera.LookAt(targetLookAt, GetAxisUp());
         AxisForward();
         scanner.Scan();
-        if(!detected) {
+        if(!detected && isStart) {
             Patrol();
         }
     }
@@ -109,6 +110,10 @@ public class CameraScanner : MonoBehaviour
 
         }
         detected = true;
+    }
+
+    private void OnStartGame() {
+        isStart = true;
     }
 
     private void HandleWhenDetectedSubTarget(Transform subTarget) {

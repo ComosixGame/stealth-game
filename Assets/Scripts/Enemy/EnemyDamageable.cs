@@ -11,8 +11,8 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     private float _coinBonus;
     private float _health;
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
+    private bool isDead;
     public UnityEvent<Vector3> OnTakeDamge;
-
     private SoundManager soundManager;
 
     private void Awake() {
@@ -30,7 +30,8 @@ public class EnemyDamageable : MonoBehaviour, Damageable
         _health -= damage;
         healthBarRennder.UpdateHealthBarValue(_health);
         OnTakeDamge?.Invoke(force);
-        if(_health <= 0) {
+        if(_health <= 0 && !isDead) {
+            isDead = true;
             soundManager.PlayOneShot(deathAudioClip,volumeScale);
             GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll

@@ -94,12 +94,9 @@ public class Trap : Command
         }
     }
     
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerExit(Collider other) {
         ready = true;
         timeNextAttack = 0;
-    }
-
-    private void OnTriggerExit(Collider other) {
         audioSource.Stop();
     }
 

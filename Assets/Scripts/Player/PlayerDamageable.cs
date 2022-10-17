@@ -9,6 +9,7 @@ public class PlayerDamageable : MonoBehaviour, Damageable
     public GameObject DestroyedBody;
     private Rigidbody[] ragdollRigibodies;
     [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
+    private bool isDead;
     private SoundManager soundManager;
     private GameManager gameManager;
     private void Awake() {
@@ -28,7 +29,9 @@ public class PlayerDamageable : MonoBehaviour, Damageable
         soundManager.PlayOneShot(audioClip, volumeScale);
         health -= damage;
         healthBarRennder.UpdateHealthBarValue(health);
-        if(health <= 0) {
+        if(health <= 0 && !isDead) {
+            isDead = true;
+            gameManager.EndGame(false);
             soundManager.PlayOneShot(deathAudioClip,volumeScale);
             health = 0;
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
@@ -53,5 +56,4 @@ public class PlayerDamageable : MonoBehaviour, Damageable
         }
         gameManager.UpdatePlayerHealth(health);
     }
-
 }

@@ -35,7 +35,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Transform player;
     private State state, prevState;
     private float IdleTimer;
-    private bool isDeadBody, readyAttack, Alerted, triggerAlertOnAttack;
+    private bool isStartGame, isDeadBody, readyAttack, Alerted, triggerAlertOnAttack;
     private Animator animator;
     private int velocityHash;
     private GameManager gameManager;
@@ -65,6 +65,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
     private void OnEnable() {
 
+        gameManager.OnStart.AddListener(OnStartGame);
         gameManager.OnEnemyAlert.AddListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.AddListener(HandleOnAlertOff);
 
@@ -91,6 +92,9 @@ public class EnemyBehaviourScript : MonoBehaviour
     {
         playerScanner.Scan();
         HandleAnimation();
+        if(!isStartGame) {
+            return;
+        }
         switch(state) {
             case State.Idle:
                 exclamation.SetActive(false);
@@ -212,7 +216,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             }
         }
 
-        if(!triggerAlertOnAttack && IdleTimer >= 2f) {
+        if(!triggerAlertOnAttack && IdleTimer >= 1f) {
             triggerAlertOnAttack = true;
             gameManager.EnemyTriggerAlert(playerPos, enemy.alertTime);
         }
@@ -255,6 +259,10 @@ public class EnemyBehaviourScript : MonoBehaviour
         rotLook.x = 0;
         rotLook.z = 0;
         return Quaternion.Lerp(transform.rotation, rotLook, speed * Time.deltaTime);
+    }
+
+    private void OnStartGame() {
+        isStartGame = true;
     }
     
     public void HandleWhenDetected(List<RaycastHit> hitList) {
@@ -338,6 +346,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void OnDisable() {
+        gameManager.OnStart.RemoveListener(OnStartGame);
         gameManager.OnEnemyAlert.RemoveListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.RemoveListener(HandleOnAlertOff);
 
