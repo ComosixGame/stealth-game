@@ -5,8 +5,9 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
-    private int money;
-    private bool isWin;
+    private PlayerData playerData;
+    private int  moneyInLevel;
+    private bool isWin, isEnd;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
     public UnityEvent<int> OnUpdateMoney =  new UnityEvent<int>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
@@ -16,9 +17,10 @@ public class GameManager : Singleton<GameManager>
     public UnityEvent OnResume =  new UnityEvent();
     public UnityEvent<bool, int> OnEndGame = new UnityEvent<bool, int>();
     // Start is called before the first frame update
+    
     void Start()
     {
-        ResetGame();
+        InitGame();
     }
     
     public void UpdatePlayerHealth(float hp) {
@@ -27,8 +29,10 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void UpdateCurrency(int point) {
-        money += point;
-        OnUpdateMoney?.Invoke(money);
+        if(isEnd) return;
+        moneyInLevel += point;
+        playerData.money += point;
+        OnUpdateMoney?.Invoke(playerData.money);
     }
 
     public void EnemyTriggerAlert(Vector3 pos, float time) {
@@ -50,15 +54,18 @@ public class GameManager : Singleton<GameManager>
         Time.timeScale = 1;
     }
 
-    public void ResetGame() {
+    public void InitGame() {
+        isEnd = false;
+        playerData = PlayerData.Load();
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
-        OnUpdateMoney?.Invoke(money);
+        OnUpdateMoney?.Invoke(playerData.money);
     }
 
     public void EndGame(bool win) {
         isWin = win;
-        OnEndGame?.Invoke(isWin, money);
-        OnUpdateMoney?.Invoke(money);
+        OnEndGame?.Invoke(isWin, moneyInLevel);
+        OnUpdateMoney?.Invoke(playerData.money);
+        playerData.Save();
     }
 
     IEnumerator StartAlert(float time) {

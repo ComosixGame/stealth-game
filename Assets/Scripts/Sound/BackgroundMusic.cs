@@ -1,10 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundMusic : MonoBehaviour
 {
     public AudioClip audioWin, audioLose;
+    private SettingData settingData;
     private SoundManager soundManager;
     private GameManager gameManager;
     private AudioSource audioSource;
@@ -13,6 +13,8 @@ public class BackgroundMusic : MonoBehaviour
         soundManager = SoundManager.Instance;
         gameManager = GameManager.Instance;
         audioSource = GetComponent<AudioSource>();
+        settingData = SettingData.Load();
+        audioSource.mute = settingData.mute;
     }
 
     private void OnEnable() {
@@ -24,7 +26,7 @@ public class BackgroundMusic : MonoBehaviour
         audioSource.mute = mute;
     }
 
-    private void OnEndGame(bool isWin, int money) {
+    private void OnEndGame(bool isWin, int moneyInLevel) {
         if(isWin) {
             audioSource.clip = audioWin;
         } else {

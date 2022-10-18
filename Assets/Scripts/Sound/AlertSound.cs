@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AlertSound : MonoBehaviour
 {
+    private SettingData settingData;
     private GameManager gameManager;
     private SoundManager soundManager;
     private AudioSource audioSource;
@@ -12,6 +11,9 @@ public class AlertSound : MonoBehaviour
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
         audioSource = GetComponent<AudioSource>();
+
+        settingData = SettingData.Load();
+        audioSource.mute = settingData.mute;
     }
 
     private void OnEnable() {

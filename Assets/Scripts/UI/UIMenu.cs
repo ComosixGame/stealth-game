@@ -52,7 +52,7 @@ public class UIMenu : MonoBehaviour
         soundManager.MuteGame(mute);
     }
 
-    private void OnEndGame(bool isWin, int money) {
+    private void OnEndGame(bool isWin, int moneyInLevel) {
         header.SetActive(false);
         if(isWin) {
             winMenu.SetActive(true);

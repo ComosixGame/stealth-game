@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
+using System.IO;
 #endif
 
 public class LoadScene : MonoBehaviour
@@ -13,21 +14,27 @@ public class LoadScene : MonoBehaviour
     public Slider loadingBar;
     [HideInInspector] public int NextLevel;
     private AsyncOperation operation;
+    private int levelIndex;
     private GameManager gameManager;
 
     private void Awake() {
+        levelIndex = SceneManager.GetActiveScene().buildIndex;
         gameManager = GameManager.Instance;
+    }
+
+    private void Start() {
+        
     }
 
 
     public void ResetLevel() {
-        StartCoroutine(LoadAsync(SceneManager.GetActiveScene().buildIndex));
-        operation.completed += ResetGame;
+        StartCoroutine(LoadAsync(levelIndex));
+        operation.completed += InitGame;
     }
 
     public void LoadNextLevel() {
         StartCoroutine(LoadAsync(NextLevel));
-        operation.completed += ResetGame;
+        operation.completed += InitGame;
     }
 
     IEnumerator LoadAsync(int index) {
@@ -40,8 +47,8 @@ public class LoadScene : MonoBehaviour
         }
     }
 
-    private void ResetGame(AsyncOperation asyncOperation) {
-        gameManager.ResetGame();
+    private void InitGame(AsyncOperation asyncOperation) {
+        gameManager.InitGame();
     }
 
 #if UNITY_EDITOR
@@ -54,7 +61,7 @@ public class LoadScene : MonoBehaviour
 
             for( int i = 0; i < sceneCount; i++ )
             {
-                scenes[i] = System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
+                scenes[i] = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
             }
         }
         public override void OnInspectorGUI() {

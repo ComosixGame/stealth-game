@@ -31,7 +31,6 @@ public class PlayerDamageable : MonoBehaviour, Damageable
         healthBarRennder.UpdateHealthBarValue(health);
         if(health <= 0 && !isDead) {
             isDead = true;
-            gameManager.EndGame(false);
             soundManager.PlayOneShot(deathAudioClip,volumeScale);
             health = 0;
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
@@ -53,6 +52,7 @@ public class PlayerDamageable : MonoBehaviour, Damageable
             hitRigi.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
             //thêm lực văng vào súng
             rigidbodyWeapon.AddForce(force.normalized * 5f, ForceMode.Impulse);
+            gameManager.EndGame(false);
         }
         gameManager.UpdatePlayerHealth(health);
     }

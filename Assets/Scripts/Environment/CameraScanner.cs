@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -38,11 +37,6 @@ public class CameraScanner : MonoBehaviour
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
 
-        audioSource = soundManager.AddAudioSource(gameObject);
-        audioSource.clip = audioClip;
-        audioSource.volume = volumeScale;
-        audioSource.loop = true;
-        audioSource.playOnAwake = false;
     }
 
     private void OnEnable() {
@@ -52,12 +46,19 @@ public class CameraScanner : MonoBehaviour
         scanner.OnNotDetectedTarget.AddListener(NotDetect);
 
         soundManager.OnMute.AddListener(OnMuteGame);
+
     }
     
     // Start is called before the first frame update
     void Start()
     {
         scanner.CreataFieldOfView(rootScanner, rootScanner.position, 360, range);
+        
+        audioSource = soundManager.AddAudioSource(gameObject);
+        audioSource.clip = audioClip;
+        audioSource.volume = volumeScale;
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
     }
 
     // Update is called once per frame
