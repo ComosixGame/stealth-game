@@ -4,15 +4,17 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem<T> where T : class, new() {
+    private static string EncryptWord = "$2a$12$bFGaHUjLQsB12SXjTPGzIuh1Gqc93EA4Wow0ka93uWxZ31X1sfdKy";
     private static string directory = "/Saves";
     public static void Save(T data) {
         if(!Directory.Exists(Application.persistentDataPath + directory)) {
             Directory.CreateDirectory(Application.persistentDataPath + directory);
         }
+        string json = JsonUtility.ToJson(data);
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + $"{directory}/{typeof(T).Name}.sav";
         FileStream file = File.Create(path);
-        formatter.Serialize(file, data);
+        formatter.Serialize(file, Encrypt(json));
         file.Close(); 
 
     }
@@ -22,7 +24,8 @@ public static class SaveSystem<T> where T : class, new() {
         if(File.Exists(path)) {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream file = File.Open(path, FileMode.Open);
-            T data = formatter.Deserialize(file) as T;
+            string json = formatter.Deserialize(file) as string;
+            T data = JsonUtility.FromJson<T>(Encrypt(json));
             file.Close();
             return data;
         } else {
@@ -30,6 +33,15 @@ public static class SaveSystem<T> where T : class, new() {
             Save(newData);
             return newData;
         }
+    }
+
+    private static string Encrypt(string text) {
+        string modifiedData = "";
+        for(int i = 0; i<text.Length; i++) {
+            modifiedData += (char) (text[i] ^ EncryptWord[i % EncryptWord.Length]);
+        }
+
+        return modifiedData;
     }
 }
 
