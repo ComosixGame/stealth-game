@@ -12,8 +12,7 @@ public class AlertSound : MonoBehaviour
         soundManager = SoundManager.Instance;
         audioSource = GetComponent<AudioSource>();
 
-        settingData = SettingData.Load();
-        audioSource.mute = settingData.mute;
+        audioSource.mute = SettingData.Load().mute;
     }
 
     private void OnEnable() {

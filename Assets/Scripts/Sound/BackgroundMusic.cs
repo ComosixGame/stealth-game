@@ -4,7 +4,6 @@ using UnityEngine;
 public class BackgroundMusic : MonoBehaviour
 {
     public AudioClip audioWin, audioLose;
-    private SettingData settingData;
     private SoundManager soundManager;
     private GameManager gameManager;
     private AudioSource audioSource;
@@ -13,8 +12,7 @@ public class BackgroundMusic : MonoBehaviour
         soundManager = SoundManager.Instance;
         gameManager = GameManager.Instance;
         audioSource = GetComponent<AudioSource>();
-        settingData = SettingData.Load();
-        audioSource.mute = settingData.mute;
+        audioSource.mute = SettingData.Load().mute;
     }
 
     private void OnEnable() {

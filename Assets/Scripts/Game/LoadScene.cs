@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,11 +29,19 @@ public class LoadScene : MonoBehaviour
 
     private void Start() {
         if(StartScene) {
-            LoadNewScene(firstLevel);
+            List<int> uclockLevels = PlayerData.Load().levels;
+            if(uclockLevels.Count == 0) {
+                LoadNewScene(firstLevel);
+            } else {
+                LoadNewScene(uclockLevels[uclockLevels.Count - 1]);
+            }
         }
     }
 
-    public void ResetLevel() {
+    public void ResetLevel(bool resumeGame) {
+        if(resumeGame) {
+            gameManager.ResumeGame();
+        }
         LoadNewScene(levelIndex);
     }
 
