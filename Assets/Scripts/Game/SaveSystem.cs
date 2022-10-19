@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -47,13 +48,16 @@ public static class SaveSystem<T> where T : class, new() {
 [System.Serializable]
 public class PlayerData
 {
-    public int money;
-    public List<int> levels;
+    public int money, selectedCharacter;
+    public List<int> levels, characters;
 
 
     public PlayerData() {
         money = 0;
+        selectedCharacter = 0;
         levels = new List<int>();
+        characters = new List<int>();
+        characters.Add(0);
     }
     public void Save() {
         SaveSystem<PlayerData>.Save(this, true);
