@@ -12,11 +12,12 @@ public class HealthBarRennder
 {
     public GameObject healthBar;
     public float offset;
-    public Camera camera;
+    private Camera camera;
     private GameObject _healthBar;
     private Slider sliderHealthBar;
 
     public void CreateHealthBar(Transform parent ,float Maxhealth) {
+        camera = Camera.main;
         _healthBar = GameObject.Instantiate(healthBar);
         _healthBar.transform.SetParent(parent,false);
         _healthBar.transform.position = parent.position + Vector3.up * offset;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -52,6 +53,14 @@ public class GameManager : Singleton<GameManager>
     public void ResumeGame() {
         OnResume?.Invoke();
         Time.timeScale = 1;
+    }
+
+    public void UnlockNewLevel(int indexLevel) {
+        List<int> list = playerData.levels;
+        if(list.IndexOf(indexLevel) == -1) {
+            playerData.levels.Add(indexLevel);
+            playerData.Save();
+        }
     }
 
     public void InitGame() {

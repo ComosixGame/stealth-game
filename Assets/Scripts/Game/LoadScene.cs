@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +11,8 @@ public class LoadScene : MonoBehaviour
 {
     public GameObject LoadingScreen;
     public Slider loadingBar;
-    [HideInInspector] public int NextLevel;
+    public bool StartScene;
+    [HideInInspector] public int firstLevel, nextLevel;
     private AsyncOperation operation;
     private int levelIndex;
     private GameManager gameManager;
@@ -22,18 +22,26 @@ public class LoadScene : MonoBehaviour
         gameManager = GameManager.Instance;
     }
 
-    private void Start() {
-        
+    private void OnEnable() {
+        gameManager.OnEndGame.AddListener(OnEndGame);
     }
 
+    private void Start() {
+        if(StartScene) {
+            LoadNewScene(firstLevel);
+        }
+    }
 
     public void ResetLevel() {
-        StartCoroutine(LoadAsync(levelIndex));
-        operation.completed += InitGame;
+        LoadNewScene(levelIndex);
     }
 
     public void LoadNextLevel() {
-        StartCoroutine(LoadAsync(NextLevel));
+        LoadNewScene(nextLevel);
+    }
+    
+    public void LoadNewScene(int index) {
+        StartCoroutine(LoadAsync(index));
         operation.completed += InitGame;
     }
 
@@ -49,6 +57,16 @@ public class LoadScene : MonoBehaviour
 
     private void InitGame(AsyncOperation asyncOperation) {
         gameManager.InitGame();
+    }
+
+    private void OnEndGame(bool isWin, int moneyInLevel) {
+        if(isWin) {
+            gameManager.UnlockNewLevel(nextLevel);
+        }
+    }
+
+    private void OnDisable() {
+        gameManager.OnEndGame.RemoveListener(OnEndGame);
     }
 
 #if UNITY_EDITOR
@@ -67,10 +85,20 @@ public class LoadScene : MonoBehaviour
         public override void OnInspectorGUI() {
             base.OnInspectorGUI();
             LoadScene loadScene = target as LoadScene;
+
+            string Label = loadScene.StartScene?"first Level":"Next Level";
+            int levelIndex = loadScene.StartScene?loadScene.firstLevel:loadScene.nextLevel;
+ 
             EditorGUI.BeginChangeCheck();
-            int indexScene = EditorGUILayout.Popup("Next Level",loadScene.NextLevel,scenes);
+            int indexScene = EditorGUILayout.Popup(Label ,levelIndex, scenes);
             if(EditorGUI.EndChangeCheck()) {
-                loadScene.NextLevel = indexScene;
+                if(loadScene.StartScene) {
+                    Undo.RecordObject(loadScene, "Update first Level");
+                    loadScene.firstLevel = indexScene;
+                } else {
+                    Undo.RecordObject(loadScene, "Update Next Level");
+                    loadScene.nextLevel = indexScene;
+                }
             }
         }
     }
