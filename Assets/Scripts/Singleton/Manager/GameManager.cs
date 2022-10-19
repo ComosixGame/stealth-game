@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     private PlayerData playerData;
     private int  moneyInLevel;
     private bool isWin, isEnd;
+    private Coroutine coroutine;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
     public UnityEvent<int> OnUpdateMoney =  new UnityEvent<int>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
@@ -37,9 +38,11 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void EnemyTriggerAlert(Vector3 pos, float time) {
-        StopCoroutine("StartAlert");
+        if(coroutine != null) {
+            StopCoroutine(coroutine);
+        }
         OnEnemyAlert?.Invoke(pos);
-        StartCoroutine(StartAlert(time));
+        coroutine = StartCoroutine(StartAlert(time));
     }
 
     public void StartGame() {

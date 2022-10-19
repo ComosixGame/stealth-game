@@ -225,8 +225,17 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void Chase(Vector3 pos) {
         NavMeshHit hit;
         if (NavMesh.SamplePosition(playerPosition, out hit, agent.height * 2, 1)) {
-            if(!agent.hasPath) {
-                agent.SetDestination(hit.position);
+            NavMeshPath path = new NavMeshPath();
+            agent.CalculatePath(hit.position, path);
+            if (path.status == NavMeshPathStatus.PathPartial)
+            {
+                agent.ResetPath();
+                state = State.Looking;
+                return;
+            } else {
+                if(!agent.hasPath) {
+                    agent.SetDestination(hit.position);
+                }
             }
         }
         if(agent.remainingDistance != 0 && agent.remainingDistance <= agent.stoppingDistance) {
