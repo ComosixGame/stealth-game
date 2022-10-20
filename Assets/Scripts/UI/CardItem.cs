@@ -11,6 +11,7 @@ public class CardItem : MonoBehaviour
     public int price;
     public int id;
     private GameManager gameManager;
+    private bool boughtItem;
 
     private void Awake() {
         gameManager = GameManager.Instance;
@@ -18,6 +19,7 @@ public class CardItem : MonoBehaviour
 
     private void OnEnable() {
         gameManager.OnSelectItem.AddListener(OnSelect);
+        gameManager.OnBuyItem.AddListener(OnBuy);
 
         buyButton.onClick.AddListener(BuyItem);
         selectButton.onClick.AddListener(SelectItem);
@@ -26,13 +28,14 @@ public class CardItem : MonoBehaviour
     public void SetCardItem(Player playerCharacter, int idItems, bool bought, bool selected) {
         typeItem = TypeItem.Character;
         thumb.sprite = playerCharacter.thumb;
-        nameItem.text = playerCharacter.name;
+        nameItem.text = playerCharacter.nameCharacter;
         buyButton.interactable = !bought;
         selectButton.interactable = !selected && bought;
         buyButtonText.text = bought ? "Owned" : "$" + playerCharacter.price.ToString();
         selectButtonText.text = selected ? "Selected" : "Select";
         price = playerCharacter.price;
         id = idItems;
+        boughtItem = bought;
     }
 
     private void BuyItem() {
@@ -51,13 +54,21 @@ public class CardItem : MonoBehaviour
 
     private void OnSelect(int _id) {
         if(id != _id) {
-            selectButton.interactable = true;
+            selectButton.interactable = true && boughtItem;
             selectButtonText.text = "Select";
+        }
+    }
+
+    private void OnBuy(int _id) {
+        if(id == _id) {
+            boughtItem = true;
+            selectButton.interactable = true;
         }
     }
 
     private void OnDisable() {
         gameManager.OnSelectItem.RemoveListener(OnSelect);
+        gameManager.OnBuyItem.RemoveListener(OnBuy);
         buyButton.onClick.RemoveListener(BuyItem);
         buyButton.onClick.RemoveListener(SelectItem);
     }

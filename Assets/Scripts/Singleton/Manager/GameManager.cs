@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
     public UnityEvent OnPause =  new UnityEvent();
     public UnityEvent OnResume =  new UnityEvent();
     public UnityEvent<int> OnSelectItem =  new UnityEvent<int>();
+    public UnityEvent<int> OnBuyItem =  new UnityEvent<int>();
     public UnityEvent<bool> OnEndGame = new UnityEvent<bool>();
     // Start is called before the first frame update
     
@@ -85,6 +86,7 @@ public class GameManager : Singleton<GameManager>
                 UpdateCurrency(-price);
                 playerData.characters.Add(id);
                 playerData.Save();
+                OnBuyItem?.Invoke(id);
                 return true;
             }
         }
