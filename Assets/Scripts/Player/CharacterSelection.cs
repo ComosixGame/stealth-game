@@ -11,17 +11,22 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private CharacterManager characterManager;
     public RectTransform joyStick;
     public  CinemachineFreeLook cinemachineFreeLook;
-    private GameObject player;
     public bool debugMode;
+    private GameObject player;
+    [HideInInspector] public GameObject debugCharacter;
+    [HideInInspector] public Mesh debugMesh;
 
     // Start is called before the first frame update
     void Start()
     {
+        PlayerData playerData = PlayerData.Load();
+        List<int> characters = playerData.characters;
+        int selectedCharacter = playerData.selectedCharacter;
+        int indexChar = characters[selectedCharacter];
         if(debugMode) {
             player = Instantiate(debugCharacter, transform.position, transform.rotation);
             player.transform.SetParent(transform);
         } else {
-            int indexChar = PlayerData.Load().selectedCharacter;
             GameObject character = characterManager.Characters[indexChar].character;
             player = Instantiate(character, transform.position, transform.rotation);
             player.transform.SetParent(transform);
@@ -40,8 +45,6 @@ public class CharacterSelection : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    [HideInInspector] public GameObject debugCharacter;
-    [HideInInspector] public Mesh debugMesh;
     private void OnDrawGizmos() {
         if(!EditorApplication.isPlaying) {
             Gizmos.DrawMesh(debugMesh, transform.position, transform.rotation);

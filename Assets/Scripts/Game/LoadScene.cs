@@ -12,8 +12,8 @@ public class LoadScene : MonoBehaviour
 {
     public GameObject LoadingScreen;
     public Slider loadingBar;
-    public bool StartScene;
-    [HideInInspector] public int firstLevel, nextLevel;
+    public bool LoadOnAwake;
+    [HideInInspector] public int nextLevel;
     private AsyncOperation operation;
     private int levelIndex;
     private GameManager gameManager;
@@ -28,12 +28,12 @@ public class LoadScene : MonoBehaviour
     }
 
     private void Start() {
-        if(StartScene) {
-            List<int> uclockLevels = PlayerData.Load().levels;
-            if(uclockLevels.Count == 0) {
-                LoadNewScene(firstLevel);
+        if(LoadOnAwake) {
+            int LatestLevel = PlayerData.Load().LatestLevel;
+            if(LatestLevel == 0) {
+                LoadNewScene(nextLevel);
             } else {
-                LoadNewScene(uclockLevels[uclockLevels.Count - 1]);
+                LoadNewScene(LatestLevel);
             }
         }
     }
@@ -52,6 +52,14 @@ public class LoadScene : MonoBehaviour
     public void LoadNewScene(int index) {
         StartCoroutine(LoadAsync(index));
         operation.completed += InitGame;
+    }
+
+    public void LoadLatestLevel() {
+        LoadNewScene(PlayerData.Load().LatestLevel);
+    }
+
+    public void LoadShop() {
+        LoadNewScene(1);
     }
 
     IEnumerator LoadAsync(int index) {
@@ -94,20 +102,12 @@ public class LoadScene : MonoBehaviour
         public override void OnInspectorGUI() {
             base.OnInspectorGUI();
             LoadScene loadScene = target as LoadScene;
-
-            string Label = loadScene.StartScene?"first Level":"Next Level";
-            int levelIndex = loadScene.StartScene?loadScene.firstLevel:loadScene.nextLevel;
  
             EditorGUI.BeginChangeCheck();
-            int indexScene = EditorGUILayout.Popup(Label ,levelIndex, scenes);
+            int indexScene = EditorGUILayout.Popup("Next Level" ,loadScene.nextLevel, scenes);
             if(EditorGUI.EndChangeCheck()) {
-                if(loadScene.StartScene) {
-                    Undo.RecordObject(loadScene, "Update first Level");
-                    loadScene.firstLevel = indexScene;
-                } else {
-                    Undo.RecordObject(loadScene, "Update Next Level");
-                    loadScene.nextLevel = indexScene;
-                }
+                Undo.RecordObject(loadScene, "Update Next Level");
+                loadScene.nextLevel = indexScene;
             }
         }
     }

@@ -49,6 +49,11 @@ public static class SaveSystem<T> where T : class, new() {
 public class PlayerData
 {
     public int money, selectedCharacter;
+    public int LatestLevel {
+        get { 
+            return levels.Count > 0 ? levels[levels.Count - 1] : 0;
+        }
+    }
     public List<int> levels, characters;
 
 
