@@ -7,7 +7,6 @@ public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
     private PlayerData playerData;
-    private int  moneyInLevel;
     private bool isWin, isEnd;
     private Coroutine coroutine;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
@@ -17,7 +16,8 @@ public class GameManager : Singleton<GameManager>
     public UnityEvent OnStart =  new UnityEvent();
     public UnityEvent OnPause =  new UnityEvent();
     public UnityEvent OnResume =  new UnityEvent();
-    public UnityEvent<bool, int> OnEndGame = new UnityEvent<bool, int>();
+    public UnityEvent<int> OnSelectItem =  new UnityEvent<int>();
+    public UnityEvent<bool> OnEndGame = new UnityEvent<bool>();
     // Start is called before the first frame update
     
     void Start()
@@ -32,7 +32,6 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateCurrency(int point) {
         if(isEnd) return;
-        moneyInLevel += point;
         playerData.money += point;
         OnUpdateMoney?.Invoke(playerData.money);
     }
@@ -75,9 +74,28 @@ public class GameManager : Singleton<GameManager>
 
     public void EndGame(bool win) {
         isWin = win;
-        OnEndGame?.Invoke(isWin, moneyInLevel);
+        OnEndGame?.Invoke(isWin);
         OnUpdateMoney?.Invoke(playerData.money);
         playerData.Save();
+    }
+
+    public bool BuyItem(int id, int price) {
+        if(playerData.money >= price) {
+            if(playerData.characters.IndexOf(id) == -1) {
+                UpdateCurrency(-price);
+                playerData.characters.Add(id);
+                playerData.Save();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void SelectItem(int id) {
+        playerData.selectedCharacter = id;
+        playerData.Save();
+        OnSelectItem?.Invoke(id);
     }
 
     IEnumerator StartAlert(float time) {

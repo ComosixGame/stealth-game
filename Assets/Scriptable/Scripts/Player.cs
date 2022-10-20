@@ -5,4 +5,6 @@ public class Player : ScriptableObject
 {
     public string nameCharacter;
     public GameObject character, radoll;
+    public int price;
+    public Sprite thumb;
 }

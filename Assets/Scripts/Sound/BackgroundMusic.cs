@@ -24,7 +24,7 @@ public class BackgroundMusic : MonoBehaviour
         audioSource.mute = mute;
     }
 
-    private void OnEndGame(bool isWin, int moneyInLevel) {
+    private void OnEndGame(bool isWin) {
         if(isWin) {
             audioSource.clip = audioWin;
         } else {

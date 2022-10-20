@@ -76,7 +76,7 @@ public class LoadScene : MonoBehaviour
         gameManager.InitGame();
     }
 
-    private void OnEndGame(bool isWin, int moneyInLevel) {
+    private void OnEndGame(bool isWin) {
         if(isWin) {
             gameManager.UnlockNewLevel(nextLevel);
         }

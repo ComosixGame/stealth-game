@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
         isPause = false;
     }
 
-    private void OnEndGame(bool isWin, int moneyInLevels) {
+    private void OnEndGame(bool isWin) {
         isPause = true;
     }
 
