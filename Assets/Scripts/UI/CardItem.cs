@@ -28,7 +28,7 @@ public class CardItem : MonoBehaviour
         thumb.sprite = playerCharacter.thumb;
         nameItem.text = playerCharacter.name;
         buyButton.interactable = !bought;
-        selectButton.interactable = !selected;
+        selectButton.interactable = !selected && bought;
         buyButtonText.text = bought ? "Owned" : "$" + playerCharacter.price.ToString();
         selectButtonText.text = selected ? "Selected" : "Select";
         price = playerCharacter.price;

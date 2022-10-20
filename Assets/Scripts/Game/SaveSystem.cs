@@ -44,7 +44,7 @@ public static class SaveSystem<T> where T : class, new() {
     }
 }
 
-[System.Serializable]
+
 public class PlayerData
 {
     public int money, selectedCharacter;
@@ -74,7 +74,7 @@ public class PlayerData
 
 }
 
-[System.Serializable]
+
 public class SettingData
 {
     public bool mute;
