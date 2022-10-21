@@ -47,20 +47,23 @@ public static class SaveSystem<T> where T : class, new() {
 
 public class PlayerData
 {
-    public int money, selectedCharacter;
+    public int money, selectedCharacter, selectedWeapon;
     public int LatestLevel {
         get { 
             return levels.Count > 0 ? levels[levels.Count - 1] : 0;
         }
     }
-    public List<int> levels, characters;
+    public List<int> levels, characters, weapons;
 
 
     public PlayerData() {
         money = 0;
         selectedCharacter = 0;
+        selectedWeapon = 0;
         levels = new List<int>();
         characters = new List<int>();
+        weapons = new List<int>();
+        weapons.Add(0);
         characters.Add(0);
     }
     public void Save() {

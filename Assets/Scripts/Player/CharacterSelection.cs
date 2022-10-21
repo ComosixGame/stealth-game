@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class CharacterSelection : MonoBehaviour
 {
-    [SerializeField] private CharacterManager characterManager;
+    [SerializeField] private EquipmentManager equipmentManager;
     public RectTransform joyStick;
     public  CinemachineFreeLook cinemachineFreeLook;
     public bool debugMode;
@@ -20,15 +20,16 @@ public class CharacterSelection : MonoBehaviour
     void Start()
     {
         PlayerData playerData = PlayerData.Load();
-        List<int> characters = playerData.characters;
         int selectedCharacter = playerData.selectedCharacter;
-        int indexChar = characters[selectedCharacter];
         if(debugMode) {
             player = Instantiate(debugCharacter, transform.position, transform.rotation);
             player.transform.SetParent(transform);
         } else {
-            GameObject character = characterManager.Characters[indexChar].character;
+            GameObject character = equipmentManager.Characters[selectedCharacter].character;
             player = Instantiate(character, transform.position, transform.rotation);
+            int selectedWeapon = playerData.selectedWeapon;
+            GameObject weapon = equipmentManager.Weapons[selectedWeapon].weapon;
+            player.GetComponent<PlayerAttack>().weapon = weapon;
             player.transform.SetParent(transform);
         }
 

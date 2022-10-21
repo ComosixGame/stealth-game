@@ -5,7 +5,6 @@ public class RangeWeapon : Weapon
     public GameObject _bullet;
     public Transform shootPositon;
     public ParticleSystem shotEffect;
-    public AudioClip audioClip;
     public float speedBullet;
     [Range(0,1)] public float volumeScale;
     private SoundManager soundManager;

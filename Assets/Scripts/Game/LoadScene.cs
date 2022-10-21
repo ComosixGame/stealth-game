@@ -31,6 +31,7 @@ public class LoadScene : MonoBehaviour
         if(LoadOnAwake) {
             int LatestLevel = PlayerData.Load().LatestLevel;
             if(LatestLevel == 0) {
+                gameManager.UnlockNewLevel(nextLevel);
                 LoadNewScene(nextLevel);
             } else {
                 LoadNewScene(LatestLevel);

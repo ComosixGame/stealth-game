@@ -29,7 +29,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start() {
         scanner.CreataFieldOfView(rootScanner, rootScanner.position, angel, range);
-
+        
         GameObject w = weaponHolder.AddWeapon(weapon);
         playerWeapon = w.GetComponent<Weapon>();
         playerWeapon.getAnimationWeaponPlay(animator);

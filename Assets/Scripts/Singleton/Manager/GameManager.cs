@@ -20,7 +20,10 @@ public class GameManager : Singleton<GameManager>
     public UnityEvent<int> OnBuyItem =  new UnityEvent<int>();
     public UnityEvent<bool> OnEndGame = new UnityEvent<bool>();
     // Start is called before the first frame update
-    
+    protected override void Awake() {
+        base.Awake();
+        playerData = PlayerData.Load();
+    }
     void Start()
     {
         InitGame();
@@ -80,24 +83,47 @@ public class GameManager : Singleton<GameManager>
         playerData.Save();
     }
 
-    public bool BuyItem(int id, int price) {
+    public bool BuyItem(int id, int price, TypeItem typeItem) {
         if(playerData.money >= price) {
-            if(playerData.characters.IndexOf(id) == -1) {
-                UpdateCurrency(-price);
-                playerData.characters.Add(id);
-                playerData.Save();
-                OnBuyItem?.Invoke(id);
-                return true;
+            if(typeItem == TypeItem.Character) {
+                if(playerData.characters.IndexOf(id) == -1) {
+                    UpdateCurrency(-price);
+                    playerData.characters.Add(id);
+                    playerData.Save();
+                    OnBuyItem?.Invoke(id);
+                    return true;
+                }
+            } else {
+                if(playerData.weapons.IndexOf(id) == -1) {
+                    UpdateCurrency(-price);
+                    playerData.weapons.Add(id);
+                    playerData.Save();
+                    OnBuyItem?.Invoke(id);
+                    return true;
+                }
             }
         }
 
         return false;
     }
 
-    public void SelectItem(int id) {
-        playerData.selectedCharacter = id;
-        playerData.Save();
-        OnSelectItem?.Invoke(id);
+    public bool SelectItem(int id, TypeItem typeItem) {
+        if(typeItem == TypeItem.Character) {
+            if(playerData.characters.IndexOf(id) != -1) {
+                playerData.selectedCharacter = id;
+                playerData.Save();
+                OnSelectItem?.Invoke(id);
+                return true;
+            }
+        } else {
+            if(playerData.weapons.IndexOf(id) != -1) {
+                playerData.selectedWeapon = id;
+                playerData.Save();
+                OnSelectItem?.Invoke(id);
+                return true;
+            }
+        }
+        return false;
     }
 
     IEnumerator StartAlert(float time) {

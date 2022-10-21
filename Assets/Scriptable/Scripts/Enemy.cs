@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Enemy", menuName = "Character/Enemy")]
+[CreateAssetMenu(fileName = "New Enemy", menuName = "Enemy")]
 public class Enemy : ScriptableObject
 {
     [Range(0, 360)] public float detectionAngle;

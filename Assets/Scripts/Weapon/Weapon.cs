@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public abstract class Weapon : MonoBehaviour
 {
     public float force;
-    public AudioClip audioEffect;
+    public AudioClip audioClip;
     [SerializeField] protected float damage, delayAttack;
     [SerializeField] private RuntimeAnimatorController runtimeAnimatorController;
     protected float timeNextAttack;

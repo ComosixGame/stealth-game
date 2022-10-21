@@ -1531,7 +1531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031022b3969d5124aa56d2afeda8551e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterManager: {fileID: 11400000, guid: 208b624741012a84a91b15ab32da1aaa, type: 2}
+  equipmentManager: {fileID: 11400000, guid: 208b624741012a84a91b15ab32da1aaa, type: 2}
   joyStick: {fileID: 1250403944}
   cinemachineFreeLook: {fileID: 819339023}
   debugMode: 0
@@ -6570,6 +6570,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnSelectItem:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBuyItem:
     m_PersistentCalls:
       m_Calls: []
   OnEndGame:
