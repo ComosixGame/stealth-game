@@ -3,6 +3,11 @@ using TMPro;
 
 public class UpdateMoney : MonoBehaviour
 {
+    public enum TypeMoney {
+        PlayerMoney,
+        MoneyCollected
+    }
+    public TypeMoney type;
     private TextMeshProUGUI textPro;
     private GameManager gameManager;
 
@@ -15,8 +20,12 @@ public class UpdateMoney : MonoBehaviour
         gameManager.OnUpdateMoney.AddListener(UpdateText);
     }
 
-    private void UpdateText(int money) {
-        textPro.text = money.ToString();
+    private void UpdateText(int money, int moneyCollected) {
+        if(type == TypeMoney.PlayerMoney) {
+            textPro.text = money.ToString();
+        } else {
+            textPro.text = moneyCollected.ToString();
+        }
     }
 
     private void OnDisable() {

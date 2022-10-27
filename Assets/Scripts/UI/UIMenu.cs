@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UIMenu : MonoBehaviour
 {
-    public GameObject header, pauseMenu, winMenu, loseMenu;
+    public GameObject header, pauseMenu, winMenu, loseMenu, rewardAds;
     public float volumeScale;
     private GameManager gameManager;
     private Animator animator;
@@ -54,6 +54,7 @@ public class UIMenu : MonoBehaviour
 
     private void OnEndGame(bool isWin) {
         header.SetActive(false);
+        rewardAds.SetActive(true);
         if(isWin) {
             winMenu.SetActive(true);
         } else {

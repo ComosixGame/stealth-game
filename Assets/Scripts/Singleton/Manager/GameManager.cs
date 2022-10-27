@@ -6,11 +6,12 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     private float healthPlayer;
+    public int moneyCollected {get; private set;}
     private PlayerData playerData;
     private bool isWin, isEnd;
     private Coroutine coroutine;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
-    public UnityEvent<int> OnUpdateMoney =  new UnityEvent<int>();
+    public UnityEvent<int, int> OnUpdateMoney =  new UnityEvent<int, int>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
     public UnityEvent OnEnemyAlertOff =  new UnityEvent();
     public UnityEvent OnStart =  new UnityEvent();
@@ -36,8 +37,9 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateCurrency(int point) {
         if(isEnd) return;
+        moneyCollected += point;
         playerData.money += point;
-        OnUpdateMoney?.Invoke(playerData.money);
+        OnUpdateMoney?.Invoke(playerData.money, moneyCollected);
     }
 
     public void EnemyTriggerAlert(Vector3 pos, float time) {
@@ -71,15 +73,16 @@ public class GameManager : Singleton<GameManager>
 
     public void InitGame() {
         isEnd = false;
+        moneyCollected = 0;
         playerData = PlayerData.Load();
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
-        OnUpdateMoney?.Invoke(playerData.money);
+        OnUpdateMoney?.Invoke(playerData.money, moneyCollected);
     }
 
     public void EndGame(bool win) {
         isWin = win;
         OnEndGame?.Invoke(isWin);
-        OnUpdateMoney?.Invoke(playerData.money);
+        OnUpdateMoney?.Invoke(playerData.money, moneyCollected);
         playerData.Save();
     }
 
@@ -124,6 +127,10 @@ public class GameManager : Singleton<GameManager>
             }
         }
         return false;
+    }
+
+    public void SavePlayerData() {
+        playerData.Save();
     }
 
     IEnumerator StartAlert(float time) {
