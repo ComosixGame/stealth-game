@@ -78,6 +78,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        state = State.Patrol;
         //creata field of view
         FieldOfView = playerScanner.CreataFieldOfView(rootScanner, rootScanner.position, enemy.detectionAngle, enemy.viewDistance);
 
