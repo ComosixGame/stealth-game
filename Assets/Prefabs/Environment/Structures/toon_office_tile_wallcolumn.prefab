@@ -11,14 +11,13 @@ GameObject:
   - component: {fileID: 9057672175429882109}
   - component: {fileID: 5340296433239007064}
   - component: {fileID: 7924219910382676882}
-  - component: {fileID: 7797748201226777647}
   - component: {fileID: 4675072949241490749}
   m_Layer: 0
   m_Name: toon_office_tile_wallcolumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 12
   m_IsActive: 1
 --- !u!4 &9057672175429882109
 Transform:
@@ -85,22 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!208 &7797748201226777647
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8572743135107500615}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.771, y: 2.525, z: 0.771}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 2.525, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!65 &4675072949241490749
 BoxCollider:
   m_ObjectHideFlags: 0

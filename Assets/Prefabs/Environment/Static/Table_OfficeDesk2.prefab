@@ -12,13 +12,12 @@ GameObject:
   - component: {fileID: 33802298486389012}
   - component: {fileID: 23890184108809586}
   - component: {fileID: -1858820881043961821}
-  - component: {fileID: -1664840058229584008}
   m_Layer: 0
   m_Name: Table_OfficeDesk2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &4574124760409694
 Transform:
@@ -27,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338192570120840}
-  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -98,19 +97,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.24297, y: 1.835912, z: 2.6759868}
   m_Center: {x: 0, y: 0.917956, z: -0.007784307}
---- !u!208 &-1664840058229584008
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338192570120840}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 2.621, y: 0.91800004, z: 1.338}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.91800004, z: -0.008}
-  m_TimeToStationary: 0.5

@@ -12,13 +12,12 @@ GameObject:
   - component: {fileID: 54180543413846170}
   - component: {fileID: 2820532799406830672}
   - component: {fileID: 282355168740371379}
-  - component: {fileID: 631902914521897707}
   m_Layer: 0
   m_Name: toon_office_tile_wallconnect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 12
   m_IsActive: 1
 --- !u!4 &3994595560784170815
 Transform:
@@ -98,19 +97,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.0000007, y: 4.9994783, z: 1.6250012}
   m_Center: {x: 0, y: 2.5002608, z: 0.18750009}
---- !u!208 &631902914521897707
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4333720489950500229}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 1, y: 2.5, z: 0.813}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 2.5, z: 0.18800001}
-  m_TimeToStationary: 0.5

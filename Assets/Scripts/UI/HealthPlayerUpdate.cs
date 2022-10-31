@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 
+[RequireComponent(typeof(TextMeshProUGUI))]
 public class HealthPlayerUpdate : MonoBehaviour
 {
     GameManager gameManager;

@@ -1,12 +1,13 @@
 using UnityEngine;
 using TMPro;
 
+public enum TypeMoney {
+    PlayerMoney,
+    MoneyCollected
+}
+[RequireComponent(typeof(TextMeshProUGUI))]
 public class UpdateMoney : MonoBehaviour
 {
-    public enum TypeMoney {
-        PlayerMoney,
-        MoneyCollected
-    }
     public TypeMoney type;
     private TextMeshProUGUI textPro;
     private GameManager gameManager;
@@ -30,5 +31,6 @@ public class UpdateMoney : MonoBehaviour
 
     private void OnDisable() {
         gameManager.OnUpdateMoney.RemoveListener(UpdateText);
+
     }
 }

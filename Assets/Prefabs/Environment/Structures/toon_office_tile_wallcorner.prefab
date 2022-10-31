@@ -11,14 +11,13 @@ GameObject:
   - component: {fileID: 4059286444255066016}
   - component: {fileID: 1151408674610001925}
   - component: {fileID: 2890844077350079695}
-  - component: {fileID: 2977660665621894916}
   - component: {fileID: 1041719605068234076}
   m_Layer: 0
   m_Name: toon_office_tile_wallcorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 12
   m_IsActive: 1
 --- !u!4 &4059286444255066016
 Transform:
@@ -85,22 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!208 &2977660665621894916
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3683569763819318554}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.813, y: 2.5, z: 0.813}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -0.18800001, y: 2.5, z: 0.18800001}
-  m_TimeToStationary: 0.5
 --- !u!65 &1041719605068234076
 BoxCollider:
   m_ObjectHideFlags: 0
