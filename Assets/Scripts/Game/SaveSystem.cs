@@ -67,11 +67,11 @@ public class PlayerData
         characters.Add(0);
     }
     public void Save() {
-        SaveSystem<PlayerData>.Save(this);
+        SaveSystem<PlayerData>.Save(this, true);
     }
     
     public static PlayerData Load() {
-        return SaveSystem<PlayerData>.Load();
+        return SaveSystem<PlayerData>.Load(true);
     }
 }
 

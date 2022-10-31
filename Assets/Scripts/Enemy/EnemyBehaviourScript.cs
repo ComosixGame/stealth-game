@@ -365,7 +365,6 @@ public class EnemyBehaviourScript : MonoBehaviour
         playerScanner.OnDetectedSubTarget.RemoveListener(HandleWhenDetectedSubtarget);
 
         enemyDamageable.OnTakeDamge.RemoveListener(HandleWhenTakeDamge);
-
     }
 
     
