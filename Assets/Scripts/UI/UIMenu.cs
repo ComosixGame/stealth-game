@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-
 public class UIMenu : MonoBehaviour
 {
     public GameObject header, pauseMenu, winMenu, loseMenu, rewardAds;
@@ -52,6 +50,10 @@ public class UIMenu : MonoBehaviour
         soundManager.MuteGame(mute);
     }
 
+    public void QuitGame() {
+        Application.Quit();
+    }
+
     private void OnEndGame(bool isWin) {
         header.SetActive(false);
         rewardAds.SetActive(true);
@@ -63,6 +65,7 @@ public class UIMenu : MonoBehaviour
         Time.timeScale = 0.3f;
         StartCoroutine(ShowEndMenu());
     }
+    
     
 
     IEnumerator ShowEndMenu() {

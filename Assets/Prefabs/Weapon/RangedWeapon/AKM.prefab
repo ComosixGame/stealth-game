@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 100
-  audioEffect: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 1b145bcffd767854fb0c71c37678ebaa, type: 3}
   damage: 1
-  delayAttack: 0.5
+  delayAttack: 0.3
   runtimeAnimatorController: {fileID: 22100000, guid: c9b3d194929b16c48917ccd3f9d42532, type: 2}
   OnAttack:
     m_PersistentCalls:
@@ -57,7 +57,6 @@ MonoBehaviour:
   _bullet: {fileID: 5481131208548253871, guid: 555901a3f5c276440818685f504ce4dd, type: 3}
   shootPositon: {fileID: 4907229106193602554}
   shotEffect: {fileID: 1558902718190618047}
-  audioClip: {fileID: 8300000, guid: 1b145bcffd767854fb0c71c37678ebaa, type: 3}
   speedBullet: 40
   volumeScale: 0.3
 --- !u!65 &3990938308962593836

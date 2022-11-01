@@ -625,6 +625,8 @@ MonoBehaviour:
   damage: 0
   speedBullet: 0
   delayAttack: 0
+  audioClip: {fileID: 0}
+  volumeScale: 0
   listPatrol: []
   indexSelectUp: 0
   indexSelectForward: 0
@@ -638,7 +640,9 @@ MonoBehaviour:
     layerMaskSubTarget:
       serializedVersion: 2
       m_Bits: 256
-    materialFieldOfView: {fileID: 2100000, guid: 840912d4f2257ba46aa56340f5a3b043, type: 2}
+    materialFieldOfView: {fileID: 2100000, guid: 81386c28759227d42b3feed099b8a1ab, type: 2}
+    color: {r: 1, g: 1, b: 1, a: 0.5882353}
+    colorWhenDecteced: {r: 1, g: 0, b: 0, a: 0.5882353}
     OnDetectedTarget:
       m_PersistentCalls:
         m_Calls: []

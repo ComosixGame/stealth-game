@@ -22,7 +22,6 @@ public class InteractOnTrigger : MonoBehaviour
         }
 
         soundManager = SoundManager.Instance;
-            
     }
 
 
@@ -60,7 +59,6 @@ public class InteractOnTrigger : MonoBehaviour
         if(command != null) {
             Handles.DrawDottedLine(transform.position, command.transform.position, 3f);
         }
-        
     }
 #endif
 }

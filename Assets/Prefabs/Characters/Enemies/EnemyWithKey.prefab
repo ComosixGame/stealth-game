@@ -3115,7 +3115,6 @@ MonoBehaviour:
   rootScanner: {fileID: 4240931736721510588}
   aimLayer: {fileID: 4240931736410950434}
   weapon: {fileID: 1772224381378265087, guid: 0dd47a78b37e14b449d89073a4f4430c, type: 3}
-  bullet: {fileID: 5481131208548253871, guid: 555901a3f5c276440818685f504ce4dd, type: 3}
   exclamation: {fileID: 6192493024906947411}
   questionMark: {fileID: 3234448392200996292}
   weaponHolder: {fileID: 4240931736519763208}
@@ -3136,7 +3135,9 @@ MonoBehaviour:
     layerMaskSubTarget:
       serializedVersion: 2
       m_Bits: 256
-    materialFieldOfView: {fileID: 2100000, guid: 840912d4f2257ba46aa56340f5a3b043, type: 2}
+    materialFieldOfView: {fileID: 2100000, guid: 81386c28759227d42b3feed099b8a1ab, type: 2}
+    color: {r: 1, g: 1, b: 1, a: 0.5882353}
+    colorWhenDecteced: {r: 1, g: 0, b: 0, a: 0.5882353}
     OnDetectedTarget:
       m_PersistentCalls:
         m_Calls: []
@@ -3184,7 +3185,7 @@ MonoBehaviour:
   deathAudioClip: {fileID: 8300000, guid: f7afb47533835c94dad934e9f25cd8ca, type: 3}
   volumeScale: 0.3
   DestroyedBody: {fileID: 2250050854710427473, guid: 0a2c5aa1e46896640b483dab86f978e3, type: 3}
-  Currency: {fileID: 3510432154072636362, guid: 679f72609ca3dba45b9b8810009a0e8e, type: 3}
+  Currency: {fileID: 2471891991449476953, guid: b83805c6c22b0c348993074b9962a435, type: 3}
   healthBarRennder:
     healthBar: {fileID: 2422146739253776180, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
     offset: 3.5

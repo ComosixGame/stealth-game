@@ -10,7 +10,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     [SerializeField] private Enemy enemy;
     public Transform rootScanner;
     public Rig aimLayer;
-    public GameObject weapon, bullet, exclamation, questionMark;
+    public GameObject weapon, exclamation, questionMark;
     [SerializeField] private WeaponHolder weaponHolder;
     private Weapon enemyWeapon;
     private enum State {

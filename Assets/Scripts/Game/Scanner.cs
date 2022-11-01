@@ -14,6 +14,7 @@ public class Scanner
 {
     public LayerMask layerMaskTarget, ignoreObstacle, layerMaskSubTarget;
     public Material materialFieldOfView;
+    public Color color, colorWhenDecteced;
     private Mesh mesh;
     private MeshFilter meshFilterFOV;
     private float fov, ViewDistence;
@@ -22,6 +23,7 @@ public class Scanner
     public UnityEvent<List<RaycastHit>> OnDetectedTarget;
     public UnityEvent<Transform> OnDetectedSubTarget;
     public UnityEvent OnNotDetectedTarget;
+    private Material materialInstance;
     
     
     public GameObject CreataFieldOfView(Transform detector, Vector3 pos, float angel, float distance) {
@@ -36,6 +38,7 @@ public class Scanner
         meshFilterFOV =  FieldOfView.AddComponent<MeshFilter>();
         meshRendererFOV.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         meshRendererFOV.material = materialFieldOfView;
+        materialInstance = meshRendererFOV.material;
         meshFilterFOV.mesh = mesh;
         fov = angel;
         ViewDistence = distance;
@@ -95,8 +98,10 @@ public class Scanner
 
         if(listHit.Count > 0) {
             OnDetectedTarget?.Invoke(listHit);
+            materialInstance.color = colorWhenDecteced;
         } else {
             OnNotDetectedTarget?.Invoke();
+            materialInstance.color = color;
         }
         
         mesh.vertices = vertices;

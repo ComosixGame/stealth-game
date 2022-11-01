@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -87,7 +85,7 @@ public class Trap : Command
             }
 
             if(ready) {
-                other.GetComponent<Damageable>().TakeDamge(other.transform.position, dir * 20, damage);
+                other.GetComponent<Damageable>().TakeDamge(other.transform.position, dir.normalized * 50, damage);
                 timeNextAttack = Time.time + delayTimeAttack;
                 ready = false;
             }
