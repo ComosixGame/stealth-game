@@ -3,6 +3,7 @@ using UnityEngine;
 public class UIMenu : MonoBehaviour
 {
     public GameObject header, pauseMenu, winMenu, loseMenu, rewardAds;
+    public Unity.Services.Mediation.InterstitialAds interstitialAds;
     public float volumeScale;
     private GameManager gameManager;
     private Animator animator;
@@ -61,6 +62,7 @@ public class UIMenu : MonoBehaviour
             winMenu.SetActive(true);
         } else {
             loseMenu.SetActive(true);
+            interstitialAds.ShowInterstitial();
         }
         Time.timeScale = 0.3f;
         StartCoroutine(ShowEndMenu());

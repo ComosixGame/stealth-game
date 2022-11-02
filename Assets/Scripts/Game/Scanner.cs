@@ -23,7 +23,9 @@ public class Scanner
     public UnityEvent<List<RaycastHit>> OnDetectedTarget;
     public UnityEvent<Transform> OnDetectedSubTarget;
     public UnityEvent OnNotDetectedTarget;
-    private Material materialInstance;
+    private MaterialPropertyBlock  materialPropertyBlock;
+    private MeshRenderer meshRendererFOV;
+    private bool isDectect;
     
     
     public GameObject CreataFieldOfView(Transform detector, Vector3 pos, float angel, float distance) {
@@ -34,11 +36,13 @@ public class Scanner
         FieldOfView.transform.SetParent(_detector);
         FieldOfView.transform.position = pos;
         FieldOfView.transform.rotation = _detector.rotation;
-        MeshRenderer meshRendererFOV = FieldOfView.AddComponent<MeshRenderer>();
+        meshRendererFOV = FieldOfView.AddComponent<MeshRenderer>();
         meshFilterFOV =  FieldOfView.AddComponent<MeshFilter>();
         meshRendererFOV.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         meshRendererFOV.material = materialFieldOfView;
-        materialInstance = meshRendererFOV.material;
+        materialPropertyBlock = new MaterialPropertyBlock();
+        materialPropertyBlock.SetColor("_BaseColor", color);
+        meshRendererFOV.SetPropertyBlock(materialPropertyBlock);
         meshFilterFOV.mesh = mesh;
         fov = angel;
         ViewDistence = distance;
@@ -98,10 +102,18 @@ public class Scanner
 
         if(listHit.Count > 0) {
             OnDetectedTarget?.Invoke(listHit);
-            materialInstance.color = colorWhenDecteced;
+            if(!isDectect) {
+                materialPropertyBlock.SetColor("_BaseColor", colorWhenDecteced);
+                meshRendererFOV.SetPropertyBlock(materialPropertyBlock);
+                isDectect = true;
+            }
         } else {
             OnNotDetectedTarget?.Invoke();
-            materialInstance.color = color;
+            if(isDectect) {
+                materialPropertyBlock.SetColor("_BaseColor", color);
+                meshRendererFOV.SetPropertyBlock(materialPropertyBlock);
+                isDectect = false;
+            }
         }
         
         mesh.vertices = vertices;

@@ -36,7 +36,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
     {
         if(!destroyed) {
             soundManager.PlayOneShot(audioClip, volumeScale);
-            timeDelay = Time.time + 5;
+            timeDelay = Time.time + 2;
             //tính hướng tác động
             Vector3 dirForce = transform.position - hitPoint;
             dirForce.y = 0;
@@ -50,7 +50,7 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
             destroyed = true;
             if(destroyAfterHit) {
                 StartCoroutine(ChangeLayer());
-                Destroy(gameObject, 10f);
+                Destroy(gameObject, 5f);
             }
         }
 
