@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Services.Mediation;
 
 public enum TypeItem {
     Character,
@@ -8,7 +9,8 @@ public enum TypeItem {
 public class Shop : MonoBehaviour
 {
     [SerializeField] private EquipmentManager equipmentManager;
-    public GameObject cardItem;
+    public GameObject cardItem, overlay, loadAdWindown;
+    public RewardedAds rewardedAds;
     public Transform CharactersContainer;
     public Transform WeaponsContainer;
 
@@ -41,6 +43,14 @@ public class Shop : MonoBehaviour
 
     }
 
+    private void OnEnable() {
+        CardItem.OnBuyFailed += OnBuyFailed;
+    }
+
+    private void OnDisable() {
+        CardItem.OnBuyFailed -= OnBuyFailed;
+    }
+
     private void RenderCardItem(PlayerEquipment[] listItem, Transform parent, int itemCount, List<int> ItemOwned, int currentItem) {
         for(int i = 0; i < itemCount; i++) {
             CardItem cardItemCopy = Instantiate(cardItem, parent.position, parent.rotation).GetComponent<CardItem>();
@@ -51,5 +61,10 @@ public class Shop : MonoBehaviour
         }
     }
 
+    private void OnBuyFailed() {
+        overlay.SetActive(true);
+        loadAdWindown.SetActive(true);
+        rewardedAds.LoadAd();
+    }
 
 }

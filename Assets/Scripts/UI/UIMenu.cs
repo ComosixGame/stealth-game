@@ -1,14 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using Unity.Services.Mediation;
 public class UIMenu : MonoBehaviour
 {
     public GameObject header, pauseMenu, winMenu, loseMenu, rewardAds;
-    public Unity.Services.Mediation.InterstitialAds interstitialAds;
+    public InterstitialAds interstitialAds;
     public float volumeScale;
     private GameManager gameManager;
     private Animator animator;
-    private int OpenMenuHash;
-    private int CloseMenuHash;
+    private int OpenMenuHash, CloseMenuHash;
+    private bool rewardAdsFailed, isWin;
     private SoundManager soundManager;
 
     private void Awake() {
@@ -55,25 +56,30 @@ public class UIMenu : MonoBehaviour
         Application.Quit();
     }
 
-    private void OnEndGame(bool isWin) {
+    private void OnEndGame(bool win) {
         header.SetActive(false);
-        rewardAds.SetActive(true);
-        if(isWin) {
+        rewardAds.SetActive(!rewardAdsFailed);
+        isWin = win;
+        if(win) {
             winMenu.SetActive(true);
         } else {
             loseMenu.SetActive(true);
-            interstitialAds.ShowInterstitial();
         }
         Time.timeScale = 0.3f;
         StartCoroutine(ShowEndMenu());
     }
-    
-    
 
+    private void OnRewardAdsFailed(string message) {
+        rewardAdsFailed = true;
+    }
+    
     IEnumerator ShowEndMenu() {
         yield return new WaitForSeconds(0.3f);
         animator.SetTrigger(OpenMenuHash);
         Time.timeScale = 1;
+        if(!isWin) {
+            interstitialAds.ShowInterstitial();
+        }
     }
     
 }

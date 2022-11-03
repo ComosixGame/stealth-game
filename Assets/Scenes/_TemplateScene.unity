@@ -4856,8 +4856,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e2958ad49e068469cae6bc44f48c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadAdsOnAwake: 1
   androidAdUnitId: Rewarded_Android
   iosAdUnitId: Rewarded_iOS
+  OnAdFailedLoad:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAdLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAdLoadClose:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUserRewarded:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1327606801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5191,7 +5204,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0

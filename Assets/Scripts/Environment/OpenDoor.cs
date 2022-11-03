@@ -71,9 +71,9 @@ public class OpenDoor : Command
         if(typeOpen == TypeOpen.Rotate) {
             Quaternion rot = door.rotation;
             rot = Quaternion.AngleAxis(angel, axisVector);
-            door.rotation = Quaternion.Lerp(door.rotation, rot, 2f * Time.deltaTime);
+            door.rotation = Quaternion.Lerp(door.rotation, rot, 5f * Time.deltaTime);
         } else {
-            door.position = Vector3.Lerp(door.position, PosMove, 2f * Time.deltaTime);
+            door.position = Vector3.MoveTowards(door.position, PosMove, 5f * Time.deltaTime);
         }
     }
 
@@ -153,6 +153,14 @@ public class OpenDoor : Command
                     UnityEditor.Undo.RecordObject(t, "update Position Move");
                     t.PosMove = pos;
                     EditorUtility.SetDirty(t);
+                }
+                EditorGUI.BeginChangeCheck();
+                if(GUILayout.Button("Reset Position Move")) {
+                    if(EditorGUI.EndChangeCheck()) {
+                        UnityEditor.Undo.RecordObject(t, "update Position Move");
+                        t.PosMove = t.door.position;
+                        EditorUtility.SetDirty(t);
+                    }
                 }
             }
 

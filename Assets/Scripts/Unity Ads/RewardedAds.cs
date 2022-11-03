@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Unity.Services.Core;
 using System.Threading.Tasks;
+using UnityEngine.Events;
 
 namespace Unity.Services.Mediation
 {
@@ -14,6 +15,7 @@ namespace Unity.Services.Mediation
             Double,
             Plus
         }
+        public bool loadAdsOnAwake = true;
         private TypeReward typeReward;
         [Header("Ad Unit Ids"), Tooltip("Ad Unit Ids for each platform that represent Mediation waterfalls.")]
         public string androidAdUnitId;
@@ -23,9 +25,16 @@ namespace Unity.Services.Mediation
         IRewardedAd m_RewardedAd;
         private GameManager gameManager;
 
+        public UnityEvent<string> OnAdFailedLoad;
+        public UnityEvent OnAdLoaded;
+        public UnityEvent OnAdLoadClose;
+        public UnityEvent<int> OnUserRewarded;
+
         private void Awake() {
             gameManager = GameManager.Instance;
         }
+
+        private int pointReward;
 
         async void Start()
         {
@@ -89,7 +98,7 @@ namespace Unity.Services.Mediation
             }
         }
 
-        async void LoadAd()
+        public async void LoadAd()
         {
             try
             {
@@ -133,9 +142,10 @@ namespace Unity.Services.Mediation
             m_RewardedAd.OnUserRewarded += UserRewarded;
             m_RewardedAd.OnClosed += AdClosed;
 
-            Debug.Log($"Initialized On Start. Loading Ad...");
-
-            LoadAd();
+            if(loadAdsOnAwake) {
+                Debug.Log($"Initialized On Start. Loading Ad...");
+                LoadAd();
+            }
         }
 
         void InitializationFailed(Exception error)
@@ -150,27 +160,40 @@ namespace Unity.Services.Mediation
 
         void UserRewarded(object sender, RewardEventArgs e)
         {
-            if(typeReward == TypeReward.Double) {
-                int moneyCollected = gameManager.moneyCollected;
-                gameManager.UpdateCurrency(moneyCollected);
-                gameManager.SavePlayerData();
+            switch(typeReward) {
+                case TypeReward.Double:
+                    int moneyCollected = gameManager.moneyCollected;
+                    gameManager.UpdateCurrency(moneyCollected);
+                    gameManager.SavePlayerData();
+                    break;
+                case TypeReward.Plus:
+                    gameManager.UpdateCurrency(pointReward);
+                    gameManager.SavePlayerData();
+                    break;
+                default:
+                    break;
             }
+
+            OnUserRewarded?.Invoke(pointReward);
         }
 
         void AdClosed(object sender, EventArgs args)
         {
             Debug.Log("Rewarded Closed! Loading Ad...");
+            OnAdLoadClose?.Invoke();
         }
 
         void AdLoaded(object sender, EventArgs e)
         {
             Debug.Log("Ad loaded");
+            OnAdLoaded?.Invoke();
         }
 
         void AdFailedLoad(object sender, LoadErrorEventArgs e)
         {
             Debug.Log("Failed to load ad");
             Debug.Log(e.Message);
+            OnAdFailedLoad?.Invoke(e.Message);
         }
 
         void ImpressionEvent(object sender, ImpressionEventArgs args)
@@ -181,6 +204,11 @@ namespace Unity.Services.Mediation
 
         public void DoubleReward() {
             typeReward = TypeReward.Double;
+        }
+
+        public void PlusPoints(int point) {
+            typeReward = TypeReward.Plus;
+            pointReward = point;
         }
     }
 }

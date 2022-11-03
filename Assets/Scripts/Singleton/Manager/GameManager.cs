@@ -87,13 +87,14 @@ public class GameManager : Singleton<GameManager>
     }
 
     public bool BuyItem(int id, int price, TypeItem typeItem) {
-        if(playerData.money >= price) {
+        bool canBuy = playerData.money >= price;
+        OnBuyItem?.Invoke(id);
+        if(canBuy) {
             if(typeItem == TypeItem.Character) {
                 if(playerData.characters.IndexOf(id) == -1) {
                     UpdateCurrency(-price);
                     playerData.characters.Add(id);
                     playerData.Save();
-                    OnBuyItem?.Invoke(id);
                     return true;
                 }
             } else {
@@ -101,12 +102,10 @@ public class GameManager : Singleton<GameManager>
                     UpdateCurrency(-price);
                     playerData.weapons.Add(id);
                     playerData.Save();
-                    OnBuyItem?.Invoke(id);
                     return true;
                 }
             }
         }
-
         return false;
     }
 

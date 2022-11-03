@@ -6,7 +6,7 @@ public class SoundManager : Singleton<SoundManager>
 {
     private AudioSource audioSource;
     private SettingData settingData;
-    public UnityEvent<bool> OnMute;
+    public UnityEvent<bool> OnMute = new UnityEvent<bool>();
 
     protected override void Awake()
     {
