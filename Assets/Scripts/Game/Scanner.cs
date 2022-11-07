@@ -26,6 +26,7 @@ public class Scanner
     private MaterialPropertyBlock  materialPropertyBlock;
     private MeshRenderer meshRendererFOV;
     private bool isDectect;
+    private RaycastHit hit, subHit;
     
     
     public GameObject CreataFieldOfView(Transform detector, Vector3 pos, float angel, float distance) {
@@ -53,7 +54,7 @@ public class Scanner
         // remove all element in list detect
         listHit.RemoveAll(el => true);
 
-        int rayCount = 25;
+        int rayCount = 20;
         float angelIncrease = fov/rayCount;
 
         //init vetex, uv, triangle
@@ -122,8 +123,7 @@ public class Scanner
     }
 
     private void ScanTarget(Ray origin, float range) {
-        RaycastHit hit;
-        Vector3 end = origin.GetPoint(range - 0.5f);
+        Vector3 end = origin.GetPoint(range - 0.2f);
         if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
             listHit.Add(hit);
         }
@@ -131,10 +131,9 @@ public class Scanner
 
     private void ScanSubTarget(Ray origin, float range, ref bool detected) {
         if(!detected) {
-            RaycastHit hit;
-            Vector3 end = origin.GetPoint(range - 0.5f);
-            if(Physics.Linecast(origin.origin, end, out hit, layerMaskSubTarget)) {
-                OnDetectedSubTarget?.Invoke(hit.transform);
+            Vector3 end = origin.GetPoint(range - 0.2f);
+            if(Physics.Linecast(origin.origin, end, out subHit, layerMaskSubTarget)) {
+                OnDetectedSubTarget?.Invoke(subHit.transform);
                 detected = true;
             }
         }

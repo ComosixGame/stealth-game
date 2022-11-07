@@ -313,6 +313,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02980306be3cd488c4e2c5d382a73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 4988626363445820128}
+  animator: {fileID: 4988626363445820157}
+  enemyDamageable: {fileID: 3850796471431535569}
   enemy: {fileID: 11400000, guid: 2741201b7ebcf66458c361f3b6d8c5bd, type: 2}
   rootScanner: {fileID: 5330644504181789907}
   aimLayer: {fileID: 5330644503871557453}
@@ -384,6 +387,7 @@ MonoBehaviour:
   volumeScale: 0.3
   DestroyedBody: {fileID: 2250050854710427473, guid: 0a2c5aa1e46896640b483dab86f978e3, type: 3}
   Currency: {fileID: 2471891991449476953, guid: b83805c6c22b0c348993074b9962a435, type: 3}
+  gunHolder: {fileID: 5330644503846150502}
   healthBarRennder:
     healthBar: {fileID: 2422146739253776180, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
     offset: 3.5

@@ -36,7 +36,6 @@ public class OpenDoor : Command
 
     private void Start() {
         orginPos = door.position;
-        GetComponent<Collider>().isTrigger = true;
     }
     private void Update() {
         if(unLocked) {

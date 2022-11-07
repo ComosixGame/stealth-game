@@ -27,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     }
     void Start()
     {
+        Application.targetFrameRate = 60;
         InitGame();
     }
     

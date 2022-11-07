@@ -4,14 +4,16 @@ using UnityEngine;
 public class CollectItems : MonoBehaviour
 {
     public LayerMask layer;
-    private void Start() {
+    private Transform itemTrans;
+    private GameObject item;
+    private void Awake() {
         GetComponent<Collider>().isTrigger = true;
     }
 
     private void OnTriggerStay(Collider other) {
-        GameObject item = other.gameObject;
+        item = other.gameObject;
         if((layer & (1 << item.layer)) != 0) {
-            Transform itemTrans = item.transform;
+            itemTrans = item.transform;
             itemTrans.position = Vector3.Lerp(itemTrans.position, transform.position, 3f * Time.deltaTime);
         }
     }

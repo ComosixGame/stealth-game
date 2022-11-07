@@ -72,6 +72,12 @@ public class LoadScene : MonoBehaviour
         }
     }
 
+    IEnumerator delayLoading() {
+        LoadingScreen.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        LoadingScreen.SetActive(false);
+    }
+
     private void InitGame(AsyncOperation asyncOperation) {
         gameManager.InitGame();
     }

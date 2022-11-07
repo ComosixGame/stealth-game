@@ -8,6 +8,7 @@ namespace Unity.Services.Mediation
 {
     public class BannerAds : MonoBehaviour
     {
+        public Text text;
         [Header("Ad Unit Ids"), Tooltip("Android Ad Unit Ids")]
         public string androidAdUnitId;
         [Tooltip("iOS Ad Unit Ids")]
@@ -115,6 +116,7 @@ namespace Unity.Services.Mediation
         {
             Debug.Log("Failed to load ad");
             Debug.Log(e.Message);
+            text.text = e.Message;
         }
 
         void ImpressionEvent(object sender, ImpressionEventArgs args)

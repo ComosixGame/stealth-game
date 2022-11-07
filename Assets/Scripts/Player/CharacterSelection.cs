@@ -11,6 +11,8 @@ public class CharacterSelection : MonoBehaviour
     public  CinemachineFreeLook cinemachineFreeLook;
     public bool debugMode;
     private GameObject player;
+    private PlayerAttack playerAttack;
+    private Transform playerTransform;
     [HideInInspector] public GameObject debugCharacter;
     [HideInInspector] public Mesh debugMesh;
 
@@ -21,18 +23,21 @@ public class CharacterSelection : MonoBehaviour
         int selectedCharacter = playerData.selectedCharacter;
         if(debugMode) {
             player = Instantiate(debugCharacter, transform.position, transform.rotation);
-            player.transform.SetParent(transform);
+            playerTransform = player.transform;
+            playerTransform.SetParent(transform);
         } else {
             GameObject character = equipmentManager.Characters[selectedCharacter].character;
             player = Instantiate(character, transform.position, transform.rotation);
+            playerTransform = player.transform;
+            playerAttack = player.GetComponent<PlayerAttack>();
             int selectedWeapon = playerData.selectedWeapon;
             GameObject weapon = equipmentManager.Weapons[selectedWeapon].weapon;
-            player.GetComponent<PlayerAttack>().weapon = weapon;
-            player.transform.SetParent(transform);
+            playerAttack.weapon = weapon;
+            playerTransform.SetParent(transform);
         }
 
-        cinemachineFreeLook.LookAt = player.transform;
-        cinemachineFreeLook.Follow = player.transform;
+        cinemachineFreeLook.LookAt = playerTransform;
+        cinemachineFreeLook.Follow = playerTransform;
 
         player.GetComponent<PlayerController>().joystickRectTrans = joyStick;
     }
