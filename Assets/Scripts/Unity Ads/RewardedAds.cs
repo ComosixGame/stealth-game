@@ -40,9 +40,7 @@ namespace Unity.Services.Mediation
         {
             try
             {
-                Debug.Log("Initializing...");
                 await UnityServices.InitializeAsync();
-                Debug.Log("Initialized!");
                 InitializationComplete();
             }
             catch (Exception e)
@@ -65,7 +63,6 @@ namespace Unity.Services.Mediation
                     RewardedAdShowOptions showOptions = new RewardedAdShowOptions();
                     showOptions.AutoReload = true;
                     await m_RewardedAd.ShowAsync(showOptions);
-                    Debug.Log("Rewarded Shown!");
                 }
                 catch (ShowFailedException e)
                 {
@@ -143,7 +140,6 @@ namespace Unity.Services.Mediation
             m_RewardedAd.OnClosed += AdClosed;
 
             if(loadAdsOnAwake) {
-                Debug.Log($"Initialized On Start. Loading Ad...");
                 LoadAd();
             }
         }
@@ -155,7 +151,6 @@ namespace Unity.Services.Mediation
             {
                 initializationError = initializeFailedException.initializationError;
             }
-            Debug.Log($"Initialization Failed: {initializationError}:{error.Message}");
         }
 
         void UserRewarded(object sender, RewardEventArgs e)
@@ -163,12 +158,10 @@ namespace Unity.Services.Mediation
             switch(typeReward) {
                 case TypeReward.Double:
                     int moneyCollected = gameManager.moneyCollected;
-                    gameManager.UpdateCurrency(moneyCollected);
-                    gameManager.SavePlayerData();
+                    gameManager.UpdateCurrency(moneyCollected, true);
                     break;
                 case TypeReward.Plus:
-                    gameManager.UpdateCurrency(pointReward);
-                    gameManager.SavePlayerData();
+                    gameManager.UpdateCurrency(pointReward, true);
                     break;
                 default:
                     break;
@@ -179,19 +172,16 @@ namespace Unity.Services.Mediation
 
         void AdClosed(object sender, EventArgs args)
         {
-            Debug.Log("Rewarded Closed! Loading Ad...");
             OnAdLoadClose?.Invoke();
         }
 
         void AdLoaded(object sender, EventArgs e)
         {
-            Debug.Log("Ad loaded");
             OnAdLoaded?.Invoke();
         }
 
         void AdFailedLoad(object sender, LoadErrorEventArgs e)
         {
-            Debug.Log("Failed to load ad");
             Debug.Log(e.Message);
             OnAdFailedLoad?.Invoke(e.Message);
         }

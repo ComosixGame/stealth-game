@@ -1,9 +1,14 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Unity.Services.Mediation;
+using TMPro;
 public class UIMenu : MonoBehaviour
 {
     public GameObject header, pauseMenu, winMenu, loseMenu, rewardAds;
+    public Slider resSliderScale;
+    public Toggle fps30, fps60, mute;
+    public TextMeshProUGUI resSliderText, warningText;
     public InterstitialAds interstitialAds;
     public float volumeScale;
     private GameManager gameManager;
@@ -23,6 +28,27 @@ public class UIMenu : MonoBehaviour
 
     private void OnEnable() {
         gameManager.OnEndGame.AddListener(OnEndGame);
+        resSliderScale.onValueChanged.AddListener(SetScaleRes);
+        fps30.onValueChanged.AddListener(onValueChangedFps30);
+        fps60.onValueChanged.AddListener(onValueChangedFps60);
+        mute.onValueChanged.AddListener(MuteGame);
+    }
+
+    private void Start() {
+        resSliderScale.value = gameManager.settingData.resolutionScale * 10;
+        float fps = gameManager.settingData.fps;
+        fps30.isOn = fps == 30;
+        fps60.isOn = fps == 60;
+        mute.isOn = gameManager.settingData.mute;
+        
+        warningText.gameObject.SetActive(false);
+    }
+
+    private void OnDisable() {
+        resSliderScale.onValueChanged.RemoveListener(SetScaleRes);
+        mute.onValueChanged.RemoveListener(MuteGame);
+        fps30.onValueChanged.RemoveListener(onValueChangedFps30);
+        fps60.onValueChanged.RemoveListener(onValueChangedFps60);
     }
 
     public void StartGame() {
@@ -56,6 +82,38 @@ public class UIMenu : MonoBehaviour
         Application.Quit();
     }
 
+    private void SetScaleRes(float value) {
+        float scale = value/10;
+        if(gameManager.settingData.resolutionScale != scale) {
+            warningText.gameObject.SetActive(true);
+            gameManager.settingData.resolutionScale = scale;
+            gameManager.settingData.Save();
+        }
+        resSliderText.text = "Resolution scale:" + scale.ToString();
+    }
+
+    private void onValueChangedFps30(bool check) {
+        if(check) {
+            if(gameManager.settingData.fps != 30) {
+                warningText.gameObject.SetActive(true);
+                gameManager.settingData.fps = 30;
+                fps60.isOn = false;
+                gameManager.settingData.Save();
+            }
+        }
+    }
+
+    private void onValueChangedFps60(bool check) {
+        if(check) {
+            if(gameManager.settingData.fps != 60) {
+                warningText.gameObject.SetActive(true);
+                gameManager.settingData.fps = 60;
+                fps30.isOn = false;
+                gameManager.settingData.Save();
+            }
+        }
+    }
+    
     private void OnEndGame(bool win) {
         header.SetActive(false);
         rewardAds.SetActive(!rewardAdsFailed);
@@ -72,6 +130,7 @@ public class UIMenu : MonoBehaviour
     private void OnRewardAdsFailed(string message) {
         rewardAdsFailed = true;
     }
+    
     
     IEnumerator ShowEndMenu() {
         yield return new WaitForSeconds(0.3f);

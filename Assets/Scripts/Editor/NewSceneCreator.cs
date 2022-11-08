@@ -3,6 +3,10 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
+namespace Tenthunghiem
+{
+    
+}
 
 public class NewSceneCreator : EditorWindow {
 

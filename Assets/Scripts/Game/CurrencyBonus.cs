@@ -11,27 +11,28 @@ public class CurrencyBonus : MonoBehaviour
     private Rigidbody rb;
     private GameManager gameManager;
     private SoundManager soundManager;
+    private MoneyPooler moneyPooler;
 
     private void Awake() {
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
+        moneyPooler = MoneyPooler.Instance;
         rb = GetComponent<Rigidbody>();
     }
     // Start is called before the first frame update
-    void Start()
-    {
+    private void OnEnable() {
         Vector3 dir = Random.insideUnitSphere.normalized;
         rb.AddForce(dir * 8f, ForceMode.Impulse);
     }
 
     private void OnTriggerEnter(Collider other) {
         if((layer & (1 << other.gameObject.layer)) != 0) {
-            Destroy(gameObject);
+            moneyPooler.InactiveMoney(gameObject);
             soundManager.PlayOneShot(audioClip, volumeScale);
         } 
     }
 
-    private void OnDestroy() {
+    private void OnDisable() {
         gameManager.UpdateCurrency(point);
     }
 }

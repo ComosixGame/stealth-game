@@ -12,7 +12,10 @@ public class BackgroundMusic : MonoBehaviour
         soundManager = SoundManager.Instance;
         gameManager = GameManager.Instance;
         audioSource = GetComponent<AudioSource>();
-        audioSource.mute = SettingData.Load().mute;
+    }
+
+    private void Start() {
+        audioSource.mute =  gameManager.settingData.mute;
     }
 
     private void OnEnable() {

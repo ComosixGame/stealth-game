@@ -21,9 +21,7 @@ namespace Unity.Services.Mediation
         {
             try
             {
-                Debug.Log("Initializing...");
                 await UnityServices.InitializeAsync();
-                Debug.Log("Initialized!");
                 InitializationComplete();
             }
             catch (Exception e)
@@ -46,7 +44,6 @@ namespace Unity.Services.Mediation
                     InterstitialAdShowOptions showOptions = new InterstitialAdShowOptions();
                     showOptions.AutoReload = true;
                     await m_InterstitialAd.ShowAsync(showOptions);
-                    Debug.Log("Interstitial Shown!");
                 }
                 catch (ShowFailedException e)
                 {
@@ -81,11 +78,6 @@ namespace Unity.Services.Mediation
                 case RuntimePlatform.IPhonePlayer:
                     m_InterstitialAd = MediationService.Instance.CreateInterstitialAd(iosAdUnitId);
                     break;
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.OSXEditor:
-                case RuntimePlatform.LinuxEditor:
-                    m_InterstitialAd = MediationService.Instance.CreateInterstitialAd(!string.IsNullOrEmpty(androidAdUnitId) ? androidAdUnitId : iosAdUnitId);
-                    break;
                 default:
                     Debug.LogWarning("Mediation service is not available for this platform:" + Application.platform);
                     return;
@@ -97,8 +89,6 @@ namespace Unity.Services.Mediation
 
             // Show Events
             m_InterstitialAd.OnClosed += AdClosed;
-
-            Debug.Log("Initialized On Start! Loading Ad...");
             LoadAd();
         }
 
@@ -114,17 +104,16 @@ namespace Unity.Services.Mediation
 
         void AdClosed(object sender, EventArgs args)
         {
-            Debug.Log("Interstitial Closed! Loading Ad...");
+
         }
 
         void AdLoaded(object sender, EventArgs e)
         {
-            Debug.Log("Ad loaded");
+
         }
 
         void AdFailedLoad(object sender, LoadErrorEventArgs e)
         {
-            Debug.Log("Failed to load ad");
             Debug.Log(e.Message);
         }
 

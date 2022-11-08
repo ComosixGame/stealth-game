@@ -15,8 +15,9 @@ public class PlayerController : MonoBehaviour
     private float fallingVelocity;
     private Animator animator;
     private int velocityHash;
-    private bool isStart, isPause;
+    private bool isStart, isPause, isAttack;
     private GameManager gameManager;
+    private PlayerAttack playerAttack;
     
     private void Awake() {
         //init input system
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
         //get component
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        playerAttack = GetComponent<PlayerAttack>();
         velocityHash = Animator.StringToHash("Velocity");
 
         gameManager = GameManager.Instance;
@@ -44,6 +46,9 @@ public class PlayerController : MonoBehaviour
         gameManager.OnPause.AddListener(OnPauseGame);
         gameManager.OnResume.AddListener(OnResumeGame);
         gameManager.OnEndGame.AddListener(OnEndGame);
+
+        playerAttack.OnAttack += OnAttack;
+
     }
     // Start is called before the first frame update
     void Start()
@@ -71,6 +76,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void RotationLook() {
+        if(isAttack) return;
         if(dirMove != Vector3.zero) {
             Quaternion rotLook = Quaternion.LookRotation(dirMove);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, 20f * Time.deltaTime);
@@ -137,6 +143,10 @@ public class PlayerController : MonoBehaviour
         isPause = true;
     }
 
+    private void OnAttack(bool attack) {
+        isAttack = attack;
+    }
+
     private void OnDisable() {
         inputs.PlayerControl.Disable();
         // unsubscribe active input
@@ -149,6 +159,9 @@ public class PlayerController : MonoBehaviour
         gameManager.OnPause.RemoveListener(OnPauseGame);
         gameManager.OnResume.RemoveListener(OnResumeGame);
         gameManager.OnEndGame.RemoveListener(OnEndGame);
+
+        playerAttack.OnAttack -= OnAttack;
+
 
     }
 }

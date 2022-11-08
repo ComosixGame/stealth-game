@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Scanner scanner = new Scanner();
     private Animator animator;
     private bool readyAttack;
+    public event Action<bool> OnAttack;
 
 
     private void Awake() {
@@ -41,11 +43,13 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void HandleNotDetectedTarget() {
+        OnAttack?.Invoke(false);
         readyAttack = false;
         rigAimLayer.weight = rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, -0.1f, 20f * Time.deltaTime);
     }
 
     private void HandleDetectedTarget(List<RaycastHit> listHit) {
+        OnAttack?.Invoke(true);
         Transform hitTransform = scanner.DetectSingleTarget(listHit);
         Vector3 dirLook = hitTransform.position - transform.position;
         dirLook.y = 0;

@@ -79,9 +79,13 @@ public class PlayerData
 public class SettingData
 {
     public bool mute;
+    public float resolutionScale;
+    public int fps;
 
     public SettingData() {
         mute = false;
+        resolutionScale = 0.5f;
+        fps = 60;
     }
     
     public static SettingData Load() {

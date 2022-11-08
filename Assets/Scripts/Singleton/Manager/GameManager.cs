@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
     private float healthPlayer;
     public int moneyCollected {get; private set;}
     private PlayerData playerData;
+    public SettingData settingData;
     private bool isWin, isEnd;
     private Coroutine coroutine;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
@@ -24,10 +25,11 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake() {
         base.Awake();
         playerData = PlayerData.Load();
+        settingData = SettingData.Load();
     }
     void Start()
     {
-        Application.targetFrameRate = 60;
+        SetGraphics();
         InitGame();
     }
     
@@ -36,11 +38,14 @@ public class GameManager : Singleton<GameManager>
         OnUpdateHealthPlayer?.Invoke(healthPlayer);
     }
 
-    public void UpdateCurrency(int point) {
+    public void UpdateCurrency(int point, bool save = false) {
         if(isEnd) return;
         moneyCollected += point;
         playerData.money += point;
         OnUpdateMoney?.Invoke(playerData.money, moneyCollected);
+        if(save) {
+            playerData.Save();
+        }
     }
 
     public void EnemyTriggerAlert(Vector3 pos, float time) {
@@ -129,13 +134,20 @@ public class GameManager : Singleton<GameManager>
         return false;
     }
 
-    public void SavePlayerData() {
-        playerData.Save();
-    }
-
     IEnumerator StartAlert(float time) {
         yield return new WaitForSeconds(time);
         OnEnemyAlertOff?.Invoke();
+    }
+
+    private void SetGraphics() {
+        float resolutionScale = settingData.resolutionScale;
+        float xx = Screen.width;
+        float yy = Screen.height;
+        int w = (int)(xx * resolutionScale);
+        int h = (int)(yy * resolutionScale);
+        Screen.SetResolution(w, h, true);
+        Camera.main.aspect = xx / yy;
+        Application.targetFrameRate = settingData.fps;
     }
 
 }

@@ -30,9 +30,7 @@ namespace Unity.Services.Mediation
         {
             try
             {
-                Debug.Log("Initializing...");
                 await UnityServices.InitializeAsync(GetGameId());
-                Debug.Log("Initialized!");
 
                 InitializationComplete();
             }
@@ -80,17 +78,10 @@ namespace Unity.Services.Mediation
                 case RuntimePlatform.IPhonePlayer:
                     m_BannerAd = MediationService.Instance.CreateBannerAd(iosAdUnitId, bannerAdSize, bannerAdAnchor);
                     break;
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.OSXEditor:
-                case RuntimePlatform.LinuxEditor:
-                    m_BannerAd = MediationService.Instance.CreateBannerAd(!string.IsNullOrEmpty(androidAdUnitId) ? androidAdUnitId : iosAdUnitId, bannerAdSize, bannerAdAnchor);
-                    break;
                 default:
                     Debug.LogWarning("Mediation service is not available for this platform:" + Application.platform);
                     return;
             }
-
-            Debug.Log("Initialized On Start! Loading banner Ad...");
             LoadAd();
         }
 
@@ -109,12 +100,11 @@ namespace Unity.Services.Mediation
 
         void AdLoaded()
         {
-            Debug.Log("Ad loaded");
+
         }
 
         void AdFailedLoad(LoadFailedException e)
         {
-            Debug.Log("Failed to load ad");
             Debug.Log(e.Message);
             text.text = e.Message;
         }

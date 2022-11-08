@@ -5,18 +5,20 @@ using UnityEngine.Events;
 public class SoundManager : Singleton<SoundManager>
 {
     private AudioSource audioSource;
-    private SettingData settingData;
     public UnityEvent<bool> OnMute = new UnityEvent<bool>();
+    private GameManager gameManager;
+    private bool isMute;
 
     protected override void Awake()
     {
         base.Awake();
-        settingData = SettingData.Load();
+        gameManager = GameManager.Instance;
         audioSource = GetComponent<AudioSource>();
     }
 
     private void Start() {
-        audioSource.mute = settingData.mute;
+        isMute = gameManager.settingData.mute;
+        audioSource.mute = isMute;
     }
 
 
@@ -26,14 +28,15 @@ public class SoundManager : Singleton<SoundManager>
 
     public AudioSource AddAudioSource(GameObject parent) {
         AudioSource audioSource = parent.AddComponent<AudioSource>();
-        audioSource.mute = settingData.mute;
+        audioSource.mute = isMute;
         return audioSource;
     }
 
     public void MuteGame(bool mute) {
-        settingData.mute = mute;
-        settingData.Save();
+        isMute =  mute;
         audioSource.mute = mute;
+        gameManager.settingData.mute = mute;
+        gameManager.settingData.Save();
         OnMute?.Invoke(mute);
     }
 }
