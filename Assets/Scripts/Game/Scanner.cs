@@ -123,7 +123,7 @@ public class Scanner
     }
 
     private void ScanTarget(Ray origin, float range) {
-        Vector3 end = origin.GetPoint(range - 0.2f);
+        Vector3 end = origin.GetPoint(range - 0.5f);
         if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
             listHit.Add(hit);
         }
@@ -131,7 +131,7 @@ public class Scanner
 
     private void ScanSubTarget(Ray origin, float range, ref bool detected) {
         if(!detected) {
-            Vector3 end = origin.GetPoint(range - 0.2f);
+            Vector3 end = origin.GetPoint(range - 0.5f);
             if(Physics.Linecast(origin.origin, end, out subHit, layerMaskSubTarget)) {
                 OnDetectedSubTarget?.Invoke(subHit.transform);
                 detected = true;

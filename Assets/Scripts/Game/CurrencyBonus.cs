@@ -11,12 +11,12 @@ public class CurrencyBonus : MonoBehaviour
     private Rigidbody rb;
     private GameManager gameManager;
     private SoundManager soundManager;
-    private MoneyPooler moneyPooler;
+    private ObjectPooler objectPooler;
 
     private void Awake() {
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
-        moneyPooler = MoneyPooler.Instance;
+        objectPooler = ObjectPooler.Instance;
         rb = GetComponent<Rigidbody>();
     }
     // Start is called before the first frame update
@@ -27,7 +27,7 @@ public class CurrencyBonus : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if((layer & (1 << other.gameObject.layer)) != 0) {
-            moneyPooler.InactiveMoney(gameObject);
+            objectPooler.InactiveObject("Money", gameObject);
             soundManager.PlayOneShot(audioClip, volumeScale);
         } 
     }

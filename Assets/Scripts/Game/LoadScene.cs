@@ -16,10 +16,12 @@ public class LoadScene : MonoBehaviour
     private AsyncOperation operation;
     private int levelIndex;
     private GameManager gameManager;
+    private ObjectPooler objectPooler;
 
     private void Awake() {
         levelIndex = SceneManager.GetActiveScene().buildIndex;
         gameManager = GameManager.Instance;
+        objectPooler = ObjectPooler.Instance;
     }
 
     private void OnEnable() {
@@ -80,6 +82,7 @@ public class LoadScene : MonoBehaviour
 
     private void InitGame(AsyncOperation asyncOperation) {
         gameManager.InitGame();
+        objectPooler.ResetObjectPooler();
     }
 
     private void OnEndGame(bool isWin) {

@@ -78,6 +78,11 @@ namespace Unity.Services.Mediation
                 case RuntimePlatform.IPhonePlayer:
                     m_InterstitialAd = MediationService.Instance.CreateInterstitialAd(iosAdUnitId);
                     break;
+                case RuntimePlatform.WindowsEditor:
+                case RuntimePlatform.OSXEditor:
+                case RuntimePlatform.LinuxEditor:
+                    m_InterstitialAd = MediationService.Instance.CreateInterstitialAd(!string.IsNullOrEmpty(androidAdUnitId) ? androidAdUnitId : iosAdUnitId);
+                    break;
                 default:
                     Debug.LogWarning("Mediation service is not available for this platform:" + Application.platform);
                     return;

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -11,19 +12,20 @@ public class Bullet : MonoBehaviour
     private float damage;
     private float force;
     private LayerMask layerMask;
+    private ObjectPooler objectPooler;
     private void Awake() {
+        objectPooler = ObjectPooler.Instance;
         bulletRigidbody = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate() {
         if(triggered) {
             FireBullet();
-            Destroy(gameObject, 10f);
         }
     }
     
     private void OnCollisionEnter(Collision other) {
-        Destroy(gameObject);
+        objectPooler.InactiveObject("Bullet", gameObject);
         ContactPoint contact = other.GetContact(0);
         if((layerMask & (1 << other.gameObject.layer)) != 0) {
             Damageable damageable =  other.transform.GetComponentInParent<Damageable>();
@@ -54,5 +56,15 @@ public class Bullet : MonoBehaviour
         force = _force;
         layerMask = _layerMask;
         triggered = true;
+        StartCoroutine(StartInactive());
     }
-}
+
+    private void OnDestroy() {
+        Debug.Log("12");
+    }
+
+    IEnumerator StartInactive() {
+        yield return new WaitForSeconds(10f);
+        objectPooler.InactiveObject("Bullet",gameObject);
+    }
+ }

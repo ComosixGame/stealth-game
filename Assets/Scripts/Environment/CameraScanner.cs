@@ -14,7 +14,6 @@ public class CameraScanner : MonoBehaviour
     public Transform rootScanner, Camera;
     public float range, speed, idleTime;
     [HideInInspector] public float alertTime;
-    [HideInInspector] public GameObject bullet;
     [HideInInspector] public Transform shootPositon;
     [HideInInspector] public ParticleSystem shotEffect;
     [HideInInspector] public float damage;
@@ -32,10 +31,12 @@ public class CameraScanner : MonoBehaviour
     private AudioSource audioSource;
     private GameManager gameManager;
     private SoundManager soundManager;
+    private ObjectPooler objectPooler;
 
     private void Awake() {
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
+        objectPooler = ObjectPooler.Instance;
 
     }
 
@@ -102,7 +103,7 @@ public class CameraScanner : MonoBehaviour
             if(Time.time >= timeNextAttack) {
                 Vector3 dir = targetLookAt -  shootPositon.position;
                 dir.y += 2;
-                GameObject c_bullet = Instantiate(bullet, shootPositon.position, shootPositon.rotation);
+                GameObject c_bullet = objectPooler.SpawnObject("Bullet", shootPositon.position, shootPositon.rotation);
                 shotEffect.Play();
                 c_bullet.layer = LayerMask.NameToLayer("FromEnemy");
                 c_bullet.GetComponent<Bullet>().TriggerFireBullet(dir.normalized, speedBullet, damage, 100, scanner.layerMaskTarget);
@@ -247,13 +248,6 @@ public class CameraScanner : MonoBehaviour
             }
 
             if(cam.typemode == Typemode.Turret) {
-                EditorGUI.BeginChangeCheck();
-                GameObject bullet = EditorGUILayout.ObjectField("Bullet", cam.bullet, typeof(GameObject), true) as GameObject;
-                if(EditorGUI.EndChangeCheck()) {
-                    Undo.RecordObject(cam, "Update bullet");
-                    cam.bullet = bullet;
-                    EditorUtility.SetDirty(cam);
-                }
                 EditorGUI.BeginChangeCheck();
                 Transform shootPositon = EditorGUILayout.ObjectField("Shoot Positon", cam.shootPositon, typeof(Transform), true) as Transform;
                 if(EditorGUI.EndChangeCheck()) {

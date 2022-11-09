@@ -14,11 +14,11 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     private bool isDead;
     public UnityEvent<Vector3> OnTakeDamge;
     private SoundManager soundManager;
-    private MoneyPooler moneyPooler;
+    private ObjectPooler objectPooler;
 
     private void Awake() {
         soundManager = SoundManager.Instance;
-        moneyPooler = MoneyPooler.Instance;
+        objectPooler = ObjectPooler.Instance;
     }
 
     private void LateUpdate() {
@@ -41,7 +41,7 @@ public class EnemyDamageable : MonoBehaviour, Damageable
 
             // rớt tiền thưởng
             while(_coinBonus > 0) {
-                moneyPooler.SpawnMoney(transform.position, transform.rotation);
+                objectPooler.SpawnObject("Money", transform.position, transform.rotation);
                 _coinBonus--;
             }
         

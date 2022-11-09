@@ -3073,7 +3073,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2.7
-  m_Radius: 0.6
+  m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -3089,7 +3089,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.6
+  m_Radius: 0.5
   m_Height: 2.7
   m_Direction: 1
   m_Center: {x: 0, y: 1.33, z: 0}
@@ -3109,8 +3109,8 @@ MonoBehaviour:
   weaponHolder: {fileID: 8353418176104301339}
   rootScanner: {fileID: 8353418176305477295}
   rigAimLayer: {fileID: 8353418175995014449}
-  range: 5
-  angel: 200
+  range: 6
+  angel: 120
   scanner:
     layerMaskTarget:
       serializedVersion: 2
@@ -3122,8 +3122,8 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     materialFieldOfView: {fileID: 2100000, guid: 81386c28759227d42b3feed099b8a1ab, type: 2}
-    color: {r: 1, g: 1, b: 1, a: 0}
-    colorWhenDecteced: {r: 1, g: 1, b: 1, a: 0}
+    color: {r: 0, g: 0.3773585, b: 0.02219758, a: 0.39215687}
+    colorWhenDecteced: {r: 0, g: 0.3764706, b: 0.023529412, a: 0.39215687}
     OnDetectedTarget:
       m_PersistentCalls:
         m_Calls: []
@@ -3163,7 +3163,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: acae9fece4d79f9498f8815731ddb7b4, type: 3}
   deathAudioClip: {fileID: 8300000, guid: 0a1e37d2320c1b2459842447e3faded7, type: 3}
   volumeScale: 0.3
-  health: 10
+  health: 999
   DestroyedBody: {fileID: 2250050854710427473, guid: 1d419c40832550c4681cd2541317a720, type: 3}
   healthBarRennder:
     healthBar: {fileID: 2422146739253776180, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
