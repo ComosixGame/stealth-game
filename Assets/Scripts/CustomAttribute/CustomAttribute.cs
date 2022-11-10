@@ -25,5 +25,28 @@ namespace MyCustomAttribute
         }
 
     }
+
+    public class LabelAttribute : PropertyAttribute { 
+        public readonly string Label;
+        public LabelAttribute(string label) {
+            Label = label;
+        }
+    }
+
+    [CustomPropertyDrawer( typeof( LabelAttribute ) )]
+    public class LabelDrawer : PropertyDrawer {
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            // accounts for foldouts on serialized classes
+            return EditorGUI.GetPropertyHeight(property, label, true);
+        }
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            LabelAttribute labelAttribute = attribute as LabelAttribute;
+            EditorGUI.PropertyField(position, property, new GUIContent(labelAttribute.Label), true);
+        }
+
+    }
 }
 #endif

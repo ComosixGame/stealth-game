@@ -209,7 +209,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
             aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 20f * Time.deltaTime);
             if(aimLayer.weight == 1 && !readyAttack) {
-                StartCoroutine(WaitForReadyAttack());
+                Invoke("WaitForReadyAttack", 0.1f);
             }
             if(readyAttack) {
                 IdleTimer += Time.deltaTime;
@@ -350,8 +350,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         }
     }
 
-    IEnumerator WaitForReadyAttack() {
-        yield return new WaitForSeconds(0.1f);
+    private void WaitForReadyAttack() {
         readyAttack = true;
     }
 

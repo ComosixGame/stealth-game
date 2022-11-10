@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Services.Mediation;
 using TMPro;
 public class UIMenu : MonoBehaviour
 {
@@ -9,7 +8,6 @@ public class UIMenu : MonoBehaviour
     public Slider resSliderScale;
     public Toggle fps30, fps60, mute;
     public TextMeshProUGUI resSliderText, warningText;
-    public InterstitialAds interstitialAds;
     public float volumeScale;
     private GameManager gameManager;
     private Animator animator;
@@ -124,21 +122,17 @@ public class UIMenu : MonoBehaviour
             loseMenu.SetActive(true);
         }
         Time.timeScale = 0.3f;
-        StartCoroutine(ShowEndMenu());
+        Invoke("ShowEndMenu", 0.3f);
     }
 
-    private void OnRewardAdsFailed(string message) {
+    public void OnRewardAdsFailed() {
         rewardAdsFailed = true;
     }
     
     
-    IEnumerator ShowEndMenu() {
-        yield return new WaitForSeconds(0.3f);
+    private void ShowEndMenu() {
         animator.SetTrigger(OpenMenuHash);
         Time.timeScale = 1;
-        if(!isWin) {
-            interstitialAds.ShowInterstitial();
-        }
     }
     
 }

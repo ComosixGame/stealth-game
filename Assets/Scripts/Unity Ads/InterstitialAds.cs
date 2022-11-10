@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using Unity.Services.Core;
 using System.Threading.Tasks;
 
@@ -14,8 +15,12 @@ namespace Unity.Services.Mediation
         public string androidAdUnitId;
         [Tooltip("Ad Unit Ids for each platform that represent Mediation waterfalls.")]
         public string iosAdUnitId;
+        public UnityEvent OnAdFailedLoad;
+        public UnityEvent ResetLevelWithAdsFailed;
+        public UnityEvent OnCloseAds;
 
         IInterstitialAd m_InterstitialAd;
+        private bool loadFailed;
 
         async void Start()
         {
@@ -49,6 +54,14 @@ namespace Unity.Services.Mediation
                 {
                     Debug.Log($"Interstitial failed to show : {e.Message}");
                 }
+            }
+        }
+
+        public void ResetLevelWithAds() {
+            if(loadFailed) {
+                ResetLevelWithAdsFailed?.Invoke();
+            } else {
+                ShowInterstitial();
             }
         }
 
@@ -105,11 +118,12 @@ namespace Unity.Services.Mediation
                 initializationError = initializeFailedException.initializationError;
             }
             Debug.Log($"Initialization Failed: {initializationError}:{error.Message}");
+            loadFailed = true;
         }
 
         void AdClosed(object sender, EventArgs args)
         {
-
+            OnCloseAds?.Invoke();
         }
 
         void AdLoaded(object sender, EventArgs e)
@@ -119,6 +133,8 @@ namespace Unity.Services.Mediation
 
         void AdFailedLoad(object sender, LoadErrorEventArgs e)
         {
+            loadFailed = true;
+            OnAdFailedLoad?.Invoke();
             Debug.Log(e.Message);
         }
 

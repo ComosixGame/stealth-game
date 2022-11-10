@@ -32,15 +32,11 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
         }
     }
 
-    public void TakeDamge(Vector3 hitPoint, Vector3 force, float damage = 0)
+    public void TakeDamge(Vector3 hitPoint, Vector3 force, float damage)
     {
         if(!destroyed) {
             soundManager.PlayOneShot(audioClip, volumeScale);
             timeDelay = Time.time + 2;
-            //tính hướng tác động
-            Vector3 dirForce = transform.position - hitPoint;
-            dirForce.y = 0;
-            dirForce.Normalize();
 
             foreach(Rigidbody rigidbody in rigidbodies) {
                 float f = force.magnitude / Vector3.Distance(rigidbody.position, hitPoint);

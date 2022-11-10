@@ -54,7 +54,6 @@ MonoBehaviour:
   OnAttack:
     m_PersistentCalls:
       m_Calls: []
-  _bullet: {fileID: 5481131208548253871, guid: 555901a3f5c276440818685f504ce4dd, type: 3}
   shootPositon: {fileID: 4907229106193602554}
   shotEffect: {fileID: 1558902718190618047}
   speedBullet: 40
@@ -126,6 +125,10 @@ PrefabInstance:
     - target: {fileID: 260074564958471125, guid: 4d977615c639a9e4083d932fe63e36cf, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 260074564958471144, guid: 4d977615c639a9e4083d932fe63e36cf, type: 3}
+      propertyPath: cameraShake.enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 260074564958471147, guid: 4d977615c639a9e4083d932fe63e36cf, type: 3}
       propertyPath: m_RootOrder
@@ -207,7 +210,8 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 260074564958471144, guid: 4d977615c639a9e4083d932fe63e36cf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4d977615c639a9e4083d932fe63e36cf, type: 3}
 --- !u!4 &1558902718190617985 stripped
 Transform:

@@ -56,7 +56,8 @@ public class PlayerAttack : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(dirLook.normalized);
         rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, 1.1f, 20f * Time.deltaTime);
         if(rigAimLayer.weight == 1 && !readyAttack) {
-            StartCoroutine(WaitForReadyAttack());
+            Invoke("WaitForReadyAttack", 0.1f);
+
         }
         if(readyAttack) {
             playerWeapon.Attack(hitTransform, scanner.layerMaskTarget, "FromPlayer");
@@ -68,8 +69,7 @@ public class PlayerAttack : MonoBehaviour
         scanner.OnNotDetectedTarget.RemoveListener(HandleNotDetectedTarget);
     }
 
-    IEnumerator WaitForReadyAttack() {
-        yield return new WaitForSeconds(0.1f);
+    private void WaitForReadyAttack() {
         readyAttack = true;
     }
 

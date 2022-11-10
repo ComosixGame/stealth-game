@@ -33,7 +33,7 @@ public class BackgroundMusic : MonoBehaviour
         } else {
             audioSource.clip = audioLose;
         }
-        StartCoroutine(PlayAudioEndGame());
+        Invoke("PlayAudioEndGame", 0.3f);
     }
 
     private void OnDisable() {
@@ -41,8 +41,7 @@ public class BackgroundMusic : MonoBehaviour
         gameManager.OnEndGame.RemoveListener(OnEndGame);
     }
 
-    IEnumerator PlayAudioEndGame() {
-        yield return new WaitForSeconds(0.3f);
+    private void PlayAudioEndGame() {
         audioSource.Play();
     }
 }

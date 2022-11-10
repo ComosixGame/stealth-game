@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
         }
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
-            ObstacleDamageable damageable = other.transform.GetComponentInParent<ObstacleDamageable>();
+            Damageable damageable = other.transform.GetComponentInParent<ObstacleDamageable>();
             damageable.TakeDamge(contact.point, dir * 15);
         }
     }
@@ -57,10 +57,6 @@ public class Bullet : MonoBehaviour
         layerMask = _layerMask;
         triggered = true;
         StartCoroutine(StartInactive());
-    }
-
-    private void OnDestroy() {
-        Debug.Log("12");
     }
 
     IEnumerator StartInactive() {
