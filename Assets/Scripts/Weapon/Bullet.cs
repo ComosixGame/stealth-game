@@ -34,9 +34,6 @@ public class Bullet : MonoBehaviour
             }
         } else {
             GameObject obj = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
-            if(obj.GetComponent<ParticleSystem>().isStopped) {
-                Destroy(obj);
-            }
         }
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {

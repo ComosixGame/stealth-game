@@ -45,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
     private void HandleNotDetectedTarget() {
         OnAttack?.Invoke(false);
         readyAttack = false;
-        rigAimLayer.weight = rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, -0.1f, 20f * Time.deltaTime);
+        // rigAimLayer.weight = rigAimLayer.weight = Mathf.Lerp(rigAimLayer.weight, -0.1f, 20f * Time.deltaTime);
     }
 
     private void HandleDetectedTarget(List<RaycastHit> listHit) {
