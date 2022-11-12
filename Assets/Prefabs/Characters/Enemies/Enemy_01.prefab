@@ -664,7 +664,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5183394664393995822}
   - component: {fileID: 5183394664393995823}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: heavy-exclamation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -810,7 +810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5183394665094198519}
   - component: {fileID: 5183394665094198518}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: question_mark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1168,7 +1168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5183394665843812086}
-  m_Layer: 7
+  m_Layer: 5
   m_Name: Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1779,7 +1779,7 @@ MonoBehaviour:
   DestroyedBody: {fileID: 5417395142239795508, guid: 9f2390b982358ca41bc146484cd4e0b1, type: 3}
   Currency: {fileID: 2471891991449476953, guid: b83805c6c22b0c348993074b9962a435, type: 3}
   healthBarRennder:
-    healthBar: {fileID: 2422146739253776180, guid: b017975695ef0294c9b5e18be1b23519, type: 3}
+    healthBar: {fileID: 2422146739253776180, guid: 73556f4fe9a0e63439da55fae91bfe82, type: 3}
     offset: 3.5
   OnTakeDamge:
     m_PersistentCalls:
@@ -1810,9 +1810,9 @@ MonoBehaviour:
     layerMaskTarget:
       serializedVersion: 2
       m_Bits: 64
-    ignoreObstacle:
+    obstacle:
       serializedVersion: 2
-      m_Bits: 32708
+      m_Bits: 65545
     layerMaskSubTarget:
       serializedVersion: 2
       m_Bits: 256

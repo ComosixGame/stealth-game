@@ -12,7 +12,7 @@ using UnityEditor;
 #endif
 public class Scanner
 {
-    public LayerMask layerMaskTarget, ignoreObstacle, layerMaskSubTarget;
+    public LayerMask layerMaskTarget, obstacle, layerMaskSubTarget;
     public Material materialFieldOfView;
     public Color color, colorWhenDecteced;
     private Mesh mesh;
@@ -34,6 +34,7 @@ public class Scanner
         _detector = detector;
         mesh = new Mesh();
         GameObject FieldOfView = new GameObject("FieldOfView");
+        FieldOfView.layer = LayerMask.NameToLayer("Fov");
         FieldOfView.transform.SetParent(_detector);
         FieldOfView.transform.position = pos;
         FieldOfView.transform.rotation = _detector.rotation;
@@ -77,7 +78,7 @@ public class Scanner
             float rangeScan = ViewDistence;
             RaycastHit hit;
 
-            if(Physics.Raycast(origin, out hit, ViewDistence, ~ignoreObstacle)) {
+            if(Physics.Raycast(origin, out hit, ViewDistence, obstacle)) {
                 vertex = Vector3.zero +  (dir * hit.distance);
                 rangeScan = hit.distance;
             }
@@ -123,7 +124,7 @@ public class Scanner
     }
 
     private void ScanTarget(Ray origin, float range) {
-        Vector3 end = origin.GetPoint(range - 0.5f);
+        Vector3 end = origin.GetPoint(range - 0.4f);
         if(Physics.Linecast(origin.origin, end, out hit, layerMaskTarget)) {
             listHit.Add(hit);
         }
@@ -131,7 +132,7 @@ public class Scanner
 
     private void ScanSubTarget(Ray origin, float range, ref bool detected) {
         if(!detected) {
-            Vector3 end = origin.GetPoint(range - 0.5f);
+            Vector3 end = origin.GetPoint(range - 0.4f);
             if(Physics.Linecast(origin.origin, end, out subHit, layerMaskSubTarget)) {
                 OnDetectedSubTarget?.Invoke(subHit.transform);
                 detected = true;

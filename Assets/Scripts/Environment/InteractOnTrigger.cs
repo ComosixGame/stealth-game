@@ -10,7 +10,7 @@ public class InteractOnTrigger : MonoBehaviour
     [SerializeField] private Command command;
     public LayerMask layer;
     public AudioClip audioClip;
-    public float volumeScale = 1;
+    [Range(0,1)] public float volumeScale = 1;
     public UnityEvent OnEnter;
     public UnityEvent OnExit;
     private SoundManager soundManager;

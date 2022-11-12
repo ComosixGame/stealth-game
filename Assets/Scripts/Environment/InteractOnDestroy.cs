@@ -8,9 +8,17 @@ public class InteractOnDestroy : MonoBehaviour
 {
     [SerializeField] private Command command;
     public UnityEvent OnObjectDestroy;
+    public AudioClip audioClip;
+    [Range(0,1)] public float volumeScale = 1;
+    private SoundManager soundManager;
+
+    private void Awake() {
+        soundManager = SoundManager.Instance;
+    }
 
     private void OnDestroy() {
         if(command != null) {
+            soundManager.PlayOneShot(audioClip, volumeScale);
             command.Execute();
         }
         OnObjectDestroy?.Invoke();

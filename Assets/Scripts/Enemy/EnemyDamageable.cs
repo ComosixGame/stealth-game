@@ -29,6 +29,8 @@ public class EnemyDamageable : MonoBehaviour, Damageable
     public void TakeDamge(Vector3 hitPoint,Vector3 force, float damage)
     {
         soundManager.PlayOneShot(audioClip, volumeScale);
+        Quaternion rot = Quaternion.LookRotation(-force);
+        objectPooler.SpawnObject("HitEffect",hitPoint,rot);
         _health -= damage;
         healthBarRennder.UpdateHealthBarValue(_health);
         OnTakeDamge?.Invoke(force);

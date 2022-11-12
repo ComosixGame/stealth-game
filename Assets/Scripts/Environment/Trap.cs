@@ -74,10 +74,11 @@ public class Trap : Command
         }
         
         if((layer & (1 << other.gameObject.layer)) != 0) {
+            Transform trans = other.transform;
             if(!audioSource.isPlaying) {
                 audioSource.Play();
             }
-            Vector3  dir = other.transform.position - transform.position;
+            Vector3  dir = trans.position - transform.position;
             dir.y = 0;
 
             if(Time.time >= timeNextAttack) {
@@ -85,7 +86,9 @@ public class Trap : Command
             }
 
             if(ready) {
-                other.GetComponent<Damageable>().TakeDamge(other.transform.position, dir.normalized * 50, damage);
+                Collider collider = other.GetComponent<Collider>();
+                Vector3 hitPos = collider.ClosestPoint(trans.position) + trans.up * 2f - dir.normalized * 0.3f;
+                other.GetComponent<Damageable>().TakeDamge(hitPos, dir.normalized * 50, damage);
                 timeNextAttack = Time.time + delayTimeAttack;
                 ready = false;
             }

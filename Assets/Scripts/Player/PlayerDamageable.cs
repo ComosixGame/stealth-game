@@ -12,10 +12,12 @@ public class PlayerDamageable : MonoBehaviour, Damageable
     private bool isDead;
     private SoundManager soundManager;
     private GameManager gameManager;
+    private ObjectPooler objectPooler;
     private void Awake() {
         healthBarRennder.CreateHealthBar(transform, health);
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
+        objectPooler = ObjectPooler.Instance;
 
         gameManager.UpdatePlayerHealth(health);
     }
@@ -27,6 +29,8 @@ public class PlayerDamageable : MonoBehaviour, Damageable
     public  void TakeDamge(Vector3 hitPoint , Vector3 force, float damage)
     {   
         soundManager.PlayOneShot(audioClip, volumeScale);
+        Quaternion rot = Quaternion.LookRotation(-force);
+        objectPooler.SpawnObject("HitEffect",hitPoint,rot);
         health -= damage;
         healthBarRennder.UpdateHealthBarValue(health);
         if(health <= 0 && !isDead) {

@@ -26,6 +26,7 @@ public class TimeBomb : MonoBehaviour
     private float minutes, seconds, milliseconds, radiusExplode = 12;
     private bool isStartGame, explode, endGame, defuse, isAlert, win;
     private Camera cam;
+    private AudioSource audioSource;
     private GameManager gameManager;
     private SoundManager soundManager;
     public UnityEvent OnAlertTimer, OnExplode, OnExploded, OnDefuse;
@@ -33,17 +34,20 @@ public class TimeBomb : MonoBehaviour
     private void Awake() {
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
+        audioSource = GetComponent<AudioSource>();
         TimeBombUI.SetActive(true);
     }
 
     private void OnEnable() {
         gameManager.OnStart.AddListener(OnStartGame);
         gameManager.OnEndGame.AddListener(OnEndGame);
+        soundManager.OnMute.AddListener(OnMuteGame);
     }
 
     private void Start() {
         cam = Camera.main;
         progressBar.maxValue = bombDefuseTime;
+        audioSource.mute =  gameManager.settingData.mute;
     }
 
     // Update is called once per frame
@@ -86,6 +90,8 @@ public class TimeBomb : MonoBehaviour
 
     private void OnDisable() {
         gameManager.OnStart.RemoveListener(OnStartGame);
+        gameManager.OnEndGame.RemoveListener(OnEndGame);
+        soundManager.OnMute.RemoveListener(OnMuteGame);
     }
 
     private void OnStartGame() {
@@ -133,7 +139,7 @@ public class TimeBomb : MonoBehaviour
                 dir.y = 1;
                 Vector3 targetPos = collider.ClosestPoint(trans.position) + dir.normalized * 1f;
                 float dis = Vector3.Distance(transform.position, trans.position);
-                float f = radiusExplode / dis * 20;
+                float f = radiusExplode / dis * 30;
                 damageable.TakeDamge(targetPos, dir.normalized * f, 99999);
             }
         }
@@ -150,6 +156,11 @@ public class TimeBomb : MonoBehaviour
             gameManager.EndGame(win);
         }
     }
+
+    private void OnMuteGame(bool mute) {
+        audioSource.mute = mute;
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
