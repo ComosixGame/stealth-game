@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6476314874584386134}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.765, y: -1.301, z: 0}
+  m_LocalPosition: {x: 0.765, y: -1.1436667, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -415,7 +415,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &7908136501588276973
 Transform:
@@ -614,12 +614,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typemode: 0
   rootScanner: {fileID: 7243111836923937924}
-  Camera: {fileID: 7908136501588315517}
+  Camera: {fileID: 7908136501588279587}
   range: 2
   speed: 4
   idleTime: 1
   alertTime: 10
-  bullet: {fileID: 0}
   shootPositon: {fileID: 0}
   shotEffect: {fileID: 0}
   damage: 0
@@ -629,14 +628,14 @@ MonoBehaviour:
   volumeScale: 0
   listPatrol: []
   indexSelectUp: 0
-  indexSelectForward: 0
+  indexSelectForward: 2
   scanner:
     layerMaskTarget:
       serializedVersion: 2
       m_Bits: 64
-    ignoreObstacle:
+    obstacle:
       serializedVersion: 2
-      m_Bits: 32708
+      m_Bits: 0
     layerMaskSubTarget:
       serializedVersion: 2
       m_Bits: 256

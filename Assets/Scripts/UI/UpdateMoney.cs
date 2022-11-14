@@ -10,6 +10,7 @@ public class UpdateMoney : MonoBehaviour
 {
     public TypeMoney type;
     private TextMeshProUGUI textPro;
+    private float maxValue = 999999999;
     private GameManager gameManager;
 
     private void Awake() {
@@ -23,9 +24,9 @@ public class UpdateMoney : MonoBehaviour
 
     private void UpdateText(int money, int moneyCollected) {
         if(type == TypeMoney.PlayerMoney) {
-            textPro.text = money.ToString();
+            textPro.text = money > maxValue? maxValue + "+" :  money.ToString();
         } else {
-            textPro.text = moneyCollected.ToString();
+            textPro.text = moneyCollected > maxValue? maxValue + "+" :  moneyCollected.ToString();
         }
     }
 

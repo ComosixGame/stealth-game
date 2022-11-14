@@ -27,6 +27,15 @@ public class EditorEnemyBehaviour : Editor {
                 enemyBehaviour.standPos = standPos;
                 EditorUtility.SetDirty(enemyBehaviour);
             }
+
+            EditorGUI.BeginChangeCheck();
+            if(GUILayout.Button("Reset Stand Point")) {
+                if(EditorGUI.EndChangeCheck()) {
+                    Undo.RecordObject(enemyBehaviour, "Update stand point");
+                    enemyBehaviour.standPos = enemyBehaviour.transform.position;
+                    EditorUtility.SetDirty(enemyBehaviour);
+                }
+            }
         }
     }
 

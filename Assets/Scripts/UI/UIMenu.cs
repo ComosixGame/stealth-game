@@ -27,8 +27,8 @@ public class UIMenu : MonoBehaviour
     private void OnEnable() {
         gameManager.OnEndGame.AddListener(OnEndGame);
         resSliderScale.onValueChanged.AddListener(SetScaleRes);
-        fps30.onValueChanged.AddListener(onValueChangedFps30);
-        fps60.onValueChanged.AddListener(onValueChangedFps60);
+        fps30.onValueChanged.AddListener(OnValueChangedFps30);
+        fps60.onValueChanged.AddListener(OnValueChangedFps60);
         mute.onValueChanged.AddListener(MuteGame);
     }
 
@@ -45,8 +45,8 @@ public class UIMenu : MonoBehaviour
     private void OnDisable() {
         resSliderScale.onValueChanged.RemoveListener(SetScaleRes);
         mute.onValueChanged.RemoveListener(MuteGame);
-        fps30.onValueChanged.RemoveListener(onValueChangedFps30);
-        fps60.onValueChanged.RemoveListener(onValueChangedFps60);
+        fps30.onValueChanged.RemoveListener(OnValueChangedFps30);
+        fps60.onValueChanged.RemoveListener(OnValueChangedFps60);
     }
 
     public void StartGame() {
@@ -90,7 +90,7 @@ public class UIMenu : MonoBehaviour
         resSliderText.text = "Resolution scale:" + scale.ToString();
     }
 
-    private void onValueChangedFps30(bool check) {
+    private void OnValueChangedFps30(bool check) {
         if(check) {
             if(gameManager.settingData.fps != 30) {
                 warningText.gameObject.SetActive(true);
@@ -101,7 +101,7 @@ public class UIMenu : MonoBehaviour
         }
     }
 
-    private void onValueChangedFps60(bool check) {
+    private void OnValueChangedFps60(bool check) {
         if(check) {
             if(gameManager.settingData.fps != 60) {
                 warningText.gameObject.SetActive(true);

@@ -30,7 +30,8 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -39,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:
-        m_Texture: {fileID: 2800000, guid: ff4a8f4e566a7a44c9c8a0ab30f572a3, type: 3}
+        m_Texture: {fileID: 2800000, guid: adba60738d8064c4a840fe8510b4ea70, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -58,13 +59,13 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
-    - _CastShadows: 1
+    - _CastShadows: 0
     - _Cull: 2
     - _DstBlend: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Speed: 5
+    - _Speed: 3
     - _SrcBlend: 1
     - _Surface: 0
     - _WorkflowMode: 1
@@ -72,5 +73,5 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _Direction: {r: 0, g: 1, b: 0, a: 0}
+    - _Direction: {r: 0, g: 0, b: 1, a: 0}
   m_BuildTextureStacks: []

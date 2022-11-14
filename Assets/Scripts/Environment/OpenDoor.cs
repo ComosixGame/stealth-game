@@ -25,7 +25,7 @@ public class OpenDoor : Command
     [HideInInspector] public Axis axis;
     [HideInInspector] public float angel;
     [HideInInspector] public Vector3 PosMove;
-    private bool haveKey, unLocked;
+    private bool haveKey, unLocked, opened;
     private Vector3 orginPos;
     private Vector3 axisVector;
     private SoundManager soundManager;
@@ -38,7 +38,7 @@ public class OpenDoor : Command
         orginPos = door.position;
     }
     private void Update() {
-        if(unLocked) {
+        if(unLocked && !opened) {
             Open();
         }
 
@@ -71,8 +71,14 @@ public class OpenDoor : Command
             Quaternion rot = door.rotation;
             rot = Quaternion.AngleAxis(angel, axisVector);
             door.rotation = Quaternion.Lerp(door.rotation, rot, 5f * Time.deltaTime);
+            if(!opened && Quaternion.Angle(door.rotation , rot) <= 0.1f) {
+                opened = true;
+            }
         } else {
             door.position = Vector3.MoveTowards(door.position, PosMove, 5f * Time.deltaTime);
+            if(!opened && Vector3.Distance(door.position, PosMove) <= 0.1f) {
+                opened = true;
+            }
         }
     }
 
