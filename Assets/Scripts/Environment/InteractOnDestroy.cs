@@ -10,13 +10,25 @@ public class InteractOnDestroy : MonoBehaviour
     public UnityEvent OnObjectDestroy;
     public AudioClip audioClip;
     [Range(0,1)] public float volumeScale = 1;
+    private bool isEnd;
     private SoundManager soundManager;
+    private GameManager gameManager;
 
     private void Awake() {
         soundManager = SoundManager.Instance;
+        gameManager = GameManager.Instance;
+    }
+
+    private void OnEnable() {
+        gameManager.OnEndGame.AddListener(OnEndGame);
+    }
+
+    private void OnDisable() {
+        gameManager.OnEndGame.RemoveListener(OnEndGame);
     }
 
     private void OnDestroy() {
+        if(isEnd) return;
         if(command != null) {
             soundManager.PlayOneShot(audioClip, volumeScale);
             command.Execute();
@@ -24,7 +36,9 @@ public class InteractOnDestroy : MonoBehaviour
         OnObjectDestroy?.Invoke();
     }
 
-
+    private void OnEndGame(bool win) {
+        isEnd = true;
+    }
 
     
 #if UNITY_EDITOR

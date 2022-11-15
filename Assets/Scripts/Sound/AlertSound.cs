@@ -20,6 +20,7 @@ public class AlertSound : MonoBehaviour
     private void OnEnable() {
         gameManager.OnEnemyAlert.AddListener(OnAlert);
         gameManager.OnEnemyAlertOff.AddListener(OnAlertOff);
+        gameManager.OnEndGame.AddListener(OnEndGame);
         soundManager.OnMute.AddListener(OnMuteGame);
     }
 
@@ -35,9 +36,14 @@ public class AlertSound : MonoBehaviour
         audioSource.mute = mute;
     }
 
+    private void OnEndGame(bool win) {
+        audioSource.Stop();
+    }
+
     private void OnDisable() {
         gameManager.OnEnemyAlert.RemoveListener(OnAlert);
         gameManager.OnEnemyAlertOff.RemoveListener(OnAlertOff);
+        gameManager.OnEndGame.RemoveListener(OnEndGame);
         soundManager.OnMute.RemoveListener(OnMuteGame);
     }
 }

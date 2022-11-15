@@ -148,6 +148,16 @@ public class EnemyBehaviourScript : MonoBehaviour
         questionMark.transform.rotation = Quaternion.LookRotation(dirCam.normalized);
     }
 
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
+            ContactPoint contact = other.GetContact(0);
+            Damageable obstacleDamageable = other.transform.GetComponentInParent<Damageable>();
+            Vector3 dir = other.transform.position -  transform.position;
+            dir.y = 0;
+            obstacleDamageable.TakeDamge(contact.point, dir.normalized * 10 );
+        }
+    }
+
     private void Idle() {
         IdleTimer += Time.deltaTime;
         agent.SetDestination(transform.position);

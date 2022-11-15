@@ -39,7 +39,6 @@ public class ObstacleDamageable : MonoBehaviour, Damageable
             timeDelay = Time.time + 2;
 
             foreach(Rigidbody rigidbody in rigidbodies) {
-                rigidbody.isKinematic = false;
                 float f = force.magnitude / Vector3.Distance(rigidbody.position, hitPoint);
                 rigidbody.AddForceAtPosition(force.normalized * f, hitPoint, ForceMode.Impulse);
             }

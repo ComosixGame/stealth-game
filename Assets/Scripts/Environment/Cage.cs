@@ -44,7 +44,7 @@ public class Cage : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
         Handles.color = Color.magenta;
         Handles.DrawDottedLine(transform.position, leavePoint.position, 5f);
         Handles.DrawSolidDisc(leavePoint.position, Vector3.up, 1f);
