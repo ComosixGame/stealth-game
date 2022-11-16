@@ -6,7 +6,7 @@ public class EnemyDamageable : MonoBehaviour, Damageable
 {
     public AudioClip audioClip, deathAudioClip;
     [Range(0,1)] public float volumeScale;
-    public GameObject DestroyedBody, Currency;
+    public GameObject DestroyedBody;
     Rigidbody[] ragdollRigibodies;
     private float _coinBonus;
     private float _health;

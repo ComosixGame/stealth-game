@@ -9,6 +9,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private EquipmentManager equipmentManager;
     public RectTransform joyStick;
     public  CinemachineFreeLook cinemachineFreeLook;
+    public BossBehaviourScript boss;
     public bool debugMode;
     private GameObject player;
     private PlayerAttack playerAttack;
@@ -35,7 +36,9 @@ public class CharacterSelection : MonoBehaviour
             playerAttack.weapon = weapon;
             playerTransform.SetParent(transform);
         }
-
+        if(boss != null) {
+            boss.Player = playerTransform;
+        }
         cinemachineFreeLook.LookAt = playerTransform;
         cinemachineFreeLook.Follow = playerTransform;
 

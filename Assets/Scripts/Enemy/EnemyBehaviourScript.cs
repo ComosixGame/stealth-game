@@ -216,7 +216,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         Vector3 dirLook = playerPos - transform.position;
         Quaternion rotLook = Quaternion.LookRotation(dirLook.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotLook, enemy.speedRotation * Time.deltaTime);
-        if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 20) {
+        if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotLook)) <= 1) {
             aimLayer.weight = Mathf.Lerp(aimLayer.weight, 1.1f, 20f * Time.deltaTime);
             if(aimLayer.weight == 1 && !readyAttack) {
                 Invoke("WaitForReadyAttack", 0.1f);

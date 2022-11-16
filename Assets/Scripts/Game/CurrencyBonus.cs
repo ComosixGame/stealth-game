@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CurrencyBonus : MonoBehaviour
 {
+    public bool addForceOnAwake = true;
     public LayerMask layer;
     [SerializeField] private int point;
     public AudioClip audioClip;
@@ -21,8 +22,10 @@ public class CurrencyBonus : MonoBehaviour
     }
     // Start is called before the first frame update
     private void OnEnable() {
-        Vector3 dir = Random.insideUnitSphere.normalized;
-        rb.AddForce(dir * 8f, ForceMode.Impulse);
+        if(addForceOnAwake) {
+            Vector3 dir = Random.insideUnitSphere.normalized;
+            rb.AddForce(dir * 8f, ForceMode.Impulse);
+        }
     }
 
     private void OnTriggerEnter(Collider other) {

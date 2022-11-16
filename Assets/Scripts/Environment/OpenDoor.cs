@@ -16,6 +16,7 @@ public class OpenDoor : Command
         Y,
         Z
     }
+    public bool unlock;
     public Transform door;
     public TypeOpen typeOpen;
     public GameObject locks;
@@ -36,6 +37,9 @@ public class OpenDoor : Command
 
     private void Start() {
         orginPos = door.position;
+        if(unlock) {
+            Execute();
+        }
     }
     private void Update() {
         if(unLocked && !opened) {
