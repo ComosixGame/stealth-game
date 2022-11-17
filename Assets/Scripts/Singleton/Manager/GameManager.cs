@@ -154,7 +154,7 @@ public class GameManager : Singleton<GameManager>
         int h = (int)(yy * resolutionScale);
         Screen.SetResolution(w, h, true);
         Camera.main.aspect = xx / yy;
-        // Application.targetFrameRate = settingData.fps;
+        Application.targetFrameRate = settingData.fps;
     }
 
 }
