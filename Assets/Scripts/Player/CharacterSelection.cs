@@ -2,6 +2,7 @@ using UnityEngine;
 using Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
+using MyCustomAttribute;
 #endif
 
 public class CharacterSelection : MonoBehaviour
@@ -9,6 +10,9 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private EquipmentManager equipmentManager;
     public RectTransform joyStick;
     public  CinemachineFreeLook cinemachineFreeLook;
+#if UNITY_EDITOR
+    [Label("Boss (Optional)")]
+#endif
     public BossBehaviourScript boss;
     public bool debugMode;
     private GameObject player;
@@ -38,18 +42,14 @@ public class CharacterSelection : MonoBehaviour
         }
         if(boss != null) {
             boss.Player = playerTransform;
-        }
+        } 
+        
         cinemachineFreeLook.LookAt = playerTransform;
         cinemachineFreeLook.Follow = playerTransform;
 
         player.GetComponent<PlayerController>().joystickRectTrans = joyStick;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos() {
@@ -78,6 +78,7 @@ public class CharacterSelection : MonoBehaviour
                     Undo.RecordObject(selection, "Update debugMesh");
                     selection.debugMesh = mesh;
                 }
+
             }
         }
     }

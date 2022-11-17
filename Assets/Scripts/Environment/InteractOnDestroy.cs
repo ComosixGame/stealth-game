@@ -30,7 +30,9 @@ public class InteractOnDestroy : MonoBehaviour
     private void OnDestroy() {
         if(isEnd) return;
         if(command != null) {
-            soundManager.PlayOneShot(audioClip, volumeScale);
+            if(audioClip !=null) {
+                soundManager.PlayOneShot(audioClip, volumeScale);
+            }
             command.Execute();
         }
         OnObjectDestroy?.Invoke();

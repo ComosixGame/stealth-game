@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Cinemachine;
+using TMPro;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -7,18 +9,18 @@ using UnityEditor;
 [RequireComponent(typeof(NavMeshAgent))]
 public class BossBehaviourScript : MonoBehaviour
 {
-    public Transform Player, shootPosition;
+    public Boss boss;
+    [HideInInspector] public Transform Player;
+    public Transform shootPosition;
     public ParticleSystem shotEffect;
-    public AudioClip audioClip;
-    [Range(0,1)] public float volumeScale;
-    public int numberOfBullets, numberOfAttacks;
-    public float timeReadyAttack, delayAttack, speedBullet, damage;
-    [Range(1,360)] public float angleAttack;
     public LayerMask target;
+    public CinemachineFreeLook cinemachineFree;
+    [Range(0,1)] public float volumeScale;
+    public TextMeshProUGUI TextBoss;
     private NavMeshAgent agent;
     private Animator animator;
     private int velocityHash;
-    private int attackHash;
+    private int fireHash;
     private float IdleTimer, chargeTimer, attackTimer, timeNextAttack, angel, angelIncrease;
     private bool readyAttack, isStart;
     private GameManager gameManager;
@@ -32,17 +34,21 @@ public class BossBehaviourScript : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         velocityHash = Animator.StringToHash("Velocity");
-        attackHash = Animator.StringToHash("Attack");
+        fireHash = Animator.StringToHash("Fire");
+
+        cinemachineFree.Priority = 0;
+        TextBoss.gameObject.SetActive(true);
+        TextBoss.text = boss.nameBoss;
     }
 
     private void OnEnable() {
-        gameManager.OnStart.AddListener(OnStartGame);
+        gameManager.OnStart.AddListener(StartCutScene);
     }
 
     private void Start() {
-        angelIncrease = angleAttack/numberOfBullets;
-        chargeTimer = Time.time + timeReadyAttack;
-        attackTimer = numberOfAttacks;
+        angelIncrease = boss.angleAttack/boss.numberOfBullets;
+        chargeTimer = Time.time + boss.timeReadyAttack;
+        attackTimer = boss.timeAttack;
     }
 
     private void Update() {
@@ -50,7 +56,7 @@ public class BossBehaviourScript : MonoBehaviour
 
         if(Time.time >= chargeTimer) {
             readyAttack = true;
-            chargeTimer = Time.time + timeReadyAttack;
+            chargeTimer = Time.time + boss.timeReadyAttack;
         }
         if(!readyAttack) {
             Move();
@@ -60,8 +66,18 @@ public class BossBehaviourScript : MonoBehaviour
         HandleAnimation();
     }
 
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
+            ContactPoint contact = other.GetContact(0);
+            Damageable obstacleDamageable = other.transform.GetComponentInParent<Damageable>();
+            Vector3 dir = other.transform.position -  transform.position;
+            dir.y = 0;
+            obstacleDamageable.TakeDamge(contact.point, dir.normalized * 10 );
+        }
+    }
+
     private void OnDisable() {
-        gameManager.OnStart.RemoveListener(OnStartGame);
+        gameManager.OnStart.RemoveListener(StartCutScene);
     }
 
     private void Move() {
@@ -79,38 +95,53 @@ public class BossBehaviourScript : MonoBehaviour
         attackTimer -= Time.deltaTime;
         if(attackTimer <= 0) {
             readyAttack = false;
-            attackTimer = numberOfAttacks;
-            animator.SetBool(attackHash, false);
+            attackTimer = boss.timeAttack;
             return;
         }
         if(agent.hasPath) {
             agent.ResetPath();
             agent.SetDestination(transform.position);
         }
-        animator.SetBool(attackHash, true);
+
         Quaternion rotDir = Quaternion.LookRotation(Player.position - transform.position);
         Quaternion rotLook = LerpRotation(Player.position, transform.position, 10);
         transform.rotation = rotLook;
-        if(Mathf.Abs(Quaternion.Angle(transform.rotation, rotDir)) <= 1) {
-            if(Time.time >= timeNextAttack) {
-                shotEffect.Play();
-                for( int i = 0; i < numberOfBullets; i ++) {
-                    angel = i % 2 == 0? angel + i * angelIncrease : angel - i * angelIncrease ;
-                    Vector3 dir = Quaternion.Euler(0, angel, 0) * shootPosition.forward;
-                    Quaternion rot = Quaternion.LookRotation(dir.normalized);
-                    GameObject c_bullet = objectPooler.SpawnObject("Bullet_L", shootPosition.position, rot);
-                    c_bullet.layer = LayerMask.NameToLayer("FromEnemy");
-                    soundManager.PlayOneShot(audioClip, volumeScale);
-                    c_bullet.GetComponent<Bullet>().TriggerFireBullet(dir.normalized, speedBullet, damage, 150, target);
-                    timeNextAttack = Time.time + delayAttack;
-                }
-                angel = 0;
-            }
+        if(Time.time >= timeNextAttack) {
+            //delay trc khi bắn
+            Invoke("Fire", boss.delayAttack);
+            timeNextAttack = Time.time + boss.delayAttack;
         }
     }
 
-    private void OnStartGame() {
+    private void Fire() {
+        shotEffect.Play();
+        animator.SetTrigger(fireHash);
+        //bắn đạn theo nhiều hướng
+        for( int i = 0; i < boss.numberOfBullets; i ++) {
+            angel = i % 2 == 0? angel + i * angelIncrease : angel - i * angelIncrease ;
+            Vector3 dir = Quaternion.Euler(0, angel, 0) * shootPosition.forward;
+            Quaternion rot = Quaternion.LookRotation(dir.normalized);
+            GameObject c_bullet = objectPooler.SpawnObject("Bullet_L", shootPosition.position, rot);
+            c_bullet.layer = LayerMask.NameToLayer("FromEnemy");
+            soundManager.PlayOneShot(boss.audioClip, volumeScale);
+            c_bullet.GetComponent<Bullet>().TriggerFireBullet(dir.normalized, boss.speedBullet, boss.damage, 100, target);
+        }
+        angel = 0;
+    }
+
+    private void StartActive() {
         isStart = true;
+    }
+
+    private void StartCutScene() {
+        cinemachineFree.Priority = 100;
+        Invoke("EndCutScene", 2f);
+    }
+
+    private void EndCutScene() {
+        TextBoss.gameObject.SetActive(false);
+        cinemachineFree.Priority = -1;
+        Invoke("StartActive", 1f);
     }
 
     private Vector3 RandomNavmeshLocation(float radius) {
@@ -149,8 +180,8 @@ public class BossBehaviourScript : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         Handles.color = new Color32(76, 122, 90, 80);
-        Vector3 dir = Quaternion.Euler(0, -angleAttack/2, 0) * shootPosition.forward;
-        Handles.DrawSolidArc(shootPosition.position, shootPosition.up, dir, angleAttack, 10f);
+        Vector3 dir = Quaternion.Euler(0, -boss.angleAttack/2, 0) * shootPosition.forward;
+        Handles.DrawSolidArc(shootPosition.position, shootPosition.up, dir, boss.angleAttack, 10f);
     }
 #endif
 }

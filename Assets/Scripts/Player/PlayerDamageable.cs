@@ -40,7 +40,7 @@ public class PlayerDamageable : MonoBehaviour, Damageable
             GameObject weapon = gameObject.GetComponent<PlayerAttack>().weapon;
 
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             GameObject deadBody = Instantiate(DestroyedBody, transform.position, transform.rotation);
 
             // thêm súng của nhân vật vào ragdoll

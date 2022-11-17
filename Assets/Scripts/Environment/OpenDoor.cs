@@ -53,7 +53,6 @@ public class OpenDoor : Command
             if(haveKey && !unLocked) {
                 soundManager.PlayOneShot(audioClip, volumeScale);
                 unLocked = true;
-                door.GetComponent<Collider>().isTrigger = true;
             }
         }
     }

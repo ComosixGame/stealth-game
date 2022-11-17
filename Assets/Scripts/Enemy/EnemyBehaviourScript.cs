@@ -34,7 +34,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private Vector3 playerPosition;
     private Transform player;
     private State state, prevState;
-    private float IdleTimer;
+    private float IdleTimer, timeDetect;
     private bool isStartGame, isDeadBody, readyAttack, Alerted, triggerAlertOnAttack;
     private Animator animator;
     private int velocityHash;
@@ -222,12 +222,12 @@ public class EnemyBehaviourScript : MonoBehaviour
                 Invoke("WaitForReadyAttack", 0.1f);
             }
             if(readyAttack) {
-                IdleTimer += Time.deltaTime;
+                timeDetect += Time.deltaTime;
                 enemyWeapon.Attack(player, playerScanner.layerMaskTarget, "FromEnemy");
             }
         }
 
-        if(!triggerAlertOnAttack && IdleTimer >= 1f) {
+        if(!triggerAlertOnAttack && timeDetect >= 1f) {
             triggerAlertOnAttack = true;
             gameManager.EnemyTriggerAlert(playerPos, enemy.alertTime);
         }
@@ -292,6 +292,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     public void HandleWhenNotDetected() {
+        timeDetect = 0;
         aimLayer.weight = Mathf.Lerp(aimLayer.weight, -0.1f, 20f * Time.deltaTime);
         triggerAlertOnAttack = false;
         if(prevState == State.Attack) {

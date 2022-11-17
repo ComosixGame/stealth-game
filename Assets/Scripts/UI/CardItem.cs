@@ -44,10 +44,11 @@ public class CardItem : MonoBehaviour
     }
 
     private void BuyItem() {
-        bool bought = gameManager.BuyItem(id, price, typeItem);
+        boughtItem = gameManager.BuyItem(id, price, typeItem);
         soundManager.PlayOneShot(audioClip, volumeScale);
-        if(bought) {
+        if(boughtItem) {
             buyButton.interactable = false;
+            selectButton.interactable = true;
             buyButtonText.text = "Owned";
         } else {
             OnBuyFailed?.Invoke();

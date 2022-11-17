@@ -1,29 +1,34 @@
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BossDamgeable : MonoBehaviour, Damageable
 {
+    public Boss boss;
     public AudioClip audioClip, deathAudioClip;
     [Range(0,1)] public float volumeScale;
-    public GameObject DestroyedBody, healthbar;
-    public Slider sliderHealthbar;
-    Rigidbody[] ragdollRigibodies;
-    public float coinBonus;
-    public float health;
+    public GameObject DestroyedBody;
+    [SerializeField] private HealthBarRennder healthBarRennder = new HealthBarRennder();
+    private Rigidbody[] ragdollRigibodies;
     private bool isDead;
     private SoundManager soundManager;
     private ObjectPooler objectPooler;
+    private int coinBonus;
+    private float health;
 
     private void Awake() {
         soundManager = SoundManager.Instance;
-        objectPooler = ObjectPooler.Instance;
-        healthbar.SetActive(true);        
+        objectPooler = ObjectPooler.Instance;   
+
+        coinBonus = boss.coinBonus;
+        health = boss.health;
     }
 
     private void Start() {
-        sliderHealthbar.maxValue = health;
-        sliderHealthbar.value = health;
+        healthBarRennder.CreateHealthBar(transform, health);
+    }
+
+    private void LateUpdate() {
+        healthBarRennder.UpdateHealthBarRotation();
     }
 
     public void TakeDamge(Vector3 hitPoint, Vector3 force, float damage = 0)
@@ -32,17 +37,19 @@ public class BossDamgeable : MonoBehaviour, Damageable
         Quaternion rot = Quaternion.LookRotation(-force);
         objectPooler.SpawnObject("HitEffect",hitPoint,rot);
         health -= damage;
-        sliderHealthbar.value = health;
+        healthBarRennder.UpdateHealthBarValue(health);
         if(health <= 0 && !isDead) {
             isDead = true;
+            Time.timeScale = 0.3f;
+            Invoke("EndSlowMotion", 0.3f);
             soundManager.PlayOneShot(deathAudioClip,volumeScale);
             // GameObject weapon = gameObject.GetComponent<EnemyBehaviourScript>().weapon;
             //phá hủy gameobject hiện tại và thay thế bằng ragdoll
-            Destroy(gameObject);
+            gameObject.SetActive(false);
 
             // rớt tiền thưởng
             while(coinBonus > 0) {
-                objectPooler.SpawnObject("Money", transform.position, transform.rotation);
+                objectPooler.SpawnObject("Money_L", transform.position, transform.rotation);
                 coinBonus--;
             }
         
@@ -64,6 +71,11 @@ public class BossDamgeable : MonoBehaviour, Damageable
             // rigidbodyWeapon.AddForce(force.normalized * 5f, ForceMode.Impulse);
             
         }
+    }
+
+    private void EndSlowMotion() {
+        Time.timeScale = 1;
+        Destroy(gameObject);
     }
 
     private Rigidbody getHitRigi(Rigidbody[]ragdollRigibodies, Vector3 hitPoint) {

@@ -71,7 +71,12 @@ public class GameManager : Singleton<GameManager>
 
     public void UnlockNewLevel(int indexLevel) {
         List<int> list = playerData.levels;
-        if(list.IndexOf(indexLevel) == -1) {
+        int index = list.IndexOf(indexLevel);
+        if(index == -1) {
+            playerData.levels.Add(indexLevel);
+            playerData.Save();
+        } else {
+            playerData.levels.Remove(index);
             playerData.levels.Add(indexLevel);
             playerData.Save();
         }
@@ -88,7 +93,9 @@ public class GameManager : Singleton<GameManager>
     public void EndGame(bool win) {
         isWin = win;
         OnEndGame?.Invoke(isWin);
-        OnUpdateMoney?.Invoke(playerData.money, moneyCollected);
+        if(isWin) {
+            UpdateCurrency(100);
+        }
         playerData.Save();
     }
 
@@ -147,7 +154,7 @@ public class GameManager : Singleton<GameManager>
         int h = (int)(yy * resolutionScale);
         Screen.SetResolution(w, h, true);
         Camera.main.aspect = xx / yy;
-        Application.targetFrameRate = settingData.fps;
+        // Application.targetFrameRate = settingData.fps;
     }
 
 }
