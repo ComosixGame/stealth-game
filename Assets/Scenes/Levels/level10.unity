@@ -4569,7 +4569,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!108 &705507994
 Light:
@@ -4582,7 +4582,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -5809,7 +5809,6 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
-  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5950,183 +5949,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!114 &963194231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b28c29541c3aae4ea0f96b8eb247f82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DefaultCullDistance: 50
-  DistanceMultiplier: 1
-  UseSphericalCulling: 0
-  AlwaysShowGizmos: 0
-  LayerCullInfoArray:
-  - LayerName: Default
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: TransparentFX
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Ignore Raycast
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Ground
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Water
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: UI
-    UseDefaultCullDistance: 0
-    CullDistance: 40
-    ShowGizmo: 1
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Player
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Enemy
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: DeadBody
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: BrokenThing
-    UseDefaultCullDistance: 0
-    CullDistance: 35
-    ShowGizmo: 1
-    GizmoColor: {r: 0.958372, g: 1, b: 0, a: 1}
-  - LayerName: Weapon
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: FromPlayer
-    UseDefaultCullDistance: 0
-    CullDistance: 25
-    ShowGizmo: 1
-    GizmoColor: {r: 0, g: 1, b: 0.04902649, a: 1}
-  - LayerName: Obstacle
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: FromEnemy
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 1
-    GizmoColor: {r: 1, g: 0.05583444, b: 0, a: 1}
-  - LayerName: Item
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: particle
-    UseDefaultCullDistance: 0
-    CullDistance: 30
-    ShowGizmo: 1
-    GizmoColor: {r: 1, g: 0, b: 0.8675709, a: 1}
-  - LayerName: Wall
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Fov
-    UseDefaultCullDistance: 0
-    CullDistance: 40
-    ShowGizmo: 1
-    GizmoColor: {r: 0, g: 0.04256487, b: 1, a: 1}
-  - LayerName: hostage
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: trigger
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  - LayerName: Layer Not Defined
-    UseDefaultCullDistance: 1
-    CullDistance: 50
-    ShowGizmo: 0
-    GizmoColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1001 &978190826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13514,29 +13336,9 @@ PrefabInstance:
       propertyPath: command
       value: 
       objectReference: {fileID: 1123942749}
-    - target: {fileID: 616737778, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-      propertyPath: boss
-      value: 
-      objectReference: {fileID: 11400000, guid: a8414ff14a749ac45babcfd2a3933612, type: 2}
-    - target: {fileID: 616737778, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-      propertyPath: text
-      value: 
-      objectReference: {fileID: 2758418540850747776}
-    - target: {fileID: 616737778, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-      propertyPath: healthbar
-      value: 
-      objectReference: {fileID: 3515748980526861682}
-    - target: {fileID: 616737778, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-      propertyPath: sliderHealthbar
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1460715661, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_LocalPosition.z
       value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1559460504, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1559460504, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13553,10 +13355,6 @@ PrefabInstance:
     - target: {fileID: 1559460504, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1801871822, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1801871822, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13598,10 +13396,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
-    - target: {fileID: 2995765354886503368, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-      propertyPath: boss
-      value: 
-      objectReference: {fileID: 11400000, guid: a8414ff14a749ac45babcfd2a3933612, type: 2}
     - target: {fileID: 2995765354886503368, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: TextBoss
       value: 

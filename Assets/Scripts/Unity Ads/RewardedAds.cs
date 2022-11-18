@@ -151,6 +151,7 @@ namespace Unity.Services.Mediation
             {
                 initializationError = initializeFailedException.initializationError;
             }
+            OnAdFailedLoad?.Invoke(error.Message);
         }
 
         void UserRewarded(object sender, RewardEventArgs e)

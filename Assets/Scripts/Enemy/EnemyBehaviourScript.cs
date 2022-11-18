@@ -222,7 +222,6 @@ public class EnemyBehaviourScript : MonoBehaviour
                 Invoke("WaitForReadyAttack", 0.1f);
             }
             if(readyAttack) {
-                timeDetect += Time.deltaTime;
                 enemyWeapon.Attack(player, playerScanner.layerMaskTarget, "FromEnemy");
             }
         }
@@ -289,6 +288,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         player = playerScanner.DetectSingleTarget(hitList);
         playerPosition = player.position;
         state = State.Attack;
+        timeDetect += Time.deltaTime;
     }
 
     public void HandleWhenNotDetected() {
