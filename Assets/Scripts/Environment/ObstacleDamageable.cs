@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ObstacleDamageable : MonoBehaviour, Damageable
+public class ObstacleDamageable : MonoBehaviour, IDamageable
 {
     public bool destroyAfterHit;
     public AudioClip audioClip;

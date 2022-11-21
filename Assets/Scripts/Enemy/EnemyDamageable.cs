@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class EnemyDamageable : MonoBehaviour, Damageable
+public class EnemyDamageable : MonoBehaviour, IDamageable
 {
     public AudioClip audioClip, deathAudioClip;
     [Range(0,1)] public float volumeScale;

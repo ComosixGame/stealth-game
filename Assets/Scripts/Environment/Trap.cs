@@ -88,7 +88,7 @@ public class Trap : Command
             if(ready) {
                 Collider collider = other.GetComponent<Collider>();
                 Vector3 hitPos = collider.ClosestPoint(trans.position) + trans.up * 2f - dir.normalized * 0.3f;
-                other.GetComponent<Damageable>().TakeDamge(hitPos, dir.normalized * 50, damage);
+                other.GetComponent<IDamageable>().TakeDamge(hitPos, dir.normalized * 50, damage);
                 timeNextAttack = Time.time + delayTimeAttack;
                 ready = false;
             }

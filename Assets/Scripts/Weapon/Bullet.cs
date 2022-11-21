@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
         objectPooler.InactiveObject("Bullet", gameObject);
         ContactPoint contact = other.GetContact(0);
         if((layerMask & (1 << other.gameObject.layer)) != 0) {
-            Damageable damageable =  other.transform.GetComponentInParent<Damageable>();
+            IDamageable damageable =  other.transform.GetComponentInParent<IDamageable>();
             if(damageable != null) {
                 damageable.TakeDamge(contact.point, dir * force, damage);
             }
@@ -37,7 +37,7 @@ public class Bullet : MonoBehaviour
         }
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
-            Damageable damageable = other.transform.GetComponentInParent<ObstacleDamageable>();
+            IDamageable damageable = other.transform.GetComponentInParent<ObstacleDamageable>();
             damageable.TakeDamge(contact.point, dir * 15);
         }
     }

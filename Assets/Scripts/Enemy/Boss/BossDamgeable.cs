@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class BossDamgeable : MonoBehaviour, Damageable
+public class BossDamgeable : MonoBehaviour, IDamageable
 {
     public Boss boss;
     public AudioClip audioClip, deathAudioClip;

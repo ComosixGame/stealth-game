@@ -69,7 +69,7 @@ public class BossBehaviourScript : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         if(other.gameObject.layer == LayerMask.NameToLayer("Obstacle")) {
             ContactPoint contact = other.GetContact(0);
-            Damageable obstacleDamageable = other.transform.GetComponentInParent<Damageable>();
+            IDamageable obstacleDamageable = other.transform.GetComponentInParent<IDamageable>();
             Vector3 dir = other.transform.position -  transform.position;
             dir.y = 0;
             obstacleDamageable.TakeDamge(contact.point, dir.normalized * 10 );

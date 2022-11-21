@@ -133,7 +133,7 @@ public class TimeBomb : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, radiusExplode);
         foreach(Collider collider in colliders) {
             Transform trans = collider.transform;
-            Damageable damageable = trans.GetComponentInParent<Damageable>();
+            IDamageable damageable = trans.GetComponentInParent<IDamageable>();
             if(damageable != null) {
                 Vector3 dir = trans.position - transform.position;
                 dir.y = 1;
