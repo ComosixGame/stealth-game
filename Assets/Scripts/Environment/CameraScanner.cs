@@ -13,6 +13,7 @@ public class CameraScanner : MonoBehaviour
     public Typemode typemode;
     public Transform rootScanner, Camera;
     public float range, speed, idleTime;
+    public VolumetricLines.VolumetricLineBehavior volumetricLine;
     [HideInInspector] public float alertTime;
     [HideInInspector] public Transform shootPositon;
     [HideInInspector] public ParticleSystem shotEffect;
@@ -27,7 +28,8 @@ public class CameraScanner : MonoBehaviour
     private int patrolIndex = 0;
     private bool isStart, detected;
     private Vector3 targetLookAt;
-    private float timeNextAttack, idleTimer;
+    private float volumetricLineLineWidth = 0.2f, timeBlinkLed = 0.5f;
+    private float timeNextAttack, idleTimer, timerBlinkLed;
     private AudioSource audioSource;
     private GameManager gameManager;
     private SoundManager soundManager;
@@ -65,6 +67,13 @@ public class CameraScanner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Time.time >= timerBlinkLed) {
+            volumetricLine.LineWidth += volumetricLineLineWidth;
+            volumetricLineLineWidth *= -1;
+            timerBlinkLed = Time.time + timeBlinkLed;
+        }
+
+
         Camera.LookAt(targetLookAt, GetAxisUp());
         AxisForward();
         scanner.Scan();
