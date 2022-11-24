@@ -16,6 +16,7 @@ public class TimeBomb : MonoBehaviour
     [Label("Bomb Disposal Time(s)")]
 #endif
     public float bombDefuseTime;
+    public float radiusExplode = 12;
     public GameObject TimeBombUI;
     public TextMeshProUGUI text;
     public Slider progressBar;
@@ -23,7 +24,7 @@ public class TimeBomb : MonoBehaviour
     public AudioClip audioClip;
     [Range(0,1)] public float volumeScale;
     public LayerMask layer;
-    private float minutes, seconds, milliseconds, radiusExplode = 12;
+    private float minutes, seconds, milliseconds ;
     private bool isStartGame, explode, endGame, defuse, isAlert, win;
     private Camera cam;
     private AudioSource audioSource;
@@ -107,11 +108,11 @@ public class TimeBomb : MonoBehaviour
         minutes = Mathf.FloorToInt(time / 60);
         seconds = Mathf.FloorToInt(time % 60);
         milliseconds = Mathf.FloorToInt(time % 1 * 1000);
-        if(seconds < 10) {
+        if(time < 10) {
             text.color = Color.red;
         }
 
-        if(seconds < 5 && !isAlert) {
+        if(time < 5 && !isAlert) {
             OnAlertTimer?.Invoke();
             isAlert = true;
         }

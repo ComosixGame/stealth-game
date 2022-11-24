@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 public class UIMenu : MonoBehaviour
 {
-    public GameObject header, pauseMenu, winMenu, loseMenu, rewardAds;
+    public GameObject header, pauseMenu, winMenu, loseMenu;
     public Slider resSliderScale;
     public Toggle fps30, fps60, mute;
     public TextMeshProUGUI resSliderText, warningText;
@@ -12,7 +12,7 @@ public class UIMenu : MonoBehaviour
     private GameManager gameManager;
     private Animator animator;
     private int OpenMenuHash, CloseMenuHash;
-    private bool rewardAdsFailed, isWin;
+    private bool isWin;
     private SoundManager soundManager;
 
     private void Awake() {
@@ -114,7 +114,6 @@ public class UIMenu : MonoBehaviour
     
     private void OnEndGame(bool win) {
         header.SetActive(false);
-        rewardAds.SetActive(!rewardAdsFailed);
         isWin = win;
         if(win) {
             winMenu.SetActive(true);
@@ -123,10 +122,6 @@ public class UIMenu : MonoBehaviour
         }
         Time.timeScale = 0.3f;
         Invoke("ShowEndMenu", 0.3f);
-    }
-
-    public void OnRewardAdsFailed() {
-        rewardAdsFailed = true;
     }
     
     

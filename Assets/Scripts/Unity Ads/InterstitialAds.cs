@@ -15,6 +15,7 @@ namespace Unity.Services.Mediation
         public string androidAdUnitId;
         [Tooltip("Ad Unit Ids for each platform that represent Mediation waterfalls.")]
         public string iosAdUnitId;
+        public UnityEvent OnAdLoaded;
         public UnityEvent OnAdFailedLoad;
         public UnityEvent ResetLevelWithAdsFailed;
         public UnityEvent OnCloseAds;
@@ -118,6 +119,7 @@ namespace Unity.Services.Mediation
                 initializationError = initializeFailedException.initializationError;
             }
             Debug.Log($"Initialization Failed: {initializationError}:{error.Message}");
+            OnAdFailedLoad?.Invoke();
             loadFailed = true;
         }
 
@@ -128,7 +130,7 @@ namespace Unity.Services.Mediation
 
         void AdLoaded(object sender, EventArgs e)
         {
-
+            OnAdLoaded?.Invoke();
         }
 
         void AdFailedLoad(object sender, LoadErrorEventArgs e)

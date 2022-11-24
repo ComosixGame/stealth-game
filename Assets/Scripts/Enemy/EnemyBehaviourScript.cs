@@ -335,6 +335,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void HandleOnAlertOff() {
         isDeadBody = false;
         Alerted = false;
+        agent.ResetPath();
         if(state != State.Attack) {
             state = State.Patrol;
         }
