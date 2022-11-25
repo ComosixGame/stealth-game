@@ -13,12 +13,6 @@ namespace Unity.Services.Mediation
         public string androidAdUnitId;
         [Tooltip("iOS Ad Unit Ids")]
         public string iosAdUnitId;
-
-        [Header("Game Ids"), Tooltip("[Optional] Specifies the iOS GameId. Otherwise uses the dashboard provided GameId by default.")]
-        public string iosGameId;
-        [Tooltip("[Optional] Specifies the Android GameId. Otherwise uses the dashboard provided GameId by default.")]
-        public string androidGameId;
-
         [Header("Banner options")]
         public BannerAdAnchor bannerAdAnchor = BannerAdAnchor.TopCenter;
 
@@ -30,7 +24,7 @@ namespace Unity.Services.Mediation
         {
             try
             {
-                await UnityServices.InitializeAsync(GetGameId());
+                await UnityServices.InitializeAsync();
 
                 InitializationComplete();
             }
@@ -43,25 +37,6 @@ namespace Unity.Services.Mediation
         void OnDestroy()
         {
             m_BannerAd.Dispose();
-        }
-
-        InitializationOptions GetGameId()
-        {
-            var initializationOptions = new InitializationOptions();
-
-#if UNITY_IOS
-                if (!string.IsNullOrEmpty(iosGameId))
-                {
-                    initializationOptions.SetGameId(iosGameId);
-                }
-#elif UNITY_ANDROID
-                if (!string.IsNullOrEmpty(androidGameId))
-                {
-                    initializationOptions.SetGameId(androidGameId);
-                }
-#endif
-
-            return initializationOptions;
         }
 
         void InitializationComplete()

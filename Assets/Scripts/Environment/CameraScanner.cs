@@ -28,7 +28,7 @@ public class CameraScanner : MonoBehaviour
     private int patrolIndex = 0;
     private bool isStart, detected;
     private Vector3 targetLookAt;
-    private float volumetricLineLineWidth = 0.2f, timeBlinkLed = 0.5f;
+    private float volumetricLineLineWidth = 0.5f, timeBlinkLed = 0.5f;
     private float timeNextAttack, idleTimer, timerBlinkLed;
     private AudioSource audioSource;
     private GameManager gameManager;
