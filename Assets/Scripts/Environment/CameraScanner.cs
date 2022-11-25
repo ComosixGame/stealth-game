@@ -67,10 +67,12 @@ public class CameraScanner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Time.time >= timerBlinkLed) {
-            volumetricLine.LineWidth += volumetricLineLineWidth;
-            volumetricLineLineWidth *= -1;
-            timerBlinkLed = Time.time + timeBlinkLed;
+        if(volumetricLine != null) {
+            if(Time.time >= timerBlinkLed) {
+                volumetricLine.LineWidth += volumetricLineLineWidth;
+                volumetricLineLineWidth *= -1;
+                timerBlinkLed = Time.time + timeBlinkLed;
+            }
         }
 
 

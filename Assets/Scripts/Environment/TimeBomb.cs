@@ -24,9 +24,11 @@ public class TimeBomb : MonoBehaviour
     public AudioClip audioClip;
     [Range(0,1)] public float volumeScale;
     public LayerMask layer;
-    private float minutes, seconds, milliseconds ;
+    public VolumetricLines.VolumetricLineBehavior volumetricLine;
+    private float minutes, seconds, milliseconds, timerBlinkLed;
     private bool isStartGame, explode, endGame, defuse, isAlert, win;
     private Camera cam;
+    private float volumetricLineLineWidth = 2f, timeBlinkLed = 0.5f;
     private AudioSource audioSource;
     private GameManager gameManager;
     private SoundManager soundManager;
@@ -56,6 +58,16 @@ public class TimeBomb : MonoBehaviour
     {
         if(isStartGame && !defuse) {
             CountDownTime();
+        }
+
+        if(!defuse) {
+            if(Time.time >= timerBlinkLed) {
+                volumetricLine.LineWidth += volumetricLineLineWidth;
+                volumetricLineLineWidth *= -1;
+                timerBlinkLed = Time.time + timeBlinkLed;
+            }
+        } else {
+            volumetricLineLineWidth = 0;
         }
     }
 
