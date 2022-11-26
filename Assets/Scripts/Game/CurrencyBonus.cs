@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CurrencyBonus : MonoBehaviour
 {
-    public bool addForceOnAwake = true;
+    public bool useMagnet = true, addForceOnAwake = true;
     public LayerMask layer;
     [SerializeField] private int point;
     public AudioClip audioClip;

@@ -10,7 +10,6 @@ using UnityEditor;
 public class BossBehaviourScript : MonoBehaviour
 {
     public Boss boss;
-    [HideInInspector] public Transform Player;
     public Transform shootPosition;
     public ParticleSystem shotEffect;
     public LayerMask target;
@@ -23,6 +22,7 @@ public class BossBehaviourScript : MonoBehaviour
     private int fireHash;
     private float IdleTimer, chargeTimer, attackTimer, timeNextAttack, angel, angelIncrease;
     private bool readyAttack, isStart;
+    private Transform _player;
     private GameManager gameManager;
     private SoundManager soundManager;
     private ObjectPooler objectPooler;
@@ -43,6 +43,7 @@ public class BossBehaviourScript : MonoBehaviour
 
     private void OnEnable() {
         gameManager.OnStart.AddListener(StartCutScene);
+        CharacterSelection.OnPlayerSpawned += GetPlayer;
     }
 
     private void Start() {
@@ -78,6 +79,11 @@ public class BossBehaviourScript : MonoBehaviour
 
     private void OnDisable() {
         gameManager.OnStart.RemoveListener(StartCutScene);
+        CharacterSelection.OnPlayerSpawned -= GetPlayer;
+    }
+
+    private void GetPlayer(Transform player) {
+        _player = player;
     }
 
     private void Move() {
@@ -103,8 +109,8 @@ public class BossBehaviourScript : MonoBehaviour
             agent.SetDestination(transform.position);
         }
 
-        Quaternion rotDir = Quaternion.LookRotation(Player.position - transform.position);
-        Quaternion rotLook = LerpRotation(Player.position, transform.position, 10);
+        Quaternion rotDir = Quaternion.LookRotation(_player.position - transform.position);
+        Quaternion rotLook = LerpRotation(_player.position, transform.position, 10);
         transform.rotation = rotLook;
         if(Time.time >= timeNextAttack) {
             //delay trc khi bắn

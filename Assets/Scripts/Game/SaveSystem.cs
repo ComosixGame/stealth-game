@@ -84,7 +84,7 @@ public class SettingData
 
     public SettingData() {
         mute = false;
-        resolutionScale = 0.5f;
+        resolutionScale = 0.7f;
         fps = 60;
     }
     

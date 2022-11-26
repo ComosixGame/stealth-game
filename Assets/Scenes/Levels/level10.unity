@@ -4665,17 +4665,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMute: 0
---- !u!114 &616737773 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2995765354886503368, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
-  m_PrefabInstance: {fileID: 1899888532}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20f2da390a30a644f9b1f2e95b0396d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &616737774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3321864092401299812, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
@@ -12936,7 +12925,6 @@ MonoBehaviour:
   equipmentManager: {fileID: 11400000, guid: 208b624741012a84a91b15ab32da1aaa, type: 2}
   joyStick: {fileID: 1250403944}
   cinemachineFreeLook: {fileID: 819339023}
-  boss: {fileID: 616737773}
   debugMode: 0
   debugCharacter: {fileID: 9163739213769234586, guid: 65827b516ed046d42945388375497b17, type: 3}
   debugMesh: {fileID: -7587899814628906442, guid: 28b68dbca4d21d74584ff3ed5853adc5, type: 3}
@@ -14798,15 +14786,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1982741957, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.3094012
+      value: 0.30940118
       objectReference: {fileID: 0}
     - target: {fileID: 1982741957, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000040078767
+      value: -2.6230078e-15
       objectReference: {fileID: 0}
     - target: {fileID: 1982741957, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000013040285
+      value: 7.925509e-16
       objectReference: {fileID: 0}
     - target: {fileID: 2689336611887655902, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_Name
@@ -14816,6 +14804,10 @@ PrefabInstance:
       propertyPath: TextBoss
       value: 
       objectReference: {fileID: 2758418540850747776}
+    - target: {fileID: 2995765354886503368, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
+      propertyPath: characterSelection
+      value: 
+      objectReference: {fileID: 1657130050}
     - target: {fileID: 3321864092401299812, guid: 7a067a4e7384a0a439507130c89f2365, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -15758,7 +15750,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094422800}
-  m_LocalRotation: {x: 0.4615785, y: 0.007741213, z: -0.0040281285, w: 0.88705647}
+  m_LocalRotation: {x: 0.46157846, y: 0.0077412976, z: -0.004028172, w: 0.88705647}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

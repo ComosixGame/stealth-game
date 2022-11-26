@@ -1,8 +1,8 @@
+using System;
 using UnityEngine;
 using Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
-using MyCustomAttribute;
 #endif
 
 public class CharacterSelection : MonoBehaviour
@@ -10,16 +10,13 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private EquipmentManager equipmentManager;
     public RectTransform joyStick;
     public  CinemachineFreeLook cinemachineFreeLook;
-#if UNITY_EDITOR
-    [Label("Boss (Optional)")]
-#endif
-    public BossBehaviourScript boss;
     public bool debugMode;
     private GameObject player;
     private PlayerAttack playerAttack;
     private Transform playerTransform;
     [HideInInspector] public GameObject debugCharacter;
     [HideInInspector] public Mesh debugMesh;
+    public static event Action<Transform> OnPlayerSpawned;
 
     // Start is called before the first frame update
     void Start()
@@ -40,10 +37,7 @@ public class CharacterSelection : MonoBehaviour
             playerAttack.weapon = weapon;
             playerTransform.SetParent(transform);
         }
-        if(boss != null) {
-            boss.Player = playerTransform;
-        } 
-        
+        OnPlayerSpawned?.Invoke(playerTransform);
         cinemachineFreeLook.LookAt = playerTransform;
         cinemachineFreeLook.Follow = playerTransform;
 
