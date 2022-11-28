@@ -7,6 +7,8 @@ using UnityEngine.Animations.Rigging;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyBehaviourScript : MonoBehaviour
 {   
+    public bool alwaysChase;
+    private Transform targetChase;
     [SerializeField] private Enemy enemy;
     public Transform rootScanner;
     public Rig aimLayer;
@@ -72,6 +74,8 @@ public class EnemyBehaviourScript : MonoBehaviour
         playerScanner.OnDetectedTarget.AddListener(HandleWhenDetected);
         playerScanner.OnNotDetectedTarget.AddListener(HandleWhenNotDetected);
         playerScanner.OnDetectedSubTarget.AddListener(HandleWhenDetectedSubtarget);
+
+        CharacterSelection.OnPlayerSpawned += GetPlayer;
         
     }
 
@@ -96,6 +100,7 @@ public class EnemyBehaviourScript : MonoBehaviour
         if(!isStartGame) {
             return;
         }
+        //state machine
         switch(state) {
             case State.Idle:
                 exclamation.SetActive(false);
@@ -131,7 +136,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             default:
                 break;
         }
-
+        //thay đổi tốc độ tuần tra và truy đuổi
         if(state == State.Patrol) {
             agent.speed = enemy.speedPatrol;
         } else {
@@ -156,6 +161,10 @@ public class EnemyBehaviourScript : MonoBehaviour
             dir.y = 0;
             obstacleDamageable.TakeDamge(contact.point, dir.normalized * 10 );
         }
+    }
+
+    private void GetPlayer(Transform player) {
+        targetChase = player;
     }
 
     private void Idle() {
@@ -226,7 +235,7 @@ public class EnemyBehaviourScript : MonoBehaviour
             }
         }
 
-        if(!triggerAlertOnAttack && timeDetect >= 1f) {
+        if(!alwaysChase && !triggerAlertOnAttack && timeDetect >= 1f) {
             triggerAlertOnAttack = true;
             gameManager.EnemyTriggerAlert(playerPos, enemy.alertTime);
         }
@@ -243,7 +252,9 @@ public class EnemyBehaviourScript : MonoBehaviour
                 state = State.Looking;
                 return;
             } else {
-                if(!agent.hasPath) {
+                if(!alwaysChase && !agent.hasPath) {
+                    agent.SetDestination(hit.position);
+                } else {
                     agent.SetDestination(hit.position);
                 }
             }
@@ -295,12 +306,18 @@ public class EnemyBehaviourScript : MonoBehaviour
         timeDetect = 0;
         aimLayer.weight = Mathf.Lerp(aimLayer.weight, -0.1f, 20f * Time.deltaTime);
         triggerAlertOnAttack = false;
+        if(alwaysChase) {
+            state = State.Chase;
+            playerPosition = targetChase.position;
+            return;
+        }
         if(prevState == State.Attack) {
             state = State.Chase;
         }
     }
 
     private void HandleWhenDetectedSubtarget(Transform _transform) {
+        if(alwaysChase) return;
         bool isDetected = _transform.GetComponentInParent<DeadBody>().isDetected;
         if(!isDetected) {
             agent.ResetPath();
@@ -324,6 +341,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleOnAlert(Vector3 pos) {
+        if(alwaysChase) return;
         Alerted = true;
         playerPosition = pos;
         agent.ResetPath();
@@ -333,6 +351,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleOnAlertOff() {
+        if(alwaysChase) return;
         isDeadBody = false;
         Alerted = false;
         agent.ResetPath();
@@ -355,6 +374,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     }
 
     private void HandleWhenTakeDamge(Vector3 dir) {
+        if(alwaysChase) return;
         if(state != State.Attack) {
             playerPosition = transform.position - dir.normalized * 3f;
             agent.ResetPath();
@@ -376,6 +396,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         playerScanner.OnDetectedSubTarget.RemoveListener(HandleWhenDetectedSubtarget);
 
         enemyDamageable.OnTakeDamge.RemoveListener(HandleWhenTakeDamge);
+
+        CharacterSelection.OnPlayerSpawned -= GetPlayer;
+
     }
 
     

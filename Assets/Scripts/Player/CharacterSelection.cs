@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,6 +10,7 @@ public class CharacterSelection : MonoBehaviour
 {
     [SerializeField] private EquipmentManager equipmentManager;
     public RectTransform joyStick;
+    public Button interactBtn;
     public  CinemachineFreeLook cinemachineFreeLook;
     public bool debugMode;
     private GameObject player;
@@ -40,8 +42,9 @@ public class CharacterSelection : MonoBehaviour
         OnPlayerSpawned?.Invoke(playerTransform);
         cinemachineFreeLook.LookAt = playerTransform;
         cinemachineFreeLook.Follow = playerTransform;
-
-        player.GetComponent<PlayerController>().joystickRectTrans = joyStick;
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        playerController.joystickRectTrans = joyStick;
+        playerController.interactBtn = interactBtn;
     }
 
 
