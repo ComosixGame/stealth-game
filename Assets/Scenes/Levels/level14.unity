@@ -14829,6 +14829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipmentManager: {fileID: 11400000, guid: 208b624741012a84a91b15ab32da1aaa, type: 2}
   joyStick: {fileID: 1250403944}
+  interactBtn: {fileID: 0}
   cinemachineFreeLook: {fileID: 819339023}
   debugMode: 0
   debugCharacter: {fileID: 9163739213769234586, guid: 65827b516ed046d42945388375497b17, type: 3}
@@ -17711,7 +17712,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094422800}
-  m_LocalRotation: {x: 0.4615785, y: 0.007741213, z: -0.0040281285, w: 0.88705647}
+  m_LocalRotation: {x: 0.46157846, y: 0.0077412976, z: -0.004028172, w: 0.88705647}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -18141,6 +18142,30 @@ PrefabInstance:
     - target: {fileID: 6741943718501733835, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}
       propertyPath: PosMove.z
       value: 28.96855
+      objectReference: {fileID: 0}
+    - target: {fileID: 7768861813638248850, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7768861813638248850, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7768861813638248850, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635332186356909956, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635332186356909956, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635332186356909956, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44934600a0b5ef44681a3faec933c5d9, type: 3}

@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     private bool isStart, isPause, isAttack;
     private GameManager gameManager;
     private PlayerAttack playerAttack;
-    private IInteractable _interactable;
     
     private void Awake() {
         //init input system
@@ -59,7 +58,6 @@ public class PlayerController : MonoBehaviour
     {
         //hide joystick out of UI view
         joystickRectTrans.position = new Vector2(9999999, 9999999);
-        interactBtn.onClick.AddListener(OnInteractbtnClick);
     }
 
     // Update is called once per frame
@@ -119,11 +117,6 @@ public class PlayerController : MonoBehaviour
             dir.y = 0;
             obstacleDamageable.TakeDamge(hit.point, dir.normalized * 10 );
         }
-
-        if(hit.gameObject.TryGetComponent(out IInteractable interactable)) {
-            interactBtn.gameObject.SetActive(true);
-            _interactable = interactable;
-        }
     }
 
     private void HandlAnimation() {
@@ -157,10 +150,6 @@ public class PlayerController : MonoBehaviour
         isAttack = attack;
     }
 
-    private void OnInteractbtnClick() {
-        _interactable.Interact();
-    }
-
     private void OnDisable() {
         inputs.PlayerControl.Disable();
         // unsubscribe active input
@@ -175,7 +164,5 @@ public class PlayerController : MonoBehaviour
         gameManager.OnEndGame.RemoveListener(OnEndGame);
 
         playerAttack.OnAttack -= OnAttack;
-
-        interactBtn.onClick.RemoveListener(OnInteractbtnClick);
     }
 }

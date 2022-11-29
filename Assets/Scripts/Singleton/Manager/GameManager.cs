@@ -93,9 +93,8 @@ public class GameManager : Singleton<GameManager>
     public void EndGame(bool win) {
         isWin = win;
         OnEndGame?.Invoke(isWin);
-        if(isWin) {
-            UpdateCurrency(100);
-        }
+        int bonus = isWin?100:0;
+        UpdateCurrency(bonus);
         playerData.Save();
     }
 
