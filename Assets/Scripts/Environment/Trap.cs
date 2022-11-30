@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,11 +19,14 @@ public class Trap : Command
     [HideInInspector] public ParticleSystem warningEffect;
     public Typemode typemode;
     public AudioClip audioClip;
+    [HideInInspector] public bool turnOn = true;
+    [HideInInspector] public float  phaseDifference;
     [Range(0,1)] public float volumeScale;
-    private bool ready, PowerOff, turnOn = true;
+    private bool ready, PowerOff;
     private float timeNextAttack, nextSwitch;
     private AudioSource audioSource;
     private SoundManager soundManager;
+    [SerializeField] private UnityEvent OnExecute;
 
     private void Awake() {
         soundManager = SoundManager.Instance;
@@ -37,6 +41,12 @@ public class Trap : Command
         soundManager.OnMute.AddListener(OnMuteGame);
     }
 
+    private void Start() {
+        if(typemode != Typemode.Blink) return;
+        effect.SetActive(turnOn);
+        nextSwitch = turnOn ? Time.time + onDuration:Time.time + offDuration;
+        nextSwitch -= !turnOn? phaseDifference : 0;
+    }
 
     private void Update() {
         if(typemode == Typemode.Blink && !PowerOff) {
@@ -54,16 +64,24 @@ public class Trap : Command
                 }
             }
 
-            if(nextSwitch - Time.time <= warningBeforeOn && !turnOn) {
-                if(warningEffect.isStopped) {
-                    warningEffect.Play();
+
+            ParticleSystem.MainModule warningEffectMain =  warningEffect.main;
+            float timeBeforeTurnOn = nextSwitch - Time.time;
+
+            if(!turnOn) {
+                if(timeBeforeTurnOn <= warningBeforeOn) {
+                    if(warningEffect.isStopped) {
+                        warningEffect.Play();
+                        warningEffectMain.startSizeY = 1.5f;
+                    }
+                } else {
+                    if(warningEffect.isPlaying) {
+                        warningEffect.Stop();
+                    }
                 }
             } else {
-                if(warningEffect.isPlaying) {
-                    warningEffect.Stop();
-                }
+                warningEffectMain.startSizeY = 0.3f;
             }
-
         }
     }
 
@@ -112,6 +130,7 @@ public class Trap : Command
         if(typemode == Typemode.Blink) {
             warningEffect.Stop();
         }
+        OnExecute?.Invoke();
     }
 
     public override void Undo()
@@ -164,6 +183,22 @@ public class Trap : Command
                 if(EditorGUI.EndChangeCheck()) {
                     UnityEditor.Undo.RecordObject(trap, "Update warning Before On");
                     trap.warningBeforeOn = warningBeforeOn;
+                }
+
+
+                EditorGUI.BeginChangeCheck();
+                bool turnOn = EditorGUILayout.Toggle("Turn On", trap.turnOn);
+                if(EditorGUI.EndChangeCheck()) {
+                    UnityEditor.Undo.RecordObject(trap, "Update turnOn");
+                    trap.turnOn = turnOn;
+                }
+                if(!trap.turnOn) {
+                    EditorGUI.BeginChangeCheck();
+                    float phaseDifference = EditorGUILayout.FloatField("Độ lệch Pha", trap.phaseDifference);
+                    if(EditorGUI.EndChangeCheck()) {
+                        UnityEditor.Undo.RecordObject(trap, "Update phaseDifference");
+                        trap.phaseDifference = phaseDifference;
+                    }
                 }
             }
         }

@@ -29,7 +29,7 @@ public class Cage : MonoBehaviour
             soundManager.PlayOneShot(audioClip, volumeScale);
             OnEnter?.Invoke();
             opened = true;
-            Invoke("HostageLeave", 1.2f);
+            Invoke("HostageLeave", 1.5f);
             while(coinBonus > 0) {
                 objectPooler.SpawnObject("Money", transform.position, transform.rotation);
                 coinBonus--;

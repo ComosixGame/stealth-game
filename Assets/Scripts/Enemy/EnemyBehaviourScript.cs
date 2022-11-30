@@ -40,6 +40,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private bool isStartGame, isDeadBody, readyAttack, Alerted, triggerAlertOnAttack;
     private Animator animator;
     private int velocityHash;
+    private int idleAnmationHash;
     private GameManager gameManager;
     private EnemyDamageable enemyDamageable;
     private Camera cam;
@@ -51,6 +52,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
+        idleAnmationHash = Animator.StringToHash("IdleAnimation");
 
         GameObject w = weaponHolder.AddWeapon(weapon);
 
@@ -90,6 +92,9 @@ public class EnemyBehaviourScript : MonoBehaviour
         if(agent.stoppingDistance == 0) {
             agent.stoppingDistance = 1;
         }
+
+        animator.SetFloat(idleAnmationHash,Random.Range(0,5));
+
     }
 
     // Update is called once per frame
@@ -191,6 +196,7 @@ public class EnemyBehaviourScript : MonoBehaviour
                     if(agent.remainingDistance <= agent.stoppingDistance) {
                         IdleTimer += Time.deltaTime;
                         if(IdleTimer > enemy.IdleTime) {
+                            animator.SetFloat(idleAnmationHash,Random.Range(0,5));
                             patrolIndex++;
                             if(patrolIndex >= patrolList.Length) {
                                 patrolIndex = 0;
@@ -206,6 +212,7 @@ public class EnemyBehaviourScript : MonoBehaviour
                             IdleTimer += Time.deltaTime;
                             transform.rotation = LerpRotation(walkPoint, transform.position, enemy.speedRotation);
                             if(IdleTimer > enemy.IdleTime) {
+                                animator.SetFloat(idleAnmationHash,Random.Range(0,5));
                                 patrolIndex++;
                                 if(patrolIndex >= patrolList.Length) {
                                     patrolIndex = 0;
