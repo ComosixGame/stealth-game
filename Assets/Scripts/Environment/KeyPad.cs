@@ -15,7 +15,9 @@ public class KeyPad : MonoBehaviour
     public AudioClip audioClipSuccess, audioClipFail;
     [Range(0,1)] public float volumeScale;
     public Canvas keyPadUI;
+    #if UNITY_EDITOR
     [ReadOnly, SerializeField, Label("Code(Auto generation)")]
+    #endif
     private string code;
     private string input;
     private SoundManager soundManager;

@@ -70,6 +70,7 @@ public class EnemyBehaviourScript : MonoBehaviour
     private void OnEnable() {
 
         gameManager.OnStart.AddListener(OnStartGame);
+        gameManager.OnEndCutScene.AddListener(OnEndCutScene);
         gameManager.OnEnemyAlert.AddListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.AddListener(HandleOnAlertOff);
 
@@ -298,7 +299,11 @@ public class EnemyBehaviourScript : MonoBehaviour
         return Quaternion.Lerp(transform.rotation, rotLook, speed * Time.deltaTime);
     }
 
-    private void OnStartGame() {
+    private void OnStartGame(bool bossFight) {
+        isStartGame = !bossFight;
+    }
+
+    private void OnEndCutScene() {
         isStartGame = true;
     }
     
@@ -395,6 +400,7 @@ public class EnemyBehaviourScript : MonoBehaviour
 
     private void OnDisable() {
         gameManager.OnStart.RemoveListener(OnStartGame);
+        gameManager.OnEndCutScene.RemoveListener(OnEndCutScene);
         gameManager.OnEnemyAlert.RemoveListener(HandleOnAlert);
         gameManager.OnEnemyAlertOff.RemoveListener(HandleOnAlertOff);
 

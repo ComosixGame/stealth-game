@@ -107,7 +107,7 @@ public class TimeBomb : MonoBehaviour
         soundManager.OnMute.RemoveListener(OnMuteGame);
     }
 
-    private void OnStartGame() {
+    private void OnStartGame(bool bossFight) {
         isStartGame = true;
     }
 

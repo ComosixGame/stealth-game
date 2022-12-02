@@ -125,7 +125,7 @@ public class CameraScanner : MonoBehaviour
         detected = true;
     }
 
-    private void OnStartGame() {
+    private void OnStartGame(bool bossFight) {
         isStart = true;
     }
 

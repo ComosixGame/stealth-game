@@ -52,6 +52,7 @@ public class Trap : Command
         if(typemode == Typemode.Blink && !PowerOff) {
             if(Time.time > nextSwitch){
                 turnOn = !turnOn;
+                nextSwitch = Time.time;
                 nextSwitch += (turnOn ? onDuration : offDuration);
                 if(turnOn) {
                     if(!effect.activeSelf) {
@@ -64,23 +65,23 @@ public class Trap : Command
                 }
             }
 
-
             ParticleSystem.MainModule warningEffectMain =  warningEffect.main;
             float timeBeforeTurnOn = nextSwitch - Time.time;
 
             if(!turnOn) {
                 if(timeBeforeTurnOn <= warningBeforeOn) {
-                    if(warningEffect.isStopped) {
-                        warningEffect.Play();
-                        warningEffectMain.startSizeY = 1.5f;
+                    warningEffectMain.startSizeY = 1.5f;
+                    if(!warningEffect.gameObject.activeSelf) {
+                        warningEffect.gameObject.SetActive(true);
                     }
                 } else {
-                    if(warningEffect.isPlaying) {
-                        warningEffect.Stop();
+                    if(warningEffect.gameObject.activeSelf) {
+                        warningEffect.gameObject.SetActive(false);
                     }
                 }
             } else {
-                warningEffectMain.startSizeY = 0.3f;
+                float startSizeY = warningEffectMain.startSizeY.constant;
+                warningEffectMain.startSizeY = Mathf.Lerp(startSizeY, 0.3f, 2f * Time.deltaTime);
             }
         }
     }

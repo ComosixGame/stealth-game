@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
         inputs.PlayerControl.HoldTouch.canceled += HideJoystick;
 
         gameManager.OnStart.AddListener(OnStartGame);
+        gameManager.OnEndCutScene.AddListener(OnEndCutScene);
         gameManager.OnPause.AddListener(OnPauseGame);
         gameManager.OnResume.AddListener(OnResumeGame);
         gameManager.OnEndGame.AddListener(OnEndGame);
@@ -131,9 +132,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnStartGame() {
+    private void OnStartGame(bool bossFight) {
+        isStart = !bossFight;
+    }
+
+    private void OnEndCutScene() {
         isStart = true;
     }
+
     private void OnPauseGame() {
         isPause = true;
     }
@@ -159,6 +165,7 @@ public class PlayerController : MonoBehaviour
         inputs.PlayerControl.HoldTouch.canceled -= HideJoystick;
 
         gameManager.OnStart.RemoveListener(OnStartGame);
+        gameManager.OnEndCutScene.RemoveListener(OnEndCutScene);
         gameManager.OnPause.RemoveListener(OnPauseGame);
         gameManager.OnResume.RemoveListener(OnResumeGame);
         gameManager.OnEndGame.RemoveListener(OnEndGame);

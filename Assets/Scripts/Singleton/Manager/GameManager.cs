@@ -9,13 +9,14 @@ public class GameManager : Singleton<GameManager>
     public int moneyCollected {get; private set;}
     private PlayerData playerData;
     public SettingData settingData;
-    private bool isWin, isEnd;
+    private bool isWin, isEnd, bossFight;
     private Coroutine coroutine;
     public UnityEvent<float> OnUpdateHealthPlayer =  new UnityEvent<float>();
     public UnityEvent<int, int> OnUpdateMoney =  new UnityEvent<int, int>();
     public UnityEvent<Vector3> OnEnemyAlert =  new UnityEvent<Vector3>();
     public UnityEvent OnEnemyAlertOff =  new UnityEvent();
-    public UnityEvent OnStart =  new UnityEvent();
+    public UnityEvent<bool> OnStart =  new UnityEvent<bool>();
+    public UnityEvent OnEndCutScene = new UnityEvent();
     public UnityEvent OnPause =  new UnityEvent();
     public UnityEvent OnResume =  new UnityEvent();
     public UnityEvent<int> OnSelectItem =  new UnityEvent<int>();
@@ -56,8 +57,16 @@ public class GameManager : Singleton<GameManager>
         coroutine = StartCoroutine(StartAlert(time));
     }
 
+    public void SetBossFight() {
+        bossFight = true;
+    }
+
+    public void EndCutScene() {
+        OnEndCutScene?.Invoke();
+    }
+
     public void StartGame() {
-        OnStart?.Invoke();
+        OnStart?.Invoke(bossFight);
     }
     public void PauseGame() {
         OnPause?.Invoke();

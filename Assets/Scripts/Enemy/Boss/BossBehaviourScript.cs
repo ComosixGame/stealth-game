@@ -42,6 +42,7 @@ public class BossBehaviourScript : MonoBehaviour
     }
 
     private void OnEnable() {
+        gameManager.SetBossFight();
         gameManager.OnStart.AddListener(StartCutScene);
         CharacterSelection.OnPlayerSpawned += GetPlayer;
     }
@@ -139,7 +140,7 @@ public class BossBehaviourScript : MonoBehaviour
         isStart = true;
     }
 
-    private void StartCutScene() {
+    private void StartCutScene(bool bossFight) {
         cinemachineFree.Priority = 100;
         Invoke("EndCutScene", 2f);
     }
@@ -148,6 +149,7 @@ public class BossBehaviourScript : MonoBehaviour
         TextBoss.gameObject.SetActive(false);
         cinemachineFree.Priority = -1;
         Invoke("StartActive", 1f);
+        gameManager.EndCutScene();
     }
 
     private Vector3 RandomNavmeshLocation(float radius) {
