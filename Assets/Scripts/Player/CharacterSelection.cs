@@ -10,7 +10,6 @@ public class CharacterSelection : MonoBehaviour
 {
     [SerializeField] private EquipmentManager equipmentManager;
     public RectTransform joyStick;
-    public Button interactBtn;
     public  CinemachineFreeLook cinemachineFreeLook;
     public bool debugMode;
     private GameObject player;
@@ -44,7 +43,6 @@ public class CharacterSelection : MonoBehaviour
         cinemachineFreeLook.Follow = playerTransform;
         PlayerController playerController = player.GetComponent<PlayerController>();
         playerController.joystickRectTrans = joyStick;
-        playerController.interactBtn = interactBtn;
     }
 
 

@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     //public
     public float speed = 10f;
     public RectTransform joystickRectTrans;
-    public Button interactBtn;
     public float gravity = -9.81f;
     //private
     private InputAssets inputs;
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnEnable() {
-        inputs.PlayerControl.Enable();
+        inputs.Enable();
         inputs.PlayerControl.Move.performed += GetDirection;
         inputs.PlayerControl.Move.canceled += GetDirection;
         inputs.PlayerControl.StartTouch.performed += ShowJoystick;

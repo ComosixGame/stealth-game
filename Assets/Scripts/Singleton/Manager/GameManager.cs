@@ -92,6 +92,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void InitGame() {
+        bossFight = false;
         isEnd = false;
         moneyCollected = 0;
         playerData = PlayerData.Load();
