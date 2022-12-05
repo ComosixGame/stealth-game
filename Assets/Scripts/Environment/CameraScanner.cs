@@ -185,7 +185,9 @@ public class CameraScanner : MonoBehaviour
     }
 
     private void OnMuteGame(bool isMute) {
-        audioSource.mute = isMute;
+        if(audioSource != null) {
+            audioSource.mute = isMute;
+        }
     }
 
     private void OnDisable() {
